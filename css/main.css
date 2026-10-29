@@ -1250,6 +1250,19 @@ body::after{
 .numrow:hover .numrow__n{ color:var(--ink); }
 .numrow__h{ font-family:var(--font-display); text-transform:uppercase; font-weight:600; letter-spacing:.005em; }
 .numrow__p{ color:var(--g-500); }
+/* How It Works: illustrated background (climbing steps to an open door) */
+#how{ position:relative; background:url(../assets/img/how-steps.jpg) center right/cover no-repeat; }
+#how::before{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:linear-gradient(90deg, var(--canvas) 0%, rgba(247,244,238,.95) 34%, rgba(247,244,238,.62) 60%, rgba(247,244,238,.12) 100%); }
+#how > .wrap{ position:relative; z-index:1; }
+#how .section__head{ max-width:600px; }
+#how .numlist{ max-width:600px; margin-left:0; margin-right:auto; }
+@media (max-width:820px){
+  /* on phones the tall layout makes the art clash with the text: keep it clean */
+  #how{ background:var(--canvas); }
+  #how::before{ display:none; }
+  #how .section__head, #how .numlist{ max-width:none; }
+}
 
 /* =====================================================================
    FEATURES — pull the dark section back onto cream paper
