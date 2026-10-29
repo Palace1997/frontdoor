@@ -1184,7 +1184,7 @@ body::after{
    ===================================================================== */
 .rdeck{ background:var(--canvas); }
 .rdeck h1,.rdeck h2{ font-family:var(--font-display); font-weight:600; text-transform:uppercase; letter-spacing:.004em; color:var(--ink); }
-.rdeck h1 .accent,.rdeck h2 .accent{ color:var(--rust); font-style:normal; }
+.rdeck h1 .accent,.rdeck h2 .accent{ color:inherit; font-style:normal; }
 .rdeck__sub{ color:var(--g-500); }
 .rdeck__btnwrap{ border-color:var(--green); }
 .rdeck__btn{ background:var(--green-600); }
@@ -1194,7 +1194,7 @@ body::after{
    GALLERY (portfolio) — Bodoni caps title, rust accent
    ===================================================================== */
 .port__title{ font-family:var(--font-display); font-weight:600; text-transform:uppercase; letter-spacing:.005em; line-height:1.0; color:var(--ink); }
-.port__title .italic-accent{ color:var(--rust); font-style:normal; }
+.port__title .italic-accent{ color:inherit; font-style:normal; }
 .port__head .lede{ color:var(--g-500); }
 .cat__type.is-active, .cat__type:hover{ background:var(--forest); border-color:var(--forest); }
 .port__areasel select{ color:var(--forest); background-color:var(--forest-tint); }
