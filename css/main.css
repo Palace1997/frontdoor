@@ -1082,30 +1082,12 @@ body:not(.is-routed) #faq { margin-top: -140px; }
    This block is last in the file so it overrides the forest-era styles.
    ===================================================================== */
 :root{
-  /* Paper + ink */
-  --ink:        #43282A;   /* deep brown-plum, primary text */
-  --ink-2:      #35201f;
-  --canvas:     #ECE3D1;   /* page paper */
-  --paper:      #F2EAD9;   /* raised cards, a hair lighter than paper */
-  --paper-2:    #E4D9C3;   /* soft/deeper sections */
-  --paper-3:    #E4D9C3;
-  --rust:       #A86438;   /* labels, emblems, editorial accent */
-  --rust-600:   #8f5329;
-  /* Dark "spread" moments become deep plum, not forest */
-  --forest:     #3a2124;
-  --forest-2:   #2b1718;
-  --forest-tint:#E4D9C3;   /* warm chip wash (was pale green) */
-  --cream-accent:#EFE4D2;  /* text/CTAs on the plum spreads */
-  /* Muted scale → warm plum alphas (reads on cream; dark spreads get explicit overrides) */
-  --g-700: rgba(67,40,42,.80);
-  --g-500: rgba(67,40,42,.62);
-  --g-400: rgba(67,40,42,.44);
-  --g-300: rgba(67,40,42,.30);
-  --g-200: rgba(67,40,42,.16);
-  --line:  rgba(67,40,42,.16);
-  /* Green stays the single interactive accent */
-  --green:     #00A583;
-  --green-600: #00876c;
+  /* Live brand palette (Kenzie V3) from the top of this file is kept as-is.
+     The editorial skin only swaps the display face and aliases its "accent"
+     (originally rust) onto the brand green, so every label/numeral/accent
+     recolors to green automatically. */
+  --rust:       #00876c;   /* accent alias → Kenzie green-600 */
+  --rust-600:   #006b55;
   --font-display: "Bodoni Moda", Didot, "Times New Roman", Georgia, serif;
 }
 body{ background:var(--canvas); color:var(--ink); }
@@ -1139,7 +1121,7 @@ body::after{
   font-size:11px; line-height:1.4; letter-spacing:.2em; text-transform:uppercase;
   color:var(--rust); margin-bottom:16px;
 }
-.section--dark .section__head .eyebrow, .section--dark .mission__head .eyebrow, .section--dark .cta-banner .eyebrow{ color:#d79a63; }
+.section--dark .section__head .eyebrow, .section--dark .mission__head .eyebrow, .section--dark .cta-banner .eyebrow{ color:#5CC2A3; }
 .section__head h2, .mission__head h2, .why h2, .port__head h2, .cta-banner h2{
   font-family:var(--font-display); font-weight:600; text-transform:uppercase;
   font-size:clamp(30px,5vw,62px); line-height:1.0; letter-spacing:.005em;
@@ -1160,7 +1142,7 @@ body::after{
 .lhero__frame::after{
   content:""; position:absolute; left:0; right:0; bottom:0; height:38%;
   z-index:2; pointer-events:none;
-  background:linear-gradient(to top, var(--canvas) 0%, rgba(236,227,209,.0) 100%);
+  background:linear-gradient(to top, var(--canvas) 0%, rgba(247,244,238,.0) 100%);
 }
 /* lift stage/foot above the melt */
 .lstage,.lfoot{ z-index:4; }
@@ -1187,14 +1169,14 @@ body::after{
 /* =====================================================================
    WHY FRONTDOOR (full-bleed photo + panel) → cream, Bodoni, rust kicker
    ===================================================================== */
-.bmr__bg::after{ background:linear-gradient(180deg,rgba(236,227,209,.05) 0%,rgba(236,227,209,.2) 50%,rgba(236,227,209,.6) 100%); }
-.bmr__panel{ background:rgba(242,234,217,.92); border-color:var(--line); border-radius:4px 4px 0 0; }
+.bmr__bg::after{ background:linear-gradient(180deg,rgba(247,244,238,.05) 0%,rgba(247,244,238,.2) 50%,rgba(247,244,238,.6) 100%); }
+.bmr__panel{ background:rgba(255,255,255,.92); border-color:var(--line); border-radius:4px 4px 0 0; }
 .bmr__kicker{ color:var(--rust); letter-spacing:.2em; }
 .bmr__title{ font-family:var(--font-display); text-transform:uppercase; font-weight:600; letter-spacing:.005em; color:var(--ink); }
 .bmr__body{ color:var(--g-500); }
 .bmr__rowtext h3{ font-family:var(--font-display); font-weight:600; }
 .bmr__n{ color:var(--rust); }
-.bmr__row:hover{ background:rgba(168,100,56,.08); }
+.bmr__row:hover{ background:rgba(0,165,131,.08); }
 .bmr__row:hover .bmr__arrow{ stroke:var(--rust); }
 
 /* =====================================================================
@@ -1204,9 +1186,9 @@ body::after{
 .rdeck h1,.rdeck h2{ font-family:var(--font-display); font-weight:600; text-transform:uppercase; letter-spacing:.004em; color:var(--ink); }
 .rdeck h1 .accent,.rdeck h2 .accent{ color:var(--rust); font-style:normal; }
 .rdeck__sub{ color:var(--g-500); }
-.rdeck__btnwrap{ border-color:var(--rust); }
-.rdeck__btn{ background:var(--ink); }
-.rdeck__btn:hover{ background:var(--rust); }
+.rdeck__btnwrap{ border-color:var(--green); }
+.rdeck__btn{ background:var(--green-600); }
+.rdeck__btn:hover{ background:var(--green); }
 
 /* =====================================================================
    GALLERY (portfolio) — Bodoni caps title, rust accent
@@ -1214,24 +1196,24 @@ body::after{
 .port__title{ font-family:var(--font-display); font-weight:600; text-transform:uppercase; letter-spacing:.005em; line-height:1.0; color:var(--ink); }
 .port__title .italic-accent{ color:var(--rust); font-style:normal; }
 .port__head .lede{ color:var(--g-500); }
-.cat__type.is-active, .cat__type:hover{ background:var(--ink); border-color:var(--ink); }
-.port__areasel select{ color:var(--ink); background-color:var(--paper-2); }
-.browse__cat.is-active{ background:var(--ink); }
-.browse__cat:hover{ background:rgba(168,100,56,.1); color:var(--rust); }
+.cat__type.is-active, .cat__type:hover{ background:var(--forest); border-color:var(--forest); }
+.port__areasel select{ color:var(--forest); background-color:var(--forest-tint); }
+.browse__cat.is-active{ background:var(--forest); }
+.browse__cat:hover{ background:var(--forest-tint); color:var(--forest); }
 .dcard h3{ font-family:var(--font-display); }
-.dcard__meta em{ color:var(--rust); }
-.dcard__choose{ color:var(--ink); border-bottom-color:var(--rust); }
-.dcard__new{ background:var(--ink); color:var(--cream-accent); }
+.dcard__meta em{ color:var(--green-600); }
+.dcard__choose{ color:var(--forest); border-bottom-color:var(--green); }
+.dcard__new{ background:var(--forest); color:var(--cream-accent); }
 
 /* =====================================================================
    MISSION — the dark "spread" moment (deep plum, cream text)
    ===================================================================== */
-#mission::before{ background:radial-gradient(circle, rgba(168,100,56,.22), transparent 62%); }
+#mission::before{ background:radial-gradient(circle, rgba(0,165,131,.22), transparent 62%); }
 .mission__head h2{ color:var(--cream-accent); }
 .mission__head .lede{ color:rgba(239,228,210,.78); }
 .mcard{ background:rgba(255,255,255,.05); border-color:rgba(239,228,210,.16); border-radius:4px; }
-.mcard:hover{ background:rgba(255,255,255,.08); border-color:rgba(215,154,99,.5); }
-.mcard__k{ background:rgba(215,154,99,.18); color:#e7b588; font-family:var(--font-display); font-style:normal; }
+.mcard:hover{ background:rgba(255,255,255,.08); border-color:rgba(79,199,171,.5); }
+.mcard__k{ background:rgba(0,165,131,.18); color:#7ddcc3; font-family:var(--font-display); font-style:normal; }
 .mcard h3{ font-family:var(--font-display); text-transform:uppercase; font-weight:600; letter-spacing:.005em; color:var(--cream-accent); font-size:clamp(18px,1.5vw,21px); }
 .mcard p{ color:rgba(239,228,210,.76); }
 
@@ -1262,11 +1244,11 @@ body::after{
 /* =====================================================================
    CLIENT STORIES — add a ticking play badge, cream posters
    ===================================================================== */
-.vtest__poster{ background:var(--ink); border-color:var(--line); border-radius:6px; }
-.vtest__poster::after{ background:linear-gradient(180deg, rgba(43,23,24,.1), rgba(43,23,24,.55)); }
+.vtest__poster{ background:var(--forest); border-color:var(--line); border-radius:6px; }
+.vtest__poster::after{ background:linear-gradient(180deg, rgba(7,40,32,.1), rgba(7,40,32,.55)); }
 .vtest__play{ background:var(--cream-accent); }
 .vtest__play svg{ color:var(--ink); }
-.vtest__soon{ background:rgba(43,23,24,.5); border-color:rgba(239,228,210,.3); }
+.vtest__soon{ background:rgba(7,40,32,.5); border-color:rgba(239,228,210,.3); }
 /* decorative ticking badge beside the client-stories title */
 .playbadge{ position:relative; width:84px; height:84px; margin:22px auto 0; }
 .playbadge__ring{ position:absolute; inset:0; animation:tick 16s linear infinite; }
@@ -1290,7 +1272,7 @@ body::after{
 .contactform{ background:var(--paper); border-color:var(--line); border-radius:6px; }
 .contactform input, .contactform select, .contactform textarea{ background:var(--canvas); border-color:var(--g-300); color:var(--ink); border-radius:4px; }
 .contactform input:focus-visible, .contactform select:focus-visible, .contactform textarea:focus-visible{ outline-color:var(--rust); border-color:var(--rust); }
-.contactform__pick{ background:rgba(168,100,56,.1); color:var(--rust-600); }
+.contactform__pick{ background:rgba(0,165,131,.1); color:var(--rust-600); }
 .reqform__done{ background:rgba(0,165,131,.12); color:var(--green-600); }
 .reqform__note svg{ color:var(--rust); }
 
@@ -1316,8 +1298,8 @@ body::after{
    ===================================================================== */
 .nav--v1 .nav__inner{ background:var(--paper); border-color:var(--line); }
 .nav__links a:hover{ color:var(--rust); }
-.helpdock{ background:var(--ink); }
-.helpdock:hover{ background:var(--rust); }
+.helpdock{ background:var(--forest); }
+.helpdock:hover{ background:var(--green-600); }
 
 /* =====================================================================
    LETTER-BY-LETTER REVEAL (set by js/editorial.js)
