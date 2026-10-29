@@ -1223,10 +1223,9 @@ body::after{
 .browse__cat.is-active{ background:var(--forest); color:#fff; }
 .browse__cat.is-active em{ background:rgba(255,255,255,.18); color:#fff; }
 .browse__count{ margin-bottom:18px; }
-.browse__grid{ grid-template-columns:repeat(4,1fr); gap:clamp(16px,1.8vw,26px); }
-@media (max-width:1180px){ .browse__grid{ grid-template-columns:repeat(3,1fr); } }
-@media (max-width:820px){ .browse__grid{ grid-template-columns:repeat(2,1fr); } }
-@media (max-width:520px){ .browse__grid{ grid-template-columns:1fr; } }
+.browse__grid{ grid-template-columns:repeat(3,1fr); gap:clamp(20px,2vw,30px); }
+@media (max-width:900px){ .browse__grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:560px){ .browse__grid{ grid-template-columns:1fr; } }
 
 /* =====================================================================
    MISSION — the dark "spread" moment (deep plum, cream text)
