@@ -1316,6 +1316,7 @@ body::after{
 .footer__top{ border-bottom-color:rgba(239,228,210,.14); }
 /* the brand logo is dark-on-transparent; render it solid white on dark panels */
 .footer .logo__img, .logo__img--ondark{ filter:brightness(0) invert(1); }
+.footer .logo__img{ transform:translateY(var(--footer-logo-y,-30px)); margin-left:-9px; }
 
 /* =====================================================================
    NAV (shown on gallery, hidden on homepage) → paper + rust
