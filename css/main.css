@@ -1175,29 +1175,14 @@ body::after{
    STATEMENT (was the green tagline band)
    Giant Bodoni caps line with inline round photo pills + rust emblem.
    ===================================================================== */
-.tagband{ background:var(--canvas); color:var(--ink); border:0; padding:clamp(72px,11vw,150px) 0; text-align:center; }
+.tagband{ background:linear-gradient(160deg,var(--forest),var(--forest-2)); color:var(--cream-accent); border:0; padding:16px 0; text-align:center; }
 .tagband .wrap{ max-width:1180px; }
 .tagband__rule{ display:none; }
-.statement__label{ font-family:var(--font-sans); font-weight:600; font-size:11px; letter-spacing:.24em; text-transform:uppercase; color:var(--rust); margin:0 0 clamp(22px,3vw,40px); }
 .tagband__line{
-  font-family:var(--font-display); font-weight:600; text-transform:uppercase;
-  font-size:clamp(34px,7vw,104px); line-height:1.04; letter-spacing:.004em;
-  color:var(--ink); margin:0; max-width:none;
+  font-family:var(--font-display); font-weight:500; text-transform:none;
+  font-size:clamp(26px,4.4vw,48px); line-height:1.16; letter-spacing:-.01em;
+  color:var(--cream-accent); margin:0; max-width:none;
 }
-.st-pill{
-  display:inline-block; width:.84em; height:.84em; border-radius:50%;
-  overflow:hidden; vertical-align:-.08em; margin:0 .06em;
-  box-shadow:0 10px 26px -12px rgba(67,40,42,.5);
-  transform:scale(0); transition:transform .7s cubic-bezier(.34,1.56,.64,1);
-}
-.st-pill img{ width:100%; height:100%; object-fit:cover; transform:scale(1.5); transition:transform 1.1s var(--ease); }
-.tagband.is-in .st-pill{ transform:scale(1); }
-.tagband.is-in .st-pill:nth-of-type(2){ transition-delay:.12s; }
-.tagband.is-in .st-pill img{ transform:scale(1); }
-.statement__emblem{ display:block; width:66px; margin:clamp(30px,4vw,52px) auto 0; color:var(--rust); }
-.statement__emblem svg{ width:100%; height:auto; display:block; transform:rotate(-90deg) scale(.6); opacity:0; transition:transform .9s var(--ease) .2s, opacity .6s ease .2s; }
-.tagband.is-in .statement__emblem svg{ transform:none; opacity:.9; }
-@media (prefers-reduced-motion:reduce){ .st-pill,.st-pill img,.statement__emblem svg{ transition:none; transform:none; opacity:1; } }
 
 /* =====================================================================
    WHY FRONTDOOR (full-bleed photo + panel) → cream, Bodoni, rust kicker
@@ -1353,8 +1338,7 @@ body::after{
 
 /* ---- Mobile editorial tweaks ---- */
 @media (max-width:560px){
-  .tagband__line{ font-size:clamp(30px,10vw,52px); }
-  .st-pill{ width:.7em; height:.7em; }
+  .tagband__line{ font-size:clamp(24px,6.4vw,34px); }
   /* the tall mobile crop puts the masthead over bright sky: darken the photo
      uniformly and add a soft shadow so the cream title stays legible */
   .lhero__wash{ background:linear-gradient(180deg, rgba(7,40,32,.52) 0%, rgba(7,40,32,.34) 42%, rgba(7,40,32,.5) 100%); }
