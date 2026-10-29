@@ -1205,6 +1205,22 @@ body::after{
 .dcard__choose{ color:var(--forest); border-bottom-color:var(--green); }
 .dcard__new{ background:var(--forest); color:var(--cream-accent); }
 
+/* Gallery browser: horizontal filter bar on top, 4-up grid below */
+.browse{ display:block; }
+.browse__side{ position:static; margin:0 0 clamp(20px,3vw,34px); }
+.browse__sidehead{ display:block; padding-left:0; margin-bottom:14px; color:var(--g-500); }
+.browse__cats{ flex-direction:row; flex-wrap:wrap; gap:10px; }
+.browse__cat{ width:auto; border:1px solid var(--line); background:var(--paper); border-radius:999px; padding:10px 18px; font-size:14.5px; }
+.browse__cat em{ background:var(--forest-tint); border-color:transparent; color:var(--forest); }
+.browse__cat:hover{ background:var(--forest-tint); color:var(--forest); }
+.browse__cat.is-active{ background:var(--forest); color:#fff; }
+.browse__cat.is-active em{ background:rgba(255,255,255,.18); color:#fff; }
+.browse__count{ margin-bottom:18px; }
+.browse__grid{ grid-template-columns:repeat(4,1fr); gap:clamp(16px,1.8vw,26px); }
+@media (max-width:1180px){ .browse__grid{ grid-template-columns:repeat(3,1fr); } }
+@media (max-width:820px){ .browse__grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:520px){ .browse__grid{ grid-template-columns:1fr; } }
+
 /* =====================================================================
    MISSION — the dark "spread" moment (deep plum, cream text)
    ===================================================================== */
