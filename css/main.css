@@ -1205,6 +1205,13 @@ body::after{
 .dcard__choose{ color:var(--forest); border-bottom-color:var(--green); }
 .dcard__new{ background:var(--forest); color:var(--cream-accent); }
 
+/* Framed design cards: each design sits in its own outlined rectangle */
+.dcard{ background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:clamp(12px,1.1vw,16px); transition:border-color .25s var(--ease), box-shadow .25s var(--ease), transform .25s var(--ease); }
+.dcard:hover{ border-color:var(--green); transform:translateY(-3px); box-shadow:0 24px 50px -32px rgba(11,54,42,.45); }
+.dcard__thumb{ box-shadow:none; border-radius:12px; }
+.dcard__thumb:hover{ transform:none; box-shadow:none; }
+.dcard__body{ padding:16px 6px 2px; }
+
 /* Gallery browser: horizontal filter bar on top, 4-up grid below */
 .browse{ display:block; }
 .browse__side{ position:static; margin:0 0 clamp(20px,3vw,34px); }
