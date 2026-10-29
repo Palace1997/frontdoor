@@ -1124,7 +1124,7 @@ body::after{
 .section--dark .section__head .eyebrow, .section--dark .mission__head .eyebrow, .section--dark .cta-banner .eyebrow{ color:#5CC2A3; }
 .section__head h2, .mission__head h2, .why h2, .port__head h2, .cta-banner h2{
   font-family:var(--font-display); font-weight:600; text-transform:uppercase;
-  font-size:clamp(30px,5vw,62px); line-height:1.0; letter-spacing:.005em;
+  font-size:clamp(28px,4.6vw,var(--title-max,50px)); line-height:1.02; letter-spacing:.005em;
   color:var(--ink); margin-bottom:16px; max-width:none;
 }
 .section--dark .section__head h2, .section--dark .mission__head h2, .section--dark .cta-banner h2{ color:var(--cream-accent); }
@@ -1183,7 +1183,7 @@ body::after{
    DESIGNS SHOWCASE (carousel)
    ===================================================================== */
 .rdeck{ background:var(--canvas); }
-.rdeck h1,.rdeck h2{ font-family:var(--font-display); font-weight:600; text-transform:uppercase; letter-spacing:.004em; color:var(--ink); }
+.rdeck h1,.rdeck h2{ font-family:var(--font-display); font-weight:600; text-transform:uppercase; letter-spacing:.004em; color:var(--ink); font-size:clamp(28px,4.6vw,var(--title-max,50px)); }
 .rdeck h1 .accent,.rdeck h2 .accent{ color:inherit; font-style:normal; }
 .rdeck__sub{ color:var(--g-500); }
 .rdeck__btnwrap{ border-color:var(--green); }
