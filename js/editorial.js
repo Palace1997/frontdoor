@@ -1,0 +1,85 @@
+/* Editorial (Tana) motion.
+   - Letter-by-letter rise on the big Bodoni display headings (preserves any
+     child <span> like .accent, and keeps an aria-label for screen readers).
+   - Statement photo pills spring in; the rust emblem turns in.
+   - Builds the ticking ring of the client-stories play badge.
+   Everything degrades to "just show it" under prefers-reduced-motion. */
+(function () {
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- Play-badge ticking ring (48 radial ticks) ---- */
+  document.querySelectorAll('[data-ticks]').forEach(function (ring) {
+    var N = 48, html = '';
+    for (var i = 0; i < N; i++) {
+      html += '<i style="transform:translateX(-50%) rotate(' + (i * (360 / N)) + 'deg)"></i>';
+    }
+    ring.innerHTML = html;
+  });
+
+  if (reduce) return;
+
+  /* ---- Letter splitter (recurses so child elements survive) ---- */
+  var counter = 0, step = 26;
+  function wrap(node) {
+    Array.prototype.slice.call(node.childNodes).forEach(function (child) {
+      if (child.nodeType === 3) {               // text node → words of letters
+        var frag = document.createDocumentFragment();
+        child.nodeValue.split(/(\s+)/).forEach(function (tok) {
+          if (tok === '') return;
+          if (/^\s+$/.test(tok)) { frag.appendChild(document.createTextNode(' ')); return; }
+          var w = document.createElement('span');      // nowrap word (no mid-word breaks)
+          w.className = 'ed-w';
+          for (var i = 0; i < tok.length; i++) {
+            var s = document.createElement('span');
+            s.className = 'ed-l';
+            s.textContent = tok[i];
+            s.setAttribute('aria-hidden', 'true');
+            s.style.transitionDelay = (counter * step) + 'ms';
+            w.appendChild(s);
+            counter++;
+          }
+          frag.appendChild(w);
+        });
+        node.replaceChild(frag, child);
+      } else if (child.nodeType === 1) {         // element → keep it, recurse
+        wrap(child);
+      }
+    });
+  }
+  function split(el, perLetter) {
+    if (el.dataset.edSplit) return;
+    el.dataset.edSplit = '1';
+    el.setAttribute('aria-label', el.textContent.trim());
+    counter = 0; step = perLetter;
+    wrap(el);
+    el.classList.add('ed-split');
+  }
+
+  var targets = [];
+  document.querySelectorAll('.lmast').forEach(function (el) { split(el, 55); targets.push(el); });
+  document.querySelectorAll('.display-2, .bmr__title, .rdeck h1, .rdeck h2, .port__title').forEach(function (el) {
+    split(el, 26); targets.push(el);
+  });
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.25, rootMargin: '0px 0px -6% 0px' });
+  targets.forEach(function (t) { io.observe(t); });
+
+  /* Hero masthead sits above the fold: reveal shortly after load. */
+  var mast = document.querySelector('.lmast');
+  if (mast) { setTimeout(function () { mast.classList.add('is-in'); }, 360); }
+
+  /* ---- Statement: spring the photo pills + emblem in ---- */
+  var tag = document.querySelector('.tagband');
+  if (tag) {
+    var io2 = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-in'); io2.unobserve(e.target); }
+      });
+    }, { threshold: 0.35 });
+    io2.observe(tag);
+  }
+})();
