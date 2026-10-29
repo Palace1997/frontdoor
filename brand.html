@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FrontDoor | Logo Usage</title>
+<meta name="description" content="FrontDoor logo usage: how the wordmark sits on light, cream, forest and Kenzie-green backgrounds, with clear space and minimum size.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2300A583'/><text x='16' y='22' font-family='Inter,sans-serif' font-size='12' font-weight='700' fill='white' text-anchor='middle'>FD</text></svg>">
+<style>
+  :root{
+    --forest:#0B362A; --forest-2:#072820; --green:#00A583; --green-600:#00876c;
+    --mint:#5fce9f; --canvas:#F7F4EE; --cream:#F0EBE1; --ink:#1B1812; --line:#E5E2DC;
+    --font-display:'Bodoni Moda',Didot,Georgia,serif;
+    --font-sans:'Inter',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:var(--font-sans);
+    background:
+      radial-gradient(120% 90% at 15% 0%, rgba(0,165,131,.14), rgba(0,0,0,0) 55%),
+      linear-gradient(160deg,var(--forest) 0%,var(--forest-2) 100%);
+    background-attachment:fixed;
+    color:var(--cream); min-height:100vh;
+    padding:clamp(28px,6vw,80px) clamp(16px,5vw,80px);
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px;margin:0 auto}
+
+  /* ---- Header ---- */
+  .eyebrow{font-size:11px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--green)}
+  .head h1{font-family:var(--font-display);font-weight:600;text-transform:uppercase;letter-spacing:.01em;
+    font-size:clamp(34px,6vw,62px);line-height:1;margin:14px 0 14px;color:#fff}
+  .head p{max-width:56ch;color:rgba(240,235,225,.7);font-size:clamp(15px,1.5vw,17px);line-height:1.6}
+  .rule{height:1px;background:rgba(240,235,225,.14);margin:clamp(30px,5vw,52px) 0}
+
+  /* ---- Section label ---- */
+  .sec-label{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin-bottom:18px}
+
+  /* ---- Background panels ---- */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(18px,2.4vw,30px)}
+  .cell .tag{font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(240,235,225,.55);margin-bottom:12px;display:block}
+  .panel{border-radius:16px;aspect-ratio:16/9;display:grid;place-items:center;padding:12% 10%;overflow:hidden;border:1px solid transparent}
+  .panel img{width:100%;max-width:380px;height:auto;display:block}
+  .panel--light{background:#fff}
+  .panel--cream{background:var(--canvas)}
+  .panel--forest{background:linear-gradient(160deg,#0e3b2e,#082420);border-color:rgba(240,235,225,.14)}
+  .panel--green{background:var(--green)}
+
+  /* ---- Guidance ---- */
+  .guide{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,4vw,56px)}
+  .guide h3{font-family:var(--font-display);font-weight:600;font-size:clamp(21px,2.4vw,27px);color:var(--green);margin-bottom:12px}
+  .guide p{color:rgba(240,235,225,.78);font-size:clamp(14.5px,1.4vw,16px);line-height:1.65;max-width:38ch}
+  /* clear-space diagram */
+  .cs{background:#fff;border-radius:14px;padding:26px;margin-bottom:18px;position:relative}
+  .cs__inner{position:relative;border:1px dashed rgba(11,54,42,.28);padding:7%}
+  .cs__inner img{width:100%;display:block}
+  .cs__k{position:absolute;background:rgba(0,165,131,.14);border:1px solid rgba(0,165,131,.4)}
+  .cs__k--t{top:0;left:7%;right:7%;height:7%}
+  .cs__k--b{bottom:0;left:7%;right:7%;height:7%}
+  .cs__k--l{left:0;top:7%;bottom:7%;width:7%}
+  .cs__k--r{right:0;top:7%;bottom:7%;width:7%}
+  /* min-size diagram */
+  .ms{background:#fff;border-radius:14px;padding:26px;margin-bottom:18px;display:flex;align-items:flex-end;gap:22px;flex-wrap:wrap}
+  .ms figure{text-align:center}
+  .ms img{display:block;height:auto}
+  .ms .big img{width:300px;max-width:52vw}
+  .ms .small img{width:160px}
+  .ms figcaption{margin-top:8px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--green-600)}
+
+  /* ---- Palette ---- */
+  .sw-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .sw{border-radius:12px;overflow:hidden;border:1px solid rgba(240,235,225,.12);background:rgba(255,255,255,.03)}
+  .sw__chip{height:72px}
+  .sw__meta{padding:12px 14px}
+  .sw__name{font-size:13px;font-weight:600;color:#fff}
+  .sw__hex{font-size:12px;color:rgba(240,235,225,.55);letter-spacing:.04em;margin-top:2px}
+
+  footer{margin-top:clamp(36px,6vw,64px);font-size:12.5px;color:rgba(240,235,225,.45)}
+
+  @media (max-width:680px){
+    .grid,.guide,.sw-grid{grid-template-columns:1fr}
+    .sw-grid{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="head">
+    <span class="eyebrow">Brand · Logo</span>
+    <h1>FrontDoor Logo Usage</h1>
+    <p>One wordmark, four surfaces. Use the forest-and-mint mark on light and cream; switch to the cream-and-mint mark on forest and Kenzie green so it always stays legible. Powered by iTrust Insights.</p>
+  </header>
+
+  <div class="rule"></div>
+
+  <!-- Backgrounds -->
+  <p class="sec-label">On our backgrounds</p>
+  <div class="grid">
+    <div class="cell">
+      <span class="tag">On light</span>
+      <div class="panel panel--light"><img src="assets/img/logo-frontdoor-full.png" alt="FrontDoor logo on a white background"></div>
+    </div>
+    <div class="cell">
+      <span class="tag">On cream</span>
+      <div class="panel panel--cream"><img src="assets/img/logo-frontdoor-full.png" alt="FrontDoor logo on a cream background"></div>
+    </div>
+    <div class="cell">
+      <span class="tag">On forest green</span>
+      <div class="panel panel--forest"><img src="assets/img/logo-frontdoor-ondark.png" alt="FrontDoor logo on forest green"></div>
+    </div>
+    <div class="cell">
+      <span class="tag">On Kenzie green</span>
+      <div class="panel panel--green"><img src="assets/img/logo-frontdoor-ondark.png" alt="FrontDoor logo on Kenzie green"></div>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <!-- Guidance -->
+  <div class="guide">
+    <div>
+      <div class="cs">
+        <div class="cs__inner">
+          <span class="cs__k cs__k--t"></span><span class="cs__k cs__k--b"></span>
+          <span class="cs__k cs__k--l"></span><span class="cs__k cs__k--r"></span>
+          <img src="assets/img/logo-frontdoor-full.png" alt="Clear space around the FrontDoor logo">
+        </div>
+      </div>
+      <h3>Clear space</h3>
+      <p>Leave space equal to the height of the "F" on all sides. Keep the full wordmark, the door mark and "powered by iTrust Insights" together and visible.</p>
+    </div>
+    <div>
+      <div class="ms">
+        <figure class="big"><img src="assets/img/logo-frontdoor-full.png" alt="FrontDoor logo at a comfortable size"><figcaption>Comfortable</figcaption></figure>
+        <figure class="small"><img src="assets/img/logo-frontdoor-full.png" alt="FrontDoor logo at minimum size"><figcaption>Min · 160px</figcaption></figure>
+      </div>
+      <h3>Minimum size</h3>
+      <p>Never below 160px wide in digital. Below that, "powered by iTrust Insights" stops being readable and the door mark loses detail.</p>
+    </div>
+  </div>
+
+  <div class="rule"></div>
+
+  <!-- Palette -->
+  <p class="sec-label">Core palette</p>
+  <div class="sw-grid">
+    <div class="sw"><div class="sw__chip" style="background:#0B362A"></div><div class="sw__meta"><div class="sw__name">Forest Base</div><div class="sw__hex">#0B362A</div></div></div>
+    <div class="sw"><div class="sw__chip" style="background:#00A583"></div><div class="sw__meta"><div class="sw__name">Kenzie Green</div><div class="sw__hex">#00A583</div></div></div>
+    <div class="sw"><div class="sw__chip" style="background:#5fce9f"></div><div class="sw__meta"><div class="sw__name">Door Mint</div><div class="sw__hex">#5FCE9F</div></div></div>
+    <div class="sw"><div class="sw__chip" style="background:#F7F4EE"></div><div class="sw__meta"><div class="sw__name">Cream Canvas</div><div class="sw__hex">#F7F4EE</div></div></div>
+    <div class="sw"><div class="sw__chip" style="background:#072820"></div><div class="sw__meta"><div class="sw__name">Forest Deep</div><div class="sw__hex">#072820</div></div></div>
+    <div class="sw"><div class="sw__chip" style="background:#00876c"></div><div class="sw__meta"><div class="sw__name">Green 600</div><div class="sw__hex">#00876C</div></div></div>
+    <div class="sw"><div class="sw__chip" style="background:#F0EBE1"></div><div class="sw__meta"><div class="sw__name">Cream Accent</div><div class="sw__hex">#F0EBE1</div></div></div>
+    <div class="sw"><div class="sw__chip" style="background:#1B1812"></div><div class="sw__meta"><div class="sw__name">Ink</div><div class="sw__hex">#1B1812</div></div></div>
+  </div>
+
+  <footer>FrontDoor, a web studio by iTrust Insights · Logo usage reference</footer>
+
+</div>
+</body>
+</html>
