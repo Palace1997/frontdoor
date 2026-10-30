@@ -1240,13 +1240,11 @@ body::after{
 .pk-top{ display:flex; justify-content:flex-end; }
 .pk-eyebrow{ font-weight:600; font-size:13px; letter-spacing:.18em; text-transform:uppercase;
   color:var(--pk-cream); text-shadow:0 1px 12px rgba(13,13,12,.5); }
-/* icon sits to the left, vertically centred across both headline lines */
-.pk-mast{ margin-top:auto; margin-bottom:clamp(18px,2.4vw,34px); width:fit-content; max-width:100%;
-  display:flex; align-items:center; gap:clamp(14px,2vw,34px); }
+.pk-mast{ margin-top:auto; margin-bottom:clamp(18px,2.4vw,34px); width:fit-content; max-width:100%; }
 .pk-h{ font-family:'Inter Tight',var(--font-sans); font-weight:600; text-transform:none;
   font-size:clamp(52px,11vw,150px); line-height:.86; letter-spacing:-.032em; color:var(--pk-ink); margin:0; }
-/* word sits flush-left on its own line, in line with "built in." */
-.pk-slot{ display:block; min-height:1em; }
+/* line 1: cycling word with the icon trailing it; both lines stay flush-left */
+.pk-slot{ display:flex; align-items:center; gap:clamp(10px,1.6vw,26px); min-height:1em; }
 .pk-icon{ display:block; flex:none; width:clamp(58px,7.4vw,112px); height:clamp(58px,7.4vw,112px);
   color:var(--pk-tint); animation:pkBob 4s ease-in-out infinite; }
 .pk-icon svg{ width:100%; height:100%; display:block; }
