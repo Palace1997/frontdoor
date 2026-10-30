@@ -1290,6 +1290,20 @@ body::after{
    FEATURES — pull the dark section back onto cream paper
    ===================================================================== */
 #features.section--dark{ background:var(--paper-2); color:var(--ink); }
+/* Features: image as background of the header band only (same as How It Works) */
+#features{ padding-top:0; }
+.feat__band{ position:relative; overflow:hidden;
+  background:url(../assets/img/features-handoff.jpg) center 42%/cover no-repeat;
+  padding:clamp(88px,13vh,150px) 0 clamp(44px,6vw,74px); }
+.feat__band::before{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:linear-gradient(90deg, rgba(247,244,238,.95) 0%, rgba(247,244,238,.74) 40%, rgba(247,244,238,.34) 68%, rgba(247,244,238,.08) 100%); }
+.feat__band .wrap{ position:relative; z-index:1; }
+.feat__band .section__head{ max-width:560px; margin-bottom:0; }
+#features .features{ margin-top:clamp(40px,5.5vw,64px); }
+@media (max-width:820px){
+  .feat__band{ padding-top:clamp(80px,12vh,120px); background-position:center 46%; }
+  .feat__band::before{ background:rgba(247,244,238,.9); }
+}
 /* features is now a light section: restore light-section head colors */
 #features.section--dark .section__head .eyebrow, #features.section--dark .eyebrow{ color:var(--rust); }
 #features.section--dark .section__head h2{ color:var(--ink); }
