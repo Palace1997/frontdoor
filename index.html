@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/main.css?v=20261031w">
+<link rel="stylesheet" href="css/main.css?v=20261031y">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2300A583'/><text x='16' y='22' font-family='Inter,sans-serif' font-size='12' font-weight='700' fill='white' text-anchor='middle'>FD</text></svg>">
 <link rel="canonical" href="https://palace1997.github.io/sitewell-studio/">
 <meta property="og:type" content="website">
@@ -407,5 +407,80 @@
 <script src="js/main.js?v=20261031c"></script>
 <script src="js/hero-motion.js?v=2"></script>
 <script src="js/editorial.js?v=8"></script>
+
+<!-- ============================================================
+     DEV SLIDER, Package block placement + title size.
+     Temporary tuning tool: shows only on #features. Once the values
+     are baked into css/main.css, delete this whole block.
+     ============================================================ -->
+<div id="pkTune" hidden>
+  <strong>Package block</strong>
+  <label>Left / right <b id="pkXv">0</b>px</label>
+  <input id="pkX" type="range" min="-260" max="260" step="1" value="0">
+  <label>Up / down <b id="pkYv">0</b>px</label>
+  <input id="pkY" type="range" min="-340" max="340" step="1" value="0">
+  <label>Title size <b id="pkTv">50</b>px <i>site default 50</i></label>
+  <input id="pkT" type="range" min="28" max="120" step="1" value="50">
+  <button type="button" id="pkRst">Reset</button>
+</div>
+<style>
+  /* bottom-left: the help dock already occupies the bottom-right corner */
+  #pkTune{ position:fixed; left:18px; bottom:18px; z-index:10000; width:236px;
+    background:#fff; border:1px solid #E5E2DC; border-radius:14px; padding:15px 16px 13px;
+    font:13px/1.45 Inter,system-ui,sans-serif; color:#1B1812;
+    box-shadow:0 22px 48px -26px rgba(0,0,0,.45); }
+  #pkTune[hidden]{ display:none; }
+  #pkTune strong{ display:block; font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:#6B675F; margin-bottom:12px; }
+  #pkTune label{ display:block; font-size:12px; color:#6B675F; margin:10px 0 4px; }
+  #pkTune label b{ color:#1B1812; font-weight:600; }
+  #pkTune label i{ font-style:normal; opacity:.65; }
+  #pkTune input[type=range]{ width:100%; accent-color:#00876c; margin:0; }
+  #pkTune button{ margin-top:12px; width:100%; height:30px; border:1px solid #E5E2DC;
+    border-radius:8px; background:#F7F4EE; color:#1B1812; font:inherit; font-size:12px; cursor:pointer; }
+  #pkTune button:hover{ background:#EFEAE0; }
+</style>
+<script>
+(function () {
+  var box = document.getElementById('pkTune');
+  if (!box) return;
+  var root = document.documentElement;
+  var FIELDS = [
+    { id: 'pkX', out: 'pkXv', css: '--pk-x', def: 0 },
+    { id: 'pkY', out: 'pkYv', css: '--pk-y', def: 0 },
+    // no default: leaving --pk-title unset keeps the title on the shared
+    // section-heading size, so Reset puts it back in step with the site
+    { id: 'pkT', out: 'pkTv', css: '--pk-title', measure: '.pk-h' }
+  ];
+  function apply(f, v) {
+    root.style.setProperty(f.css, v + 'px');
+    document.getElementById(f.out).textContent = v;
+    try { localStorage.setItem(f.css, v); } catch (e) {}
+  }
+  function clear(f) {
+    root.style.removeProperty(f.css);
+    try { localStorage.removeItem(f.css); } catch (e) {}
+    var live = f.measure
+      ? Math.round(parseFloat(getComputedStyle(document.querySelector(f.measure)).fontSize))
+      : f.def;
+    document.getElementById(f.id).value = live;
+    document.getElementById(f.out).textContent = live;
+  }
+  FIELDS.forEach(function (f) {
+    var el = document.getElementById(f.id), saved = null;
+    try { saved = localStorage.getItem(f.css); } catch (e) {}
+    if (saved === null) clear(f); else apply(f, parseInt(saved, 10));
+    el.addEventListener('input', function () { apply(f, parseInt(el.value, 10)); });
+  });
+  document.getElementById('pkRst').addEventListener('click', function () {
+    FIELDS.forEach(clear);
+  });
+  // only surface the panel on the Package route
+  function show() { box.hidden = location.hash !== '#features'; }
+  show();
+  window.addEventListener('hashchange', show);
+  window.addEventListener('popstate', show);
+})();
+</script>
 </body>
 </html>
