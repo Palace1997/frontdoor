@@ -1197,6 +1197,34 @@ body::after{
 /* =====================================================================
    GALLERY (portfolio) — Bodoni caps title, rust accent
    ===================================================================== */
+/* Gallery header band, same shape as the FAQ, Mission and Get Started bands:
+   the heading sits centred over the illustration (browsing framed website
+   designs on a wall) and the catalog below returns to plain cream. */
+.gal__band{ position:relative; overflow:hidden; background:var(--canvas);
+  padding:clamp(70px,9vh,120px) 0 clamp(150px,24vw,340px);
+  margin-bottom:clamp(28px,3.5vw,48px); }
+.gal__band::after{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:url(../assets/img/designs-wall.jpg) center 34%/cover no-repeat; }
+/* the framed designs run the full height of this artwork, so there is no
+   clear corridor behind the heading: the veil stays solid through the text
+   and lifts below it, as on the Get Started band */
+.gal__band::before{ content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(180deg, rgba(247,244,238,.93) 0%, rgba(247,244,238,.9) 46%,
+    rgba(247,244,238,.82) 54%, rgba(247,244,238,.16) 68%, rgba(247,244,238,.12) 88%,
+    rgba(247,244,238,.6) 96%, rgba(247,244,238,.96) 100%); }
+.gal__band .wrap{ position:relative; z-index:2; }
+.gal__band .port__head{ max-width:800px; margin:0 auto; text-align:center; }
+.gal__band .port__head .eyebrow{ justify-content:center; }
+.gal__band .port__head .lede{ margin-left:auto; margin-right:auto; }
+@media (max-width:820px){
+  .gal__band{ padding:clamp(56px,8vh,90px) 0 clamp(120px,34vw,190px); }
+  .gal__band::after{ background-position:center bottom; }
+  /* the head runs to ~71% of the band at this width, so hold the veil solid
+     that far down and only clear the strip below it */
+  .gal__band::before{ background:linear-gradient(180deg, rgba(247,244,238,.94) 0%,
+    rgba(247,244,238,.92) 72%, rgba(247,244,238,.5) 80%, rgba(247,244,238,.1) 90%,
+    rgba(247,244,238,.06) 100%); }
+}
 .port__title{ font-family:var(--font-display); font-weight:600; text-transform:uppercase; letter-spacing:.005em; line-height:1.0; color:var(--ink); }
 .port__title .italic-accent{ color:inherit; font-style:normal; }
 .port__head .lede{ color:var(--g-500); }
