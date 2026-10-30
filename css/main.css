@@ -1224,8 +1224,10 @@ body::after{
 #features{ padding:0; --pk-ink:#0D0D0C; --pk-cream:#FBF6EF; --pk-tint:#3FB874; }
 #features.section--dark{ background:var(--pk-cream); color:var(--pk-ink); }
 .pk-panel{ position:relative; min-height:74vh; display:flex; overflow:hidden; isolation:isolate;
+  background:var(--pk-cream); }
+.pk-panel::before{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
   background:url(../assets/img/features-handoff.jpg) center 40%/cover no-repeat; }
-.pk-layer{ position:absolute; inset:0; opacity:0; transition:opacity .77s ease; will-change:opacity;
+.pk-layer{ position:absolute; inset:0; z-index:1; opacity:0; transition:opacity .77s ease; will-change:opacity;
   animation:pkDrift 20s ease-in-out infinite alternate; }
 .pk-layer.on{ opacity:1; }
 @keyframes pkDrift{ from{transform:scale(1.04) translate(-1.2%,-.8%)} to{transform:scale(1.07) translate(1.2%,.8%)} }
@@ -1343,12 +1345,13 @@ body::after{
 #mission::before{ background:radial-gradient(circle, rgba(0,165,131,.22), transparent 62%); }
 /* Mission: image as background of the header band only (dark section) */
 #mission{ padding-top:0; }
-.mission__band{ position:relative; overflow:hidden; z-index:1;
-  background:url(../assets/img/mission-path.jpg) center/cover no-repeat;
+.mission__band{ position:relative; overflow:hidden; z-index:1; background:var(--forest-2);
   padding:clamp(92px,13vh,154px) 0 clamp(48px,6vw,78px); }
-.mission__band::before{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+.mission__band::after{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:url(../assets/img/mission-path.jpg) center/cover no-repeat; }
+.mission__band::before{ content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
   background:linear-gradient(180deg, rgba(7,40,32,.72) 0%, rgba(7,40,32,.74) 48%, rgba(7,40,32,.66) 100%); }
-.mission__band .wrap{ position:relative; z-index:1; }
+.mission__band .wrap{ position:relative; z-index:2; }
 .mission__band .mission__head{ margin-bottom:0; }
 .mission__band .mission__head h2{ text-shadow:0 2px 28px rgba(7,40,32,.85); }
 .mission__band .mission__head .lede{ text-shadow:0 1px 18px rgba(7,40,32,.7); }
@@ -1376,17 +1379,20 @@ body::after{
 /* Top band only: the illustration fills behind the header (cover), ending at
    the hairline above "01". The numbered steps below stay on plain cream. */
 #how{ padding-top:0; }
-.how__band{ position:relative; overflow:hidden;
-  background:url(../assets/img/how-steps.jpg) center 42%/cover no-repeat;
+.how__band{ position:relative; overflow:hidden; background:var(--canvas);
   padding:clamp(88px,13vh,150px) 0 clamp(44px,6vw,74px); }
-.how__band::before{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+/* the photo lives on its own layer so it can animate in without moving the text */
+.how__band::after{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:url(../assets/img/how-steps.jpg) center 42%/cover no-repeat; }
+.how__band::before{ content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
   background:linear-gradient(90deg, rgba(247,244,238,.92) 0%, rgba(247,244,238,.72) 40%, rgba(247,244,238,.32) 68%, rgba(247,244,238,.08) 100%); }
-.how__band .wrap{ position:relative; z-index:1; }
+.how__band .wrap{ position:relative; z-index:2; }
 .how__band .section__head{ max-width:560px; margin-bottom:0; }
 #how .numlist{ margin-top:0; }
 @media (max-width:820px){
   /* on phones the header text overlaps the figure, so keep the art a faint backdrop */
-  .how__band{ padding-top:clamp(80px,12vh,120px); background-position:center 46%; }
+  .how__band{ padding-top:clamp(80px,12vh,120px); }
+  .how__band::after{ background-position:center 46%; }
   .how__band::before{ background:rgba(247,244,238,.9); }
   .how__band .section__head{ max-width:none; }
   #how .numlist{ max-width:none; }
@@ -1500,6 +1506,32 @@ body::after{
 .lmast.ed-split:not(.is-in) .ed-l{ transform:translateY(.18em); filter:blur(10px); }
 @media (prefers-reduced-motion:reduce){
   .ed-split .ed-l{ opacity:1; transform:none; filter:none; transition:none; }
+}
+
+/* =====================================================================
+   SECTION ENTRANCE  ·  replays every time a routed section is opened
+   (main.js re-adds .is-entering, so these animations restart each visit)
+   ===================================================================== */
+@keyframes fdImgIn{ from{ opacity:0; transform:scale(1.08) } to{ opacity:1; transform:scale(1) } }
+@keyframes fdRise{ from{ opacity:0; transform:translateY(20px) } to{ opacity:1; transform:none } }
+/* the background photo settles in, like the homepage hero */
+.is-entering .how__band::after,
+.is-entering .mission__band::after,
+.is-entering .pk-panel::before{ animation:fdImgIn 1.25s cubic-bezier(.16,1,.3,1) both; }
+/* small label + supporting copy rise in behind the title */
+.is-entering .section__head .eyebrow,
+.is-entering .mission__head .eyebrow,
+.is-entering .pk-eyebrow{ animation:fdRise .7s cubic-bezier(.16,1,.3,1) .06s both; }
+.is-entering .section__head .lede,
+.is-entering .mission__head .lede{ animation:fdRise .8s cubic-bezier(.16,1,.3,1) .34s both; }
+/* the Package headline is not letter-split, so give it its own rise */
+.is-entering .pk-mast{ animation:fdRise .85s cubic-bezier(.16,1,.3,1) .12s both; }
+.is-entering .pk-cap{ animation:fdRise .8s cubic-bezier(.16,1,.3,1) .3s both; }
+@media (prefers-reduced-motion:reduce){
+  .is-entering .how__band::after, .is-entering .mission__band::after, .is-entering .pk-panel::before,
+  .is-entering .section__head .eyebrow, .is-entering .mission__head .eyebrow, .is-entering .pk-eyebrow,
+  .is-entering .section__head .lede, .is-entering .mission__head .lede,
+  .is-entering .pk-mast, .is-entering .pk-cap{ animation:none!important; }
 }
 
 /* ---- Mobile editorial tweaks ---- */

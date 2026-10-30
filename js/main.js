@@ -89,10 +89,18 @@
       // Dark routeback only on genuinely dark sections (a section can carry the
       // .section--dark class for styling hooks yet be visually light: data-light).
       if (backBtn) backBtn.classList.toggle('routeback--ondark', sec.classList.contains('section--dark') && !sec.hasAttribute('data-light'));
-      // The isolated section is at the top now, so play its reveals immediately.
-      sec.querySelectorAll('.reveal').forEach(function (el) {
-        el.classList.add('is-in');
-      });
+      // Replay the entrance every time the section is opened, not just the first
+      // time: reset the reveal/letter states, force a reflow so the CSS
+      // animations restart, then play them again on the next frame.
+      // Done synchronously: reset, flush the reset with a forced reflow, then
+      // re-apply. Never defer the re-show to rAF, which does not fire while the
+      // page is hidden and would leave the section stuck invisible.
+      var anim = sec.querySelectorAll('.reveal, .ed-split');
+      sec.classList.remove('is-entering');
+      anim.forEach(function (el) { el.classList.remove('is-in'); });
+      void sec.offsetWidth;
+      sec.classList.add('is-entering');
+      anim.forEach(function (el) { el.classList.add('is-in'); });
       // Land at the top. Defer past the browser's own jump-to-#hash so we win.
       window.scrollTo(0, 0);
       requestAnimationFrame(function () { window.scrollTo(0, 0); });
