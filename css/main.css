@@ -1244,16 +1244,18 @@ body::after{
   color:var(--pk-cream); text-shadow:0 1px 12px rgba(13,13,12,.5); }
 .pk-mast{ margin-top:auto; margin-bottom:clamp(18px,2.4vw,34px); width:fit-content; max-width:100%; }
 /* Face, weight and tracking come from the shared section-heading rule above.
-   With --pk-title unset the size is the site rule verbatim, tracking
-   --title-max with every other heading; setting it pins an absolute size for
-   tuning. Only the case is held back: the cycling word reads better in title
-   case than in the caps the other headings use. */
+   The size uses the same 4.6vw slope as every other heading but a 60px cap
+   instead of 50px, so it scales in step with them and just reads a little
+   larger at full width. Only the case is held back: the cycling word reads
+   better in title case than in the caps the other headings use. */
 .pk-h{ text-transform:none; color:var(--ink); margin:0;
-  font-size:var(--pk-title, clamp(28px,4.6vw,var(--title-max,50px))); }
-/* Headline + caption shift together. This uses the independent `translate`
-   property, not `transform`: the .is-entering entrance animates transform
-   with fill:both, which would otherwise wipe the offset out. */
-.pk-mast,.pk-row{ translate:var(--pk-x,0px) var(--pk-y,0px); }
+  font-size:var(--pk-title, clamp(28px,4.6vw,60px)); }
+/* Headline + caption shift together, baked from the tuning slider. This uses
+   the independent `translate` property, not `transform`: the .is-entering
+   entrance animates transform with fill:both, which would otherwise wipe the
+   offset out on every open. Reset to 0 on phones (see the media query below),
+   where the offset was never tuned and would push the block off the panel. */
+.pk-mast,.pk-row{ translate:var(--pk-x,50px) var(--pk-y,-135px); }
 /* line 1: cycling word with the icon trailing it; both lines stay flush-left.
    --pk-gap adds breathing room so line-one descenders clear line two. */
 .pk-slot{ display:flex; align-items:center; gap:clamp(8px,1vw,14px); min-height:1em;
@@ -1327,8 +1329,9 @@ body::after{
 .pk-chip-ic{ flex:none; width:clamp(36px,3.2vw,48px); height:clamp(36px,3.2vw,48px); color:var(--pk-tint); }
 .pk-chip-ic svg{ width:100%; height:100%; display:block; }
 @media (max-width:760px){
-  /* no size override: the headline now follows the same display-2 scale as
-     every other section heading at every width */
+  /* no size override: the clamp already scales the headline down by width.
+     The desktop offset does not apply here, it would push the block off. */
+  .pk-mast,.pk-row{ translate:0 0; }
   .pk-eyebrow{ display:none; }
   .pk-track{ gap:18px 28px; }
 }
