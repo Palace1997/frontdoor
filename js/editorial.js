@@ -76,17 +76,13 @@
   (function () {
     var slot = document.getElementById('pkSlot');
     if (!slot) return;
-    var wordEl = document.getElementById('pkWord'), iconEl = document.getElementById('pkIcon');
-    var TILE = '<rect x="2" y="2" width="20" height="20" rx="6" fill="currentColor"/>';
-    var SVG = {
-      design: '<svg viewBox="0 0 24 24">' + TILE + '<rect x="6.5" y="6.5" width="11" height="11" rx="1.8" stroke="#fff" stroke-width="1.6" fill="none"/><circle cx="10" cy="10" r="1.3" stroke="#fff" stroke-width="1.3" fill="none"/><path d="M7 16l3.2-3.4 2.3 2.2 2.2-2.4 2.3 2.6" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      hosting: '<svg viewBox="0 0 24 24">' + TILE + '<rect x="6.3" y="6.5" width="11.4" height="4.4" rx="1.3" stroke="#fff" stroke-width="1.6" fill="none"/><rect x="6.3" y="13.1" width="11.4" height="4.4" rx="1.3" stroke="#fff" stroke-width="1.6" fill="none"/><path d="M9 8.7h.01M9 15.3h.01" stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>',
-      support: '<svg viewBox="0 0 24 24">' + TILE + '<path d="M6.5 8.2a1.7 1.7 0 0 1 1.7-1.7h7.6a1.7 1.7 0 0 1 1.7 1.7v4.6a1.7 1.7 0 0 1-1.7 1.7H10l-3.5 3z" stroke="#fff" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M9.3 10.5h.01M12 10.5h.01M14.7 10.5h.01" stroke="#fff" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>'
-    };
+    var wordEl = document.getElementById('pkWord');
+    var imgEl = document.getElementById('pkIconImg'), tintEl = document.getElementById('pkIconTint');
+    var CDN = 'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/';
     var WORDS = [
-      { word: 'Design', svg: SVG.design, layer: 0 },
-      { word: 'Hosting', svg: SVG.hosting, layer: 1 },
-      { word: 'Support', svg: SVG.support, layer: 2 }
+      { word: 'Design', icon: CDN + '4d952211-0474-48cc-af48-58f68b3b7525.webp', layer: 0 },
+      { word: 'Hosting', icon: CDN + '6b32bb47-4ad6-4938-a637-c997b373c68b.webp', layer: 1 },
+      { word: 'Support', icon: CDN + '83de7c35-dd91-4e56-bfb8-0ffafc83d0e0.webp', layer: 2 }
     ];
     var layers = document.querySelectorAll('#features .pk-layer');
     var mast = document.getElementById('pkMast') || slot;
@@ -94,7 +90,8 @@
     function paint(n) {
       var w = WORDS[n];
       wordEl.textContent = w.word;
-      iconEl.innerHTML = w.svg;
+      imgEl.src = w.icon;
+      tintEl.style.setProperty('--pk-mask', 'url(' + w.icon + ')');
       layers.forEach(function (l, k) { l.classList.toggle('on', k === w.layer); });
     }
     paint(i);
