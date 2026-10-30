@@ -76,23 +76,67 @@
   (function () {
     var slot = document.getElementById('pkSlot');
     if (!slot) return;
-    var wordEl = document.getElementById('pkWord');
-    var imgEl = document.getElementById('pkIconImg'), tintEl = document.getElementById('pkIconTint');
-    var CDN = 'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/';
+    var wordEl = document.getElementById('pkWord'), iconEl = document.getElementById('pkIcon');
+    // Glossy "inflated" icon set: gradient body + embossed detail + specular.
+    var G = 'url(#pkG)', D = 'url(#pkGd)';
+    function hl(cx, cy, rx, ry, op) {
+      return '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + rx + '" ry="' + ry +
+        '" fill="#fff" opacity="' + op + '" filter="url(#pkB)"/>';
+    }
+    function svg(inner) { return '<svg viewBox="0 0 64 64">' + inner + '</svg>'; }
+    var ART = {
+      design: svg('<rect x="8" y="10" width="48" height="44" rx="14" fill="' + G + '"/>' +
+        '<circle cx="23" cy="26" r="5" fill="' + D + '"/>' +
+        '<path d="M15 47 L27 33 L35 42 L43 34 L51 47 Z" fill="' + D + '"/>' + hl(25, 20, 13, 6, .55)),
+      domain: svg('<circle cx="32" cy="32" r="23" fill="' + G + '"/>' +
+        '<ellipse cx="32" cy="32" rx="9.5" ry="23" fill="none" stroke="' + D + '" stroke-width="3"/>' +
+        '<path d="M10 32 H54" stroke="' + D + '" stroke-width="3" stroke-linecap="round"/>' + hl(24, 21, 10, 6, .55)),
+      hosting: svg('<rect x="10" y="13" width="44" height="16" rx="8" fill="' + G + '"/>' +
+        '<rect x="10" y="35" width="44" height="16" rx="8" fill="' + G + '"/>' +
+        '<circle cx="20" cy="21" r="3.2" fill="' + D + '"/><circle cx="20" cy="43" r="3.2" fill="' + D + '"/>' +
+        hl(27, 17, 11, 3.4, .5) + hl(27, 39, 11, 3.4, .35)),
+      editor: svg('<g transform="rotate(-45 32 32)">' +
+        '<rect x="25" y="8" width="14" height="36" rx="7" fill="' + G + '"/>' +
+        '<path d="M25 44 L32 57 L39 44 Z" fill="' + D + '"/>' +
+        '<ellipse cx="30" cy="17" rx="3" ry="8" fill="#fff" opacity=".45" filter="url(#pkB)"/></g>'),
+      booking: svg('<rect x="18" y="6" width="7" height="13" rx="3.5" fill="' + G + '"/>' +
+        '<rect x="39" y="6" width="7" height="13" rx="3.5" fill="' + G + '"/>' +
+        '<rect x="8" y="13" width="48" height="42" rx="13" fill="' + G + '"/>' +
+        '<rect x="8" y="26" width="48" height="4" fill="' + D + '"/>' +
+        '<circle cx="22" cy="40" r="3.2" fill="' + D + '"/><circle cx="32" cy="40" r="3.2" fill="' + D + '"/>' +
+        '<circle cx="42" cy="40" r="3.2" fill="' + D + '"/>' + hl(25, 21, 12, 5, .5)),
+      edits: svg('<circle cx="32" cy="32" r="17" fill="none" stroke="' + G + '" stroke-width="10" ' +
+        'stroke-linecap="round" stroke-dasharray="80 27" transform="rotate(-50 32 32)"/>' +
+        '<path d="M43 8 L55 19 L41 24 Z" fill="' + G + '"/>' + hl(20, 23, 6, 7, .4)),
+      support: svg('<rect x="8" y="12" width="48" height="36" rx="16" fill="' + G + '"/>' +
+        '<path d="M21 44 L19 58 L34 46 Z" fill="' + G + '"/>' +
+        '<circle cx="22" cy="30" r="3.6" fill="' + D + '"/><circle cx="32" cy="30" r="3.6" fill="' + D + '"/>' +
+        '<circle cx="42" cy="30" r="3.6" fill="' + D + '"/>' + hl(25, 21, 12, 6, .55)),
+      analytics: svg('<rect x="11" y="33" width="12" height="21" rx="6" fill="' + G + '"/>' +
+        '<rect x="26" y="23" width="12" height="31" rx="6" fill="' + G + '"/>' +
+        '<rect x="41" y="13" width="12" height="41" rx="6" fill="' + G + '"/>' +
+        hl(17, 37, 4, 3.5, .5) + hl(32, 27, 4, 3.5, .5) + hl(47, 17, 4, 3.5, .5)),
+      security: svg('<path d="M32 7 L54 15 V31 C54 43.5 44.5 51.5 32 56 C19.5 51.5 10 43.5 10 31 V15 Z" fill="' + G + '"/>' +
+        '<path d="M23 32 l6.5 6.5 L42 26" fill="none" stroke="' + D + '" stroke-width="5.5" ' +
+        'stroke-linecap="round" stroke-linejoin="round"/>' + hl(23, 20, 8, 6, .45))
+    };
     var WORDS = [
-      { word: 'Design', icon: CDN + '4d952211-0474-48cc-af48-58f68b3b7525.webp', layer: 0 },
-      { word: 'Hosting', icon: CDN + '6b32bb47-4ad6-4938-a637-c997b373c68b.webp', layer: 1 },
-      { word: 'Support', icon: CDN + '83de7c35-dd91-4e56-bfb8-0ffafc83d0e0.webp', layer: 2 }
+      { word: 'Design', svg: ART.design },
+      { word: 'Domain', svg: ART.domain },
+      { word: 'Hosting', svg: ART.hosting },
+      { word: 'Editor', svg: ART.editor },
+      { word: 'Booking', svg: ART.booking },
+      { word: 'Edits', svg: ART.edits },
+      { word: 'Support', svg: ART.support },
+      { word: 'Analytics', svg: ART.analytics },
+      { word: 'Security', svg: ART.security }
     ];
-    var layers = document.querySelectorAll('#features .pk-layer');
     var mast = document.getElementById('pkMast') || slot;
-    var i = 1;
+    var i = 2;
     function paint(n) {
       var w = WORDS[n];
       wordEl.textContent = w.word;
-      imgEl.src = w.icon;
-      tintEl.style.setProperty('--pk-mask', 'url(' + w.icon + ')');
-      layers.forEach(function (l, k) { l.classList.toggle('on', k === w.layer); });
+      iconEl.innerHTML = w.svg;
     }
     paint(i);
     setInterval(function () {
