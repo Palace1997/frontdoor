@@ -1126,7 +1126,7 @@ body::after{
   color:var(--rust); margin-bottom:16px;
 }
 .section--dark .section__head .eyebrow, .section--dark .mission__head .eyebrow, .section--dark .cta-banner .eyebrow{ color:#5CC2A3; }
-.section__head h2, .mission__head h2, .why h2, .port__head h2, .cta-banner h2{
+.section__head h2, .mission__head h2, .why h2, .port__head h2, .cta-banner h2, .pk-h{
   font-family:var(--font-display); font-weight:600; text-transform:uppercase;
   font-size:clamp(28px,4.6vw,var(--title-max,50px)); line-height:1.02; letter-spacing:.005em;
   color:var(--ink); margin-bottom:16px; max-width:none;
@@ -1238,21 +1238,24 @@ body::after{
 .pk-panel::after{ content:""; position:absolute; inset:0; z-index:5; pointer-events:none; opacity:.18; mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 .pk-in{ position:relative; z-index:6; flex:1; display:flex; flex-direction:column;
-  padding:clamp(20px,3vw,40px) clamp(22px,5vw,80px); font-family:'Inter Tight',var(--font-sans); }
+  padding:clamp(20px,3vw,40px) clamp(22px,5vw,80px); font-family:var(--font-sans); }
 .pk-top{ display:flex; justify-content:flex-end; }
 .pk-eyebrow{ font-weight:600; font-size:13px; letter-spacing:.18em; text-transform:uppercase;
   color:var(--pk-cream); text-shadow:0 1px 12px rgba(13,13,12,.5); }
 .pk-mast{ margin-top:auto; margin-bottom:clamp(18px,2.4vw,34px); width:fit-content; max-width:100%; }
-.pk-h{ font-family:'Inter Tight',var(--font-sans); font-weight:600; text-transform:none;
-  font-size:clamp(52px,11vw,150px); line-height:.86; letter-spacing:-.032em; color:var(--pk-ink); margin:0; }
+/* Face, size, weight and tracking come from the shared section-heading rule
+   above, so this headline tracks --title-max with the rest of the site and
+   cannot drift from it. Only the case is held back: the cycling word reads
+   better in title case than in the caps the other headings use. */
+.pk-h{ text-transform:none; color:var(--ink); margin:0; }
 /* line 1: cycling word with the icon trailing it; both lines stay flush-left.
    --pk-gap adds breathing room so line-one descenders clear line two. */
-.pk-slot{ display:flex; align-items:center; gap:clamp(10px,1.6vw,26px); min-height:1em;
-  margin-bottom:var(--pk-gap,15px); }
+.pk-slot{ display:flex; align-items:center; gap:clamp(8px,1vw,14px); min-height:1em;
+  margin-bottom:var(--pk-gap,2px); }
 /* glossy 3-D icon set (inline SVG: gradient body, embossed detail, specular) */
 .pk-defs{ position:absolute; width:0; height:0; overflow:hidden; }
 .pk-icon{ display:block; flex:none;
-  width:clamp(64px,8.6vw,132px); height:clamp(64px,8.6vw,132px);
+  width:clamp(36px,4.6vw,62px); height:clamp(36px,4.6vw,62px);
   filter:drop-shadow(0 10px 16px rgba(13,13,12,.18));
   animation:pkBob 4s ease-in-out infinite; }
 .pk-icon svg{ width:100%; height:100%; display:block; overflow:visible; }
@@ -1269,7 +1272,9 @@ body::after{
   font-weight:600; font-size:15px; text-decoration:none; transition:background .2s,color .2s; }
 .pk-sbtn:hover{ background:var(--pk-ink); color:var(--pk-cream); }
 .pk-sbtn svg{ width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.8; }
-.pk-cap{ max-width:34ch; font-size:clamp(15px,1.3vw,18.5px); line-height:1.5; color:rgba(13,13,12,.56); margin:0; }
+/* kept narrow so the copy stays over the cream and clear of the figures */
+.pk-cap{ max-width:34ch; font-family:var(--font-sans); font-size:clamp(17px,1.7vw,19px);
+  line-height:1.55; color:var(--g-500); margin:0; }
 /* strip */
 .pk-strip{ position:relative; background:var(--pk-cream); padding:0 0 clamp(30px,4vw,56px);
   font-family:'Inter Tight',var(--font-sans); color:var(--pk-ink); overflow:hidden; }
@@ -1279,16 +1284,16 @@ body::after{
 .pk-lead{ font-size:clamp(26px,2.6vw,40px); font-weight:600; letter-spacing:-.015em; line-height:1.1; margin:0; }
 .pk-sub{ font-size:clamp(15px,1.3vw,17.5px); color:rgba(13,13,12,.56); margin:10px 0 0; }
 /* static grid of everything included, with a staggered entrance on open */
-.pk-grid{ background:var(--pk-cream); font-family:'Inter Tight',var(--font-sans); color:var(--pk-ink);
+.pk-grid{ background:var(--pk-cream); font-family:var(--font-sans); color:var(--ink);
   padding:clamp(46px,6vw,88px) clamp(22px,5vw,80px) clamp(50px,7vw,98px); }
 .pk-grid-in{ max-width:1180px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr);
   gap:clamp(30px,3.6vw,56px); }
 .pk-item-ic{ display:block; width:clamp(42px,3.4vw,52px); height:clamp(42px,3.4vw,52px);
   color:var(--pk-tint); margin-bottom:clamp(12px,1.2vw,18px); }
 .pk-item-ic svg{ width:100%; height:100%; display:block; }
-.pk-item h3{ font-family:inherit; font-size:clamp(18px,1.5vw,21px); font-weight:600; letter-spacing:-.01em;
-  line-height:1.25; text-transform:none; color:var(--pk-ink); margin:0 0 8px; }
-.pk-item p{ font-size:clamp(14.5px,1.2vw,16px); line-height:1.55; color:rgba(13,13,12,.56); margin:0; }
+.pk-item h3{ font-family:var(--font-display); font-size:clamp(18px,1.5vw,21px); font-weight:500; letter-spacing:-.01em;
+  line-height:1.25; text-transform:none; color:var(--ink); margin:0 0 8px; }
+.pk-item p{ font-size:clamp(14.5px,1.2vw,16px); line-height:1.55; color:var(--g-500); margin:0; }
 .pk-item.reveal:nth-child(1){ transition-delay:.04s }
 .pk-item.reveal:nth-child(2){ transition-delay:.10s }
 .pk-item.reveal:nth-child(3){ transition-delay:.16s }
@@ -1316,7 +1321,8 @@ body::after{
 .pk-chip-ic{ flex:none; width:clamp(36px,3.2vw,48px); height:clamp(36px,3.2vw,48px); color:var(--pk-tint); }
 .pk-chip-ic svg{ width:100%; height:100%; display:block; }
 @media (max-width:760px){
-  .pk-h{ font-size:clamp(46px,15.5vw,88px); }
+  /* no size override: the headline now follows the same display-2 scale as
+     every other section heading at every width */
   .pk-eyebrow{ display:none; }
   .pk-track{ gap:18px 28px; }
 }
