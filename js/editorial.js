@@ -89,6 +89,7 @@
       { word: 'Support', svg: SVG.support, layer: 2 }
     ];
     var layers = document.querySelectorAll('#features .pk-layer');
+    var mast = document.getElementById('pkMast') || slot;
     var i = 1;
     function paint(n) {
       var w = WORDS[n];
@@ -101,7 +102,7 @@
       if (document.hidden) return;
       i = (i + 1) % WORDS.length;
       paint(i);
-      slot.classList.remove('anim'); void slot.offsetWidth; slot.classList.add('anim');
+      mast.classList.remove('anim'); void mast.offsetWidth; mast.classList.add('anim');
     }, 1900);
   })();
 
