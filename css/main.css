@@ -1534,6 +1534,33 @@ body::after{
    GET STARTED FORM — cream, rust label, hairline fields
    ===================================================================== */
 #start.section--soft{ background:var(--paper-2); }
+/* Get Started header band, same shape as the FAQ and Mission bands: the
+   heading sits centred over the illustration (walking through an open door),
+   which runs edge to edge and stays visible below it. The form returns to
+   plain cream. Stops use --paper-2, the soft section's own background. */
+#start{ padding-top:0; }
+.start__band{ position:relative; overflow:hidden; background:var(--paper-2);
+  padding:clamp(96px,13vh,160px) 0 clamp(150px,24vw,345px);
+  margin-bottom:clamp(30px,4vw,56px); }
+/* the photo lives on its own layer so it can animate in without moving the text */
+.start__band::after{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+  background:url(../assets/img/start-door.jpg) center 30%/cover no-repeat; }
+/* Unlike the other bands this illustration has no empty corridor down the
+   middle: the door and the figure sit where the centred heading lands, and
+   the band is wider than the artwork so there is no horizontal pan to play
+   with. The veil therefore stays solid through the text, clears for the
+   middle, then fades out at the base. */
+.start__band::before{ content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(180deg, rgba(240,235,225,.94) 0%, rgba(240,235,225,.92) 48%,
+    rgba(240,235,225,.86) 55%, rgba(240,235,225,.18) 67%, rgba(240,235,225,.14) 86%,
+    rgba(240,235,225,.62) 95%, rgba(240,235,225,.97) 100%); }
+.start__band .wrap{ position:relative; z-index:2; }
+.start__band .section__head{ margin-bottom:0; }
+@media (max-width:820px){
+  .start__band{ padding:clamp(80px,11vh,120px) 0 clamp(96px,22vw,150px); }
+  .start__band::after{ background-position:center 40%; }
+  .start__band::before{ background:rgba(240,235,225,.9); }
+}
 .contactform{ background:var(--paper); border-color:var(--line); border-radius:6px; }
 .contactform input, .contactform select, .contactform textarea{ background:var(--canvas); border-color:var(--g-300); color:var(--ink); border-radius:4px; }
 .contactform input:focus-visible, .contactform select:focus-visible, .contactform textarea:focus-visible{ outline-color:var(--rust); border-color:var(--rust); }
@@ -1596,6 +1623,7 @@ body::after{
 .is-entering .how__band::after,
 .is-entering .mission__band::after,
 .is-entering .faq__band::after,
+.is-entering .start__band::after,
 .is-entering .pk-panel::before{ animation:fdImgIn 1.25s cubic-bezier(.16,1,.3,1) both; }
 /* small label + supporting copy rise in behind the title */
 .is-entering .section__head .eyebrow,
@@ -1608,7 +1636,8 @@ body::after{
 .is-entering .pk-cap{ animation:fdRise .8s cubic-bezier(.16,1,.3,1) .3s both; }
 @media (prefers-reduced-motion:reduce){
   .is-entering .how__band::after, .is-entering .mission__band::after,
-  .is-entering .faq__band::after, .is-entering .pk-panel::before,
+  .is-entering .faq__band::after, .is-entering .start__band::after,
+  .is-entering .pk-panel::before,
   .is-entering .section__head .eyebrow, .is-entering .mission__head .eyebrow, .is-entering .pk-eyebrow,
   .is-entering .section__head .lede, .is-entering .mission__head .lede,
   .is-entering .pk-mast, .is-entering .pk-cap{ animation:none!important; }
