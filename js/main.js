@@ -86,7 +86,9 @@
     document.body.classList.toggle('is-routed', !!single);
     if (single) {
       var sec = document.getElementById(single);
-      if (backBtn) backBtn.classList.toggle('routeback--ondark', sec.classList.contains('section--dark'));
+      // Dark routeback only on genuinely dark sections (a section can carry the
+      // .section--dark class for styling hooks yet be visually light: data-light).
+      if (backBtn) backBtn.classList.toggle('routeback--ondark', sec.classList.contains('section--dark') && !sec.hasAttribute('data-light'));
       // The isolated section is at the top now, so play its reveals immediately.
       sec.querySelectorAll('.reveal').forEach(function (el) {
         el.classList.add('is-in');
