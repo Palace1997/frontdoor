@@ -1437,6 +1437,26 @@ body::after{
 }
 
 /* =====================================================================
+   MISSION — pull the dark section back onto cream paper
+   Mirrors the Features treatment: the section keeps .section--dark as a
+   styling hook but is visually light, so it also carries data-light, which
+   is what tells the router to use the light "Back to homepage" button.
+   ===================================================================== */
+#mission.section--dark{ background:var(--paper-2); color:var(--ink); }
+/* the green glow was tuned for a dark panel; barely there on cream */
+#mission::before{ background:radial-gradient(circle, rgba(0,165,131,.07), transparent 62%); }
+/* The header band keeps its dark treatment. mission-path.jpg is a night
+   scene whose whole subject is a lit path through the dark, so a cream wash
+   over it only turns it grey and the heading stops reading. The band stays
+   its own dark strip and keeps its cream-on-forest head colours. */
+/* cards: light paper tiles instead of translucent white on forest */
+#mission .mcard{ background:var(--paper); border-color:var(--line); }
+#mission .mcard:hover{ background:#fff; border-color:var(--green-600); }
+#mission .mcard__k{ background:rgba(0,135,108,.12); color:var(--rust); }
+#mission .mcard h3{ color:var(--ink); }
+#mission .mcard p{ color:var(--g-500); }
+
+/* =====================================================================
    FEATURES — pull the dark section back onto cream paper
    ===================================================================== */
 #features.section--dark{ background:var(--paper-2); color:var(--ink); }
