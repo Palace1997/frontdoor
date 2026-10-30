@@ -106,6 +106,19 @@
     }, 1900);
   })();
 
+  /* ---- Package strip: duplicate the chips so the marquee loops seamlessly ---- */
+  (function () {
+    var track = document.getElementById('pkTrack');
+    if (!track || reduce) return;
+    var items = Array.prototype.slice.call(track.children);
+    items.forEach(function (el) {
+      var copy = el.cloneNode(true);
+      copy.setAttribute('aria-hidden', 'true');
+      track.appendChild(copy);
+    });
+    track.classList.add('is-loop');
+  })();
+
   /* ---- Statement: spring the photo pills + emblem in ---- */
   var tag = document.querySelector('.tagband');
   if (tag) {
