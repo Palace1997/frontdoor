@@ -1246,9 +1246,9 @@ body::after{
 /* Face, weight and tracking come from the shared section-heading rule above.
    The size uses the same 4.6vw slope as every other heading but a 60px cap
    instead of 50px, so it scales in step with them and just reads a little
-   larger at full width. Only the case is held back: the cycling word reads
-   better in title case than in the caps the other headings use. */
-.pk-h{ text-transform:none; color:var(--ink); margin:0;
+   larger at full width. Case comes from that rule too: caps, like the rest
+   of the site. */
+.pk-h{ color:var(--ink); margin:0;
   font-size:var(--pk-title, clamp(28px,4.6vw,60px)); }
 /* Headline + caption shift together, baked from the tuning slider. This uses
    the independent `translate` property, not `transform`: the .is-entering
