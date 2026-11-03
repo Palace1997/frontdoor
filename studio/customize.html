@@ -481,7 +481,7 @@ document.getElementById('download').addEventListener('click',async ()=>{
   } else { // icons all left as they are: drop the marker attributes entirely
     ['data-d7icon','data-d7icondeco'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   }
-  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0','data-d7logo','data-d7logotext','data-d7auto','data-d7imgstyle','data-d7frstyle'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
+  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0','data-d7logo','data-d7logotext','data-d7auto','data-d7imgstyle','data-d7frstyle','data-d7pre'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   // .d7-frame wrappers + .d7-ph placeholders are KEPT (they hold the crop/size/placement and keep the layout stable)
   // make the file self-contained: inline the shared template.css + template.js (bespoke templates use them)
   await inlineAsset(clone,'link[rel="stylesheet"][href*="template.css"]',css=>{const s=doc.createElement('style');s.textContent=css;return s;});
@@ -1186,6 +1186,12 @@ function d7Float(fr){
   // adopted wrapper IS the styled thing, so blanking its parent would strip
   // the design the image is meant to keep.
   d7Unclip(fr); if(fr.classList&&fr.classList.contains('d7-frame')&&!fr.dataset.d7adopt) d7Neutralize(fr);
+  // remember the inline values we are about to overwrite, so unfloating can put
+  // them back. A frame created around an absolutely positioned image carries
+  // position:absolute of its own; blanking that on mouseup dropped it into flow
+  // and shoved the hero copy sideways.
+  fr.dataset.d7pre=JSON.stringify({position:fr.style.position,left:fr.style.left,top:fr.style.top,
+    margin:fr.style.margin,zIndex:fr.style.zIndex});
   fr.style.position='absolute'; fr.style.margin='0'; fr.style.width=r.width+'px'; fr.style.height=r.height+'px';
   // carry the element's own stacking across, so going absolute does not quietly
   // reorder it against the content around it
@@ -1199,8 +1205,11 @@ function d7Unfloat(fr){
   let sib=fr.previousElementSibling; while(sib && !(sib.classList&&sib.classList.contains('d7-ph'))) sib=sib.previousElementSibling;
   if(sib) sib.remove();
   d7Reclip(fr); d7RestoreSlot(fr);
-  fr.style.position=''; fr.style.left=''; fr.style.top=''; fr.style.margin=''; fr.style.zIndex='';
-  delete fr.dataset.d7float; delete fr.dataset.d7zi;
+  let pre={position:'',left:'',top:'',margin:'',zIndex:''};
+  try{ if(fr.dataset.d7pre) pre=JSON.parse(fr.dataset.d7pre); }catch(e){}
+  fr.style.position=pre.position||''; fr.style.left=pre.left||''; fr.style.top=pre.top||'';
+  fr.style.margin=pre.margin||''; fr.style.zIndex=pre.zIndex||'';
+  delete fr.dataset.d7pre; delete fr.dataset.d7float; delete fr.dataset.d7zi;
 }
 function d7StartMove(e){ d7HistPush(); // snapshot before a move or (in reframe mode) a crop pan
   if(d7Reframe && d7Sel){ return d7StartPan(e); } // in reframe mode, dragging pans the crop instead of moving the frame
