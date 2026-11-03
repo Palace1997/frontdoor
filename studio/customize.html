@@ -1137,9 +1137,16 @@ function d7StartPan(e){ e.preventDefault(); e.stopPropagation();
 function d7Float(fr){
   if(fr.dataset.d7float) return;
   const win=doc.defaultView, r=fr.getBoundingClientRect(), cs=win.getComputedStyle(fr);
-  const ph=doc.createElement('span'); ph.className='d7-ph';
-  ph.style.cssText='display:'+cs.display+';width:'+r.width+'px;height:'+r.height+'px;margin:'+cs.marginTop+' '+cs.marginRight+' '+cs.marginBottom+' '+cs.marginLeft+';vertical-align:'+cs.verticalAlign+';flex:'+(cs.flex||'0 0 auto')+';visibility:hidden;pointer-events:none';
-  fr.parentNode.insertBefore(ph, fr);
+  // The placeholder holds the slot the element is about to vacate, so the page
+  // does not reflow around it. An element that was already out of flow had no
+  // slot to hold: adding one INVENTS space. In a flex parent that placeholder
+  // becomes an item and shoves the real content sideways, which is what pushed
+  // a hero's heading into the middle when its background image was grabbed.
+  if(cs.position!=='absolute' && cs.position!=='fixed'){
+    const ph=doc.createElement('span'); ph.className='d7-ph';
+    ph.style.cssText='display:'+cs.display+';width:'+r.width+'px;height:'+r.height+'px;margin:'+cs.marginTop+' '+cs.marginRight+' '+cs.marginBottom+' '+cs.marginLeft+';vertical-align:'+cs.verticalAlign+';flex:'+(cs.flex||'0 0 auto')+';visibility:hidden;pointer-events:none';
+    fr.parentNode.insertBefore(ph, fr);
+  }
   // Only a frame WE inserted leaves a styled slot behind worth hiding. An
   // adopted wrapper IS the styled thing, so blanking its parent would strip
   // the design the image is meant to keep.
