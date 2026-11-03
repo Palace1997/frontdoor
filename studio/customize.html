@@ -1003,6 +1003,11 @@ function d7CollectPeers(exclude){
   doc.body.querySelectorAll('div,span,li,i,img,a,button,p,h2,h3,figure,article,section').forEach(el=>{
     if(el===exclude||exclude.contains(el)||el.contains(exclude))return;
     if(el.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar'))return;
+    // A placeholder is exactly the size of the box that left it, so it would
+    // pass every test below and corrupt the rhythm with a gap nobody can see.
+    if(el.classList&&el.classList.contains('d7-ph'))return;
+    const vis=win.getComputedStyle(el);
+    if(vis.visibility==='hidden'||vis.opacity==='0'||vis.display==='none')return;
     const b=el.getBoundingClientRect();
     if(b.width<8||b.height<8||b.bottom<0||b.top>win.innerHeight)return;
     // only boxes of roughly the same size count as peers in a row
@@ -1012,39 +1017,56 @@ function d7CollectPeers(exclude){
   });
   return out;
 }
-// Nearest peer on each side along one axis, among peers sharing the other axis.
-function d7EqualGap(peers, box, axis){
-  const near=[], S=axis==='x';
-  const c=S?(box.top+box.height/2):(box.left+box.width/2);
-  peers.forEach(b=>{ const bc=S?(b.top+b.height/2):(b.left+b.width/2);
-    if(Math.abs(bc-c)>Math.max(14,(S?box.height:box.width)*0.6))return;   // same row / column
-    near.push(b); });
-  if(near.length<2) return null;
-  const lo=S?box.left:box.top, hi=S?box.right:box.bottom;
-  let prev=null, next=null;
-  near.forEach(b=>{ const bHi=S?b.right:b.bottom, bLo=S?b.left:b.top;
-    if(bHi<=lo+1 && (!prev || bHi>(S?prev.right:prev.bottom))) prev=b;
-    if(bLo>=hi-1 && (!next || bLo<(S?next.left:next.top))) next=b; });
-  if(!prev||!next) return null;
-  const gapA=lo-(S?prev.right:prev.bottom), gapB=(S?next.left:next.top)-hi;
-  if(gapA<0||gapB<0) return null;
-  if(Math.abs(gapA-gapB)>D7_SNAP) return null;
-  return {prev:prev, next:next, shift:(gapB-gapA)/2, gap:(gapA+gapB)/2};
+// Spacing across a whole row (or column) of peers, not just the box in the
+// middle. Work out the rhythm the OTHER boxes already keep, then place the
+// dragged one on it, whether it belongs at the start, the end or between two.
+function d7RowSpacing(peers, box, axis){
+  const S=axis==='x';
+  const lo=o=>S?o.left:o.top, hi=o=>S?o.right:o.bottom;
+  const mid=o=>S?(o.top+o.height/2):(o.left+o.width/2);
+  const cross=S?box.height:box.width, bm=mid(box);
+  const others=peers.filter(b=>Math.abs(mid(b)-bm)<=Math.max(14,cross*0.6))
+                    .sort((a,b)=>lo(a)-lo(b));
+  if(others.length<2) return null;                 // need a rhythm to match
+  const gaps=[]; for(let i=1;i<others.length;i++) gaps.push(lo(others[i])-hi(others[i-1]));
+  const uni=gaps.reduce((a,b)=>a+b,0)/gaps.length;
+  if(uni<0) return null;
+  if(gaps.some(g=>Math.abs(g-uni)>D7_SNAP)) return null;   // the others are not even themselves
+  const bLo=lo(box), bHi=hi(box), size=S?box.width:box.height;
+  let shift;
+  if(bHi<=lo(others[0])+1)            shift=(lo(others[0])-uni-size)-bLo;          // before the run
+  else if(bLo>=hi(others[others.length-1])-1) shift=(hi(others[others.length-1])+uni)-bLo; // after it
+  else {                                                                            // between two
+    let prev=null,next=null;
+    others.forEach(o=>{ if(hi(o)<=bLo+1 && (!prev||hi(o)>hi(prev))) prev=o;
+                        if(lo(o)>=bHi-1 && (!next||lo(o)<lo(next))) next=o; });
+    if(!prev||!next) return null;
+    const gA=bLo-hi(prev), gB=lo(next)-bHi;
+    if(gA<0||gB<0) return null;
+    shift=(gB-gA)/2;
+  }
+  if(!isFinite(shift)||Math.abs(shift)>D7_SNAP) return null;
+  return {shift:shift, gap:uni, others:others};
 }
-// Two matching bars, one in each gap, with the figure.
-function d7EqBars(box, eq, axis){
+// Draw every gap in the run, so an even row reads as even end to end.
+function d7EqBars(box, info, axis){
   let g=doc.getElementById('d7-guides'); if(!g){ g=doc.createElement('div'); g.id='d7-guides'; doc.body.appendChild(g); }
-  const S=axis==='x', v=Math.round(eq.gap);
-  const mk=(from,to)=>{ const d=doc.createElement('div'); d.className='d7-eq '+(S?'h':'v');
-    if(S){ d.style.left=from+'px'; d.style.width=Math.max(0,to-from)+'px'; d.style.top=Math.round(box.top+box.height/2)+'px'; }
-    else { d.style.top=from+'px'; d.style.height=Math.max(0,to-from)+'px'; d.style.left=Math.round(box.left+box.width/2)+'px'; }
+  const S=axis==='x';
+  const lo=o=>S?o.left:o.top, hi=o=>S?o.right:o.bottom;
+  const run=info.others.concat([box]).sort((a,b)=>lo(a)-lo(b));
+  const line=S?Math.round(box.top+box.height/2):Math.round(box.left+box.width/2);
+  for(let i=1;i<run.length;i++){
+    const from=Math.round(hi(run[i-1])), to=Math.round(lo(run[i]));
+    if(to-from<1) continue;
+    const d=doc.createElement('div'); d.className='d7-eq '+(S?'h':'v');
+    if(S){ d.style.left=from+'px'; d.style.width=(to-from)+'px'; d.style.top=line+'px'; }
+    else { d.style.top=from+'px'; d.style.height=(to-from)+'px'; d.style.left=line+'px'; }
     g.appendChild(d);
-    const lab=doc.createElement('div'); lab.className='d7-eqlab'; lab.textContent=v;
-    if(S){ lab.style.left=Math.round((from+to)/2)+'px'; lab.style.top=Math.round(box.top+box.height/2)+'px'; }
-    else { lab.style.left=Math.round(box.left+box.width/2)+'px'; lab.style.top=Math.round((from+to)/2)+'px'; }
-    g.appendChild(lab); };
-  if(S){ mk(Math.round(eq.prev.right), Math.round(box.left)); mk(Math.round(box.right), Math.round(eq.next.left)); }
-  else { mk(Math.round(eq.prev.bottom), Math.round(box.top)); mk(Math.round(box.bottom), Math.round(eq.next.top)); }
+    const lab=doc.createElement('div'); lab.className='d7-eqlab'; lab.textContent=to-from;
+    if(S){ lab.style.left=Math.round((from+to)/2)+'px'; lab.style.top=line+'px'; }
+    else { lab.style.left=line+'px'; lab.style.top=Math.round((from+to)/2)+'px'; }
+    g.appendChild(lab);
+  }
 }
 function d7CollectTargets(exclude){
   const win=doc.defaultView, xs=[], ys=[];
@@ -1292,10 +1314,10 @@ function d7StartMove(e){ d7HistPush(); // snapshot before a move or (in reframe 
     // claimed the axis, but the gaps are measured either way: an edge guide can
     // land on equal spacing by itself and that still deserves the indicator.
     const probe=()=>({left:r0.left+(L-L0), right:r0.left+(L-L0)+W, top:r0.top+(Tp-T0), bottom:r0.top+(Tp-T0)+H, width:W, height:H});
-    let eqX=d7EqualGap(PEERS, probe(), 'x'); if(eqX && !sX) L+=eqX.shift;
-    let eqY=d7EqualGap(PEERS, probe(), 'y'); if(eqY && !sY) Tp+=eqY.shift;
-    if(eqX) eqX=d7EqualGap(PEERS, probe(), 'x');   // re-measure after the shift
-    if(eqY) eqY=d7EqualGap(PEERS, probe(), 'y');
+    let eqX=d7RowSpacing(PEERS, probe(), 'x'); if(eqX && !sX) L+=eqX.shift;
+    let eqY=d7RowSpacing(PEERS, probe(), 'y'); if(eqY && !sY) Tp+=eqY.shift;
+    if(eqX) eqX=d7RowSpacing(PEERS, probe(), 'x');   // re-measure after the shift
+    if(eqY) eqY=d7RowSpacing(PEERS, probe(), 'y');
     fr.style.left=L+'px'; fr.style.top=Tp+'px'; d7PositionBox();
     d7ClearGuides(); if(sX) d7Guide(true,sX.guide); if(sY) d7Guide(false,sY.guide);
     const now={left:r0.left+(L-L0), right:r0.left+(L-L0)+W, top:r0.top+(Tp-T0), bottom:r0.top+(Tp-T0)+H, width:W, height:H};
