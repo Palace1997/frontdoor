@@ -976,6 +976,9 @@ function d7ShowMenu(x,y,el){
 }
 function d7PositionBox(){
   const fr=d7CurBox(); if(!fr) return;
+  // the Zoom / Bright / Reframe controls stay up for as long as an image is
+  // selected, including all the way through a move or a resize
+  if(d7Sel){ const ib=doc.getElementById('d7-imgbar'); if(ib && ib.style.display!=='flex') ib.style.display='flex'; }
   const r=fr.getBoundingClientRect(), win=doc.defaultView, x=r.left+win.scrollX, y=r.top+win.scrollY;
   const box=doc.getElementById('d7-imgbox'); if(box){ box.style.left=x+'px'; box.style.top=y+'px'; box.style.width=r.width+'px'; box.style.height=r.height+'px'; }
   const ab=doc.getElementById('d7-actbar');
@@ -1002,7 +1005,12 @@ function d7Unclip(fr){ const win=doc.defaultView;
   if(win.getComputedStyle(fr).position==='static') fr.style.position='relative';
   let n=fr.parentElement, guard=0;
   while(n && n!==doc.body && guard++<10){
-    if(win.getComputedStyle(n).overflow!=='visible'){ if(!n.hasAttribute('data-d7ov')) n.setAttribute('data-d7ov', n.style.overflow||''); n.style.overflow='visible'; }
+    // Leave page-level containers clipping. Releasing a card's overflow lets you
+    // drag an image out of it; releasing a full-width section's lets a resized
+    // background spill across the whole page.
+    const b=n.getBoundingClientRect();
+    const pageLevel = b.width>=win.innerWidth*0.9 && b.height>=win.innerHeight*0.9;
+    if(!pageLevel && win.getComputedStyle(n).overflow!=='visible'){ if(!n.hasAttribute('data-d7ov')) n.setAttribute('data-d7ov', n.style.overflow||''); n.style.overflow='visible'; }
     n=n.parentElement;
   }
 }
@@ -1011,6 +1019,11 @@ function d7Reclip(fr){ let n=fr.parentElement, guard=0;
 }
 // hide the leftover styled slot (the frame's parent) once the image is moved
 function d7Neutralize(fr){ const p=fr.parentElement; if(!p||p.hasAttribute('data-d7fr'))return;
+  // Only when the parent exists purely to hold this frame. A hero section also
+  // holds the copy and its scrim, and blanking its background there wipes the
+  // section's own design.
+  const kids=[].slice.call(p.children).filter(c=>c!==fr&&!(c.classList&&c.classList.contains('d7-ph')));
+  if(kids.length) return;
   p.setAttribute('data-d7fr', JSON.stringify([p.style.background||'',p.style.boxShadow||'',p.style.border||''])); p.style.background='transparent'; p.style.boxShadow='none'; p.style.border='none';
 }
 function d7RestoreSlot(fr){ const p=fr.parentElement; if(!p||!p.hasAttribute('data-d7fr'))return;
@@ -1048,6 +1061,9 @@ function d7Float(fr){
   // the design the image is meant to keep.
   d7Unclip(fr); if(fr.classList&&fr.classList.contains('d7-frame')&&!fr.dataset.d7adopt) d7Neutralize(fr);
   fr.style.position='absolute'; fr.style.margin='0'; fr.style.width=r.width+'px'; fr.style.height=r.height+'px';
+  // carry the element's own stacking across, so going absolute does not quietly
+  // reorder it against the content around it
+  if(cs.zIndex && cs.zIndex!=='auto') fr.style.zIndex=cs.zIndex;
   const op=fr.offsetParent||doc.body, opr=op.getBoundingClientRect();
   fr.style.left=(r.left-opr.left+(op.scrollLeft||0))+'px';
   fr.style.top=(r.top-opr.top+(op.scrollTop||0))+'px';
@@ -1063,7 +1079,11 @@ function d7Unfloat(fr){
 function d7StartMove(e){ d7HistPush(); // snapshot before a move or (in reframe mode) a crop pan
   if(d7Reframe && d7Sel){ return d7StartPan(e); } // in reframe mode, dragging pans the crop instead of moving the frame
   e.preventDefault(); e.stopPropagation();
-  const fr=d7CurBox(); if(!fr)return; d7Float(fr); if(!fr.dataset.d7zi) d7SetZ(fr,100);
+  // No automatic z-index here. Raising the box to 100 on mousedown lifted a
+  // full-bleed background image above the copy layered over it, so merely
+  // clicking a hero image made its heading vanish. Layer order is the
+  // editor's to change only when Bring forward / Send back is used.
+  const fr=d7CurBox(); if(!fr)return; d7Float(fr);
   const L0=parseFloat(fr.style.left)||0, T0=parseFloat(fr.style.top)||0, sx=e.clientX, sy=e.clientY; d7drag={};
   const r0=fr.getBoundingClientRect(), W=r0.width, H=r0.height, T=d7CollectTargets(fr); // targets fixed at drag start
   const mv=ev=>{ let L=L0+(ev.clientX-sx), Tp=T0+(ev.clientY-sy);
