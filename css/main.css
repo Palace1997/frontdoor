@@ -532,8 +532,6 @@ ul { margin: 0; padding: 0; list-style: none; }
 .bmr__rowtext{flex:1;min-width:0}
 .bmr__rowtext h3{font-family:var(--font-display);font-size:15.5px;font-weight:600;color:var(--ink);margin:0 0 2px}
 .bmr__rowtext p{font-size:13.5px;line-height:1.5;color:var(--g-500);margin:0}
-.bmr__arrow{width:18px;height:18px;flex:none;fill:none;stroke:var(--g-400);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s,transform .2s}
-.bmr__row:hover .bmr__arrow{stroke:var(--forest);transform:translateX(4px)}
 @media (max-width:760px){
   .bmr{display:block;min-height:0}
   .bmr__bg{position:relative;height:clamp(200px,44vw,300px)}
@@ -1181,7 +1179,6 @@ body::after{
 .bmr__rowtext h3{ font-family:var(--font-display); font-weight:600; }
 .bmr__n{ color:var(--rust); }
 .bmr__row:hover{ background:rgba(0,165,131,.08); }
-.bmr__row:hover .bmr__arrow{ stroke:var(--rust); }
 
 /* =====================================================================
    DESIGNS SHOWCASE (carousel)
