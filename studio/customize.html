@@ -652,6 +652,7 @@ function d7IconBar(){
   let html='<span class="d7-ib-lbl">Icon</span>';
   D7_ICONS.forEach((g,i)=>{ html+='<button data-ig="'+i+'" title="'+g.k+'"><svg viewBox="0 0 24 24">'+g.d+'</svg></button>'; });
   html+='<span class="d7-ib-sep"></span>'
+      + '<button class="d7-ib-txt" data-ia="move" title="Drag this icon anywhere, or pull a corner to resize">Move / size</button>'
       + '<button class="d7-ib-txt" data-ia="reset" title="Put the original icon back">Reset</button>'
       + '<button class="d7-ib-txt d7-ib-del" data-ia="remove" title="Hide this icon">Remove</button>';
   b.innerHTML=html;
@@ -663,6 +664,9 @@ function d7IconBar(){
     const ig=t.getAttribute('data-ig'), ia=t.getAttribute('data-ia');
     if(ig!=null) d7SetIcon(d7IconSel, D7_ICONS[+ig]);
     else if(ia==='remove'){ d7IconSel.setAttribute('data-d7iconoff','1'); d7DeselectIcon(); return; }
+    else if(ia==='move'){ // hand the icon's own tile to the drag engine
+      const tgt=d7BoxTarget(d7IconSel); d7DeselectIcon(); d7SelectBox(tgt);
+      toast('Drag to move, pull a corner to resize'); return; }
     else if(ia==='reset') d7RestoreIcon(d7IconSel);
   });
   return b;
