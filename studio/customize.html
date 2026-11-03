@@ -360,7 +360,7 @@ document.getElementById('download').addEventListener('click',async ()=>{
   clone.querySelectorAll('.d7-hi').forEach(el=>el.classList.remove('d7-hi'));
   // persist "remove decoration": the editor CSS is stripped, so bake a rule for [data-d7nodeco] (and keep the attribute)
   if(clone.querySelector('[data-d7nodeco]')){ const nd=doc.createElement('style'); nd.textContent='[data-d7nodeco]::before,[data-d7nodeco]::after{content:none!important;display:none!important}'; (clone.querySelector('head')||clone).appendChild(nd); }
-  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
+  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   // .d7-frame wrappers + .d7-ph placeholders are KEPT (they hold the crop/size/placement and keep the layout stable)
   // make the file self-contained: inline the shared template.css + template.js (bespoke templates use them)
   await inlineAsset(clone,'link[rel="stylesheet"][href*="template.css"]',css=>{const s=doc.createElement('style');s.textContent=css;return s;});
@@ -551,9 +551,44 @@ function d7TextAction(t){ const el=d7EditEl; if(t==='done'){ d7CommitText(); ret
 //     in a fixed .d7-frame (overflow:hidden) so zoom crops the photo without growing the box. ---
 let d7zTop=200, d7Reframe=false;
 function d7Frame(img){ const p=img&&img.parentElement; return (p&&p.classList&&p.classList.contains('d7-frame'))?p:null; }
+// Templates usually wrap a single image in their own styled element: the arch
+// shape, the white border, the clip and the shadow all live on that wrapper,
+// never on the <img>. Wrapping the image AGAIN in a bare .d7-frame and then
+// floating that inner wrapper left every one of those behind, which is why a
+// resized image used to snap back to a plain rectangle. Where the parent is a
+// wrapper like that, adopt it as the frame so the decorated element is the one
+// being moved and resized.
+function d7AdoptableWrap(img){
+  const p=img.parentElement; if(!p||p===doc.body||p.tagName==='PICTURE') return null;
+  if(p.classList&&p.classList.contains('d7-frame')) return p;
+  if(p.children.length!==1) return null;              // must hold this image alone
+  if((p.textContent||'').trim()) return null;         // ...and no text of its own
+  const cs=doc.defaultView.getComputedStyle(p);
+  const decorated =
+       (cs.borderRadius && cs.borderRadius!=='0px')
+    || cs.overflow==='hidden'
+    || parseFloat(cs.borderTopWidth||0)>0
+    || (cs.boxShadow && cs.boxShadow!=='none')
+    || (cs.clipPath && cs.clipPath!=='none')
+    || (cs.aspectRatio && cs.aspectRatio!=='auto');
+  return decorated ? p : null;
+}
 function d7EnsureFrame(img){
   let fr=d7Frame(img); if(fr) return fr;
   const win=doc.defaultView, r=img.getBoundingClientRect(), cs=win.getComputedStyle(img);
+  const adopt=d7AdoptableWrap(img);
+  if(adopt){
+    const ar=adopt.getBoundingClientRect();
+    adopt.classList.add('d7-frame'); adopt.dataset.d7adopt='1';
+    adopt.dataset.d7ow=ar.width; adopt.dataset.d7oh=ar.height;
+    // pin the current size so dragging a handle beats the template's own
+    // aspect-ratio / width rules, which would otherwise snap it back
+    adopt.style.width=ar.width+'px'; adopt.style.height=ar.height+'px'; adopt.style.maxWidth='none';
+    img.style.width='100%'; img.style.height='100%'; img.style.display='block'; img.style.margin='0';
+    img.style.objectFit=(cs.objectFit&&cs.objectFit!=='fill')?cs.objectFit:'cover';
+    img.style.transformOrigin='center'; img.style.maxWidth='none';
+    return adopt;
+  }
   fr=doc.createElement('span'); fr.className='d7-frame';
   fr.style.display=(cs.display.indexOf('inline')>-1)?'inline-block':'block';
   fr.style.width=r.width+'px'; fr.style.height=r.height+'px';
@@ -764,7 +799,10 @@ function d7Float(fr){
   const ph=doc.createElement('span'); ph.className='d7-ph';
   ph.style.cssText='display:'+cs.display+';width:'+r.width+'px;height:'+r.height+'px;margin:'+cs.marginTop+' '+cs.marginRight+' '+cs.marginBottom+' '+cs.marginLeft+';vertical-align:'+cs.verticalAlign+';flex:'+(cs.flex||'0 0 auto')+';visibility:hidden;pointer-events:none';
   fr.parentNode.insertBefore(ph, fr);
-  d7Unclip(fr); if(fr.classList&&fr.classList.contains('d7-frame')) d7Neutralize(fr); // only image frames leave a styled slot to hide
+  // Only a frame WE inserted leaves a styled slot behind worth hiding. An
+  // adopted wrapper IS the styled thing, so blanking its parent would strip
+  // the design the image is meant to keep.
+  d7Unclip(fr); if(fr.classList&&fr.classList.contains('d7-frame')&&!fr.dataset.d7adopt) d7Neutralize(fr);
   fr.style.position='absolute'; fr.style.margin='0'; fr.style.width=r.width+'px'; fr.style.height=r.height+'px';
   const op=fr.offsetParent||doc.body, opr=op.getBoundingClientRect();
   fr.style.left=(r.left-opr.left+(op.scrollLeft||0))+'px';
@@ -835,7 +873,12 @@ function d7MenuAction(a){
 function d7ImgAction(a){ if(!d7Sel)return; const fr=d7Frame(d7Sel);
   if(a==='done'){ d7Deselect(); return; }
   if(a==='reframe'){ d7SetReframe(!d7Reframe); if(d7Reframe) toast('Reframe on, drag the photo to show a different part'); return; }
-  if(a==='reset'){ d7HistPush(); if(fr){ d7Unfloat(fr); fr.style.display=''; fr.style.width=(fr.dataset.d7ow||'')+'px'; fr.style.height=(fr.dataset.d7oh||'')+'px'; }
+  if(a==='reset'){ d7HistPush();
+    if(fr){ d7Unfloat(fr); fr.style.display='';
+      // an adopted wrapper gets its size cleared, not pinned, so the template's
+      // own aspect-ratio and width rules take back over
+      if(fr.dataset.d7adopt){ fr.style.width=''; fr.style.height=''; fr.style.maxWidth=''; }
+      else { fr.style.width=(fr.dataset.d7ow||'')+'px'; fr.style.height=(fr.dataset.d7oh||'')+'px'; } }
     d7Sel.style.transform=''; d7Sel.style.filter=''; d7Sel.style.objectPosition=''; delete d7Sel.dataset.d7z; delete d7Sel.dataset.d7b; delete d7Sel.dataset.d7px; delete d7Sel.dataset.d7py; d7SetReframe(false);
     const bar=doc.getElementById('d7-imgbar'), zr=bar.querySelector('.d7-zoomrange'), br=bar.querySelector('.d7-bright'); if(zr)zr.value=1; if(br)br.value=1; d7PositionBox(); return; }
   if(a==='replace'){ d7HistPush(); const inp=doc.createElement('input'); inp.type='file'; inp.accept='image/*';
