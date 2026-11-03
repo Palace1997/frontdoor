@@ -40,6 +40,14 @@ body{margin:0;font-family:var(--font-sans);color:var(--ink);background:var(--can
 .group>summary::after{content:"+";color:var(--muted);font-size:18px;font-family:var(--font-sans)}
 .group[open]>summary::after{content:"–"}
 .field{margin-top:12px}
+/* flashes the field that matches whatever was just clicked in the preview.
+   A ring rather than a bar in the margin, which the panel's overflow clips. */
+.field.d7-fieldhi{border-radius:8px;animation:d7FieldFlash 2.4s ease}
+@keyframes d7FieldFlash{
+  0%,55%{background:rgba(0,165,131,.14);box-shadow:0 0 0 2px rgba(0,165,131,.5)}
+  100%{background:transparent;box-shadow:0 0 0 2px rgba(0,165,131,0)}
+}
+@media (prefers-reduced-motion:reduce){ .field.d7-fieldhi{animation:none;box-shadow:0 0 0 2px rgba(0,165,131,.5)} }
 .field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px;letter-spacing:.01em}
 .field input,.field textarea{width:100%;font-family:inherit;font-size:14px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--canvas);color:var(--ink)}
 .field textarea{resize:vertical;min-height:58px}
@@ -629,6 +637,31 @@ function initInlineEditor(){
 // with a floating text toolbar until you pick another element / click empty / press Done.
 let d7EditEl=null;
 function d7OnEditInput(){ const el=d7EditEl; if(!el)return; const id=el.getAttribute('data-field'); if(id){ const inp=document.getElementById('f_'+id); if(inp) inp.value=el.textContent.trim(); } }
+/* ---- Keep the two panes in step -------------------------------------
+   Clicking something in the preview brings its field into view on the left,
+   opening the section it lives in, so you never have to hunt for the field
+   that matches what you just clicked. ---------------------------------- */
+function d7FieldIdFor(el){
+  if(!el||el.nodeType!==1) return null;
+  if(el.getAttribute('data-img')) return el.getAttribute('data-img');
+  if(el.getAttribute('data-field')) return el.getAttribute('data-field');
+  const up=el.closest('[data-field]'); if(up) return up.getAttribute('data-field');
+  const down=el.querySelector&&el.querySelector('[data-field]');
+  return down?down.getAttribute('data-field'):null;
+}
+let d7FieldT=null;
+function d7RevealField(id){
+  if(!id) return false;
+  const inp=document.getElementById('f_'+id); if(!inp) return false;
+  const det=inp.closest('details.group'); if(det&&!det.open) det.open=true;
+  const row=inp.closest('.field')||inp;
+  row.scrollIntoView({block:'center',behavior:'smooth'});
+  document.querySelectorAll('.d7-fieldhi').forEach(e=>e.classList.remove('d7-fieldhi'));
+  row.classList.add('d7-fieldhi');
+  clearTimeout(d7FieldT);
+  d7FieldT=setTimeout(()=>row.classList.remove('d7-fieldhi'),2400);
+  return true;
+}
 function d7OnEditPaste(ev){ ev.preventDefault(); const t=(ev.clipboardData||doc.defaultView.clipboardData).getData('text/plain'); doc.execCommand('insertText',false,t); }
 function d7CommitText(){ if(d7EditEl){ d7EditEl.removeAttribute('contenteditable'); d7EditEl.removeEventListener('input',d7OnEditInput); d7EditEl.removeEventListener('paste',d7OnEditPaste); d7EditEl=null; } const b=doc.getElementById('d7-txtbar'); if(b)b.style.display='none'; }
 function d7MakeEditable(el){
@@ -637,6 +670,7 @@ function d7MakeEditable(el){
   d7CommitText();
   el.setAttribute('contenteditable','true'); el.focus(); d7EditEl=el;
   el.addEventListener('input',d7OnEditInput); el.addEventListener('paste',d7OnEditPaste);
+  d7RevealField(d7FieldIdFor(el));
   d7ShowTextBar(el);
 }
 function d7RgbToHex(rgb){ const m=rgb&&rgb.match(/\d+/g); if(!m)return null; return '#'+m.slice(0,3).map(n=>(+n).toString(16).padStart(2,'0')).join(''); }
@@ -772,6 +806,7 @@ function d7SelectImg(img){
   const sl=bar.querySelector('.d7-zoomrange'); if(sl) sl.value=parseFloat(img.dataset.d7z||'1');
   const bi=bar.querySelector('.d7-bright'); if(bi) bi.value=parseFloat(img.dataset.d7b||'1');
   d7SetReframe(false); // each new selection starts in normal (move) mode
+  d7RevealField(img.getAttribute('data-img'));
   d7PositionBox();
 }
 function d7SetReframe(on){ d7Reframe=!!on;
