@@ -191,8 +191,9 @@ const GROUPS = [
   {title:"Brand & colour", open:true, fields:[
     {id:"navCta", label:"Button label (nav)", type:"text"},
     {id:"accent", label:"Brand colour", type:"color"},
-    {id:"logoImg", label:"Logo image (replaces the name)", type:"logo"},
-    {id:"logoH", label:"Logo height", type:"range", min:18, max:90, def:36},
+    {id:"logoText", label:"Logo text (the logo only, not the business name)", type:"text"},
+    {id:"logoImg", label:"Logo image (replaces the text)", type:"logo"},
+    {id:"logoH", label:"Logo size", type:"range", min:14, max:90, def:36},
     {id:"hero", label:"Hero image", type:"image"},
     {id:"about", label:"About image", type:"image"},
   ]},
@@ -249,7 +250,9 @@ function darken(hex){
   const n = p=>Math.max(0,Math.round(parseInt(m.substr(p,2),16)*0.8)).toString(16).padStart(2,'0');
   return '#'+n(0)+n(2)+n(4);
 }
-function setField(id,val){ if(!doc)return; doc.querySelectorAll('[data-field="'+id+'"]').forEach(el=>el.textContent=val);
+function setField(id,val){ if(!doc)return;
+  // a logo carrying its own typed word is left alone; the name still drives everything else
+  doc.querySelectorAll('[data-field="'+id+'"]').forEach(el=>{ if(!el.hasAttribute('data-d7logotext')) el.textContent=val; });
   // business-info fields also drive the clickable links, not just the visible text
   if(id==='phone'){ const t='tel:'+String(val).replace(/[^\d+]/g,''); doc.querySelectorAll('a[href^="tel:"]').forEach(a=>a.setAttribute('href',t)); }
   else if(id==='email'){ const e=String(val).trim(); doc.querySelectorAll('a[href^="mailto:"]').forEach(a=>a.setAttribute('href','mailto:'+e)); }
@@ -261,23 +264,39 @@ function setField(id,val){ if(!doc)return; doc.querySelectorAll('[data-field="'+
    wordmark back. ---------------------------------------------------------- */
 function applyLogo(){
   if(!doc) return;
-  const uIn=document.getElementById('f_logoImg'), hIn=document.getElementById('f_logoH');
+  const uIn=document.getElementById('f_logoImg'), hIn=document.getElementById('f_logoH'),
+        tIn=document.getElementById('f_logoText');
   if(!uIn) return;
-  const url=(uIn.value||'').trim(), h=(hIn&&hIn.value)||36;
+  const url=(uIn.value||'').trim(), size=(hIn&&hIn.value)||36,
+        text=(tIn&&tIn.value||'').trim();
   doc.querySelectorAll('[data-field="brandMark"]').forEach(mark=>{
     const link=mark.closest('a')||mark.parentElement; if(!link) return;
+    link.setAttribute('data-d7logo','1');               // so it can be moved as one piece
     const name=link.querySelector('[data-field="brandName"]');
     let img=link.querySelector('img.d7-logoimg');
-    if(url){
+    if(url){                                             // an image wins over typed text
       if(!img){ img=doc.createElement('img'); img.className='d7-logoimg'; img.alt=''; link.insertBefore(img, link.firstChild); }
       if(img.getAttribute('src')!==url) img.setAttribute('src',url);
-      img.style.height=h+'px';
+      img.style.height=size+'px';
       mark.setAttribute('data-d7logohide','1');
-      if(name) name.setAttribute('data-d7logohide','1');
+      if(name){ name.setAttribute('data-d7logohide','1'); name.style.fontSize=''; }
+      return;
+    }
+    if(img) img.remove();
+    mark.removeAttribute('data-d7logohide');
+    if(!name){ return; }
+    name.removeAttribute('data-d7logohide');
+    if(text){
+      // Marked so the Business name field leaves it alone: this word belongs to
+      // the logo, and the business name still drives the footer, title and links.
+      name.setAttribute('data-d7logotext','1');
+      if(name.textContent!==text) name.textContent=text;
+      name.style.fontSize=size+'px';
     } else {
-      if(img) img.remove();
-      mark.removeAttribute('data-d7logohide');
-      if(name) name.removeAttribute('data-d7logohide');
+      name.removeAttribute('data-d7logotext');
+      name.style.fontSize='';
+      const bn=document.getElementById('f_brandName');
+      if(bn && bn.value && name.textContent!==bn.value) name.textContent=bn.value;
     }
   });
 }
@@ -346,7 +365,8 @@ function attach(){
     } else {
       inp.addEventListener('input',()=>{
         setField(f.id,inp.value);
-        if(f.id==='brandName')updateMark(inp.value);
+        if(f.id==='logoText'){ applyLogo(); return; }        // logo-only word
+        if(f.id==='brandName'){ updateMark(inp.value); applyLogo(); }
         const sm=f.id.match(/^svc(\d)Title$/); if(sm)toggleCard(sm[1]);
         const cm=f.id.match(/^check(\d)$/); if(cm)toggleCheck(cm[1]);
       });
@@ -362,7 +382,7 @@ function populate(){
   d7ResetHistory(); // fresh undo history per loaded template
   GROUPS.forEach(g=>g.fields.forEach(f=>{
     const inp=document.getElementById('f_'+f.id); if(!inp)return;
-    if(f.type==='logo'||f.type==='range'){
+    if(f.type==='logo'||f.type==='range'||f.id==='logoText'){
       inp.disabled=false; return;   // held in the form, re-applied below
     } else if(f.type==='image'){
       const el=doc.querySelector('[data-img="'+f.id+'"]');
@@ -439,7 +459,7 @@ document.getElementById('download').addEventListener('click',async ()=>{
   } else { // icons all left as they are: drop the marker attributes entirely
     ['data-d7icon','data-d7icondeco'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   }
-  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
+  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0','data-d7logo','data-d7logotext'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   // .d7-frame wrappers + .d7-ph placeholders are KEPT (they hold the crop/size/placement and keep the layout stable)
   // make the file self-contained: inline the shared template.css + template.js (bespoke templates use them)
   await inlineAsset(clone,'link[rel="stylesheet"][href*="template.css"]',css=>{const s=doc.createElement('style');s.textContent=css;return s;});
@@ -773,6 +793,9 @@ function d7EnsureTextBar(){
 // inside a coloured section does not hand back the whole section.
 function d7BoxTarget(el){
   if(!el) return el;
+  // the logo is a lockup: badge, word and picture move and size together
+  const logo=el.closest&&el.closest('[data-d7logo]');
+  if(logo) return logo;
   const win=doc.defaultView; let n=el, guard=0;
   while(n && n!==doc.body && guard++<4){
     const cs=win.getComputedStyle(n);
