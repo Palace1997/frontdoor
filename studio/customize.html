@@ -420,6 +420,12 @@ function d7EditorCSS(){ return [
   '#d7-guides .d7-gl{position:fixed;background:#FF2D55;box-shadow:0 0 0 .5px rgba(255,45,85,.35)}',
   '#d7-guides .d7-gl.v{top:0;bottom:0;width:1.5px}',
   '#d7-guides .d7-gl.h{left:0;right:0;height:1.5px}',
+  // live width x height readout while resizing; a figure turns green when it
+  // has locked to another image's exact measurement
+  '#d7-guides .d7-dim{position:fixed;transform:translateX(-50%);background:#0B362A;color:#fff;border-radius:7px;padding:5px 9px;font:600 11.5px/1 Inter,sans-serif;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.34);display:flex;gap:6px;align-items:center}',
+  '#d7-guides .d7-dim b{font-weight:700}',
+  '#d7-guides .d7-dim b.on{color:#49E0A6}',
+  '#d7-guides .d7-dim i{font-style:normal;font-weight:600;opacity:.8;border-left:1px solid rgba(255,255,255,.28);padding-left:6px}',
   '#d7-txtbar{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:2147483000;background:#0B362A;color:#fff;border-radius:9px;padding:6px 9px;display:flex;gap:7px;align-items:center;font:600 12px/1 Inter,sans-serif;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.32)}',
   '#d7-txtbar button{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:6px;padding:7px 9px;cursor:pointer;font:inherit;min-width:30px}',
   '#d7-txtbar button:hover,#d7-txtbar button.on{background:#00A583}',
@@ -631,6 +637,35 @@ const D7_SNAP=6; // px threshold
 function d7ClearGuides(){ const g=doc&&doc.getElementById('d7-guides'); if(g) g.innerHTML=''; }
 function d7Guide(vertical,pos){ let g=doc.getElementById('d7-guides'); if(!g){ g=doc.createElement('div'); g.id='d7-guides'; doc.body.appendChild(g); }
   const l=doc.createElement('div'); l.className='d7-gl '+(vertical?'v':'h'); if(vertical) l.style.left=pos+'px'; else l.style.top=pos+'px'; g.appendChild(l); }
+// ---- Size matching: the guides say when edges line up, these say when the box
+//      is the same SIZE as another image, with the figures to confirm it. ----
+function d7CollectSizes(exclude){
+  const ws=[], hs=[], seen=[];
+  doc.body.querySelectorAll('img').forEach(im=>{
+    if(im.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides'))return;
+    // Measure whatever the editor would treat as THIS image's frame, so the
+    // figures compare like with like. Comparing a dragged frame's outer size
+    // against a bare img's inner size is out by the frame's border.
+    const el=d7AdoptableWrap(im)||im;
+    if(el===exclude||exclude.contains(el)||el.contains(exclude))return;
+    if(seen.indexOf(el)>-1)return; seen.push(el);
+    const b=el.getBoundingClientRect(); if(b.width<24||b.height<24)return;
+    ws.push(Math.round(b.width)); hs.push(Math.round(b.height));
+  });
+  return {ws,hs};
+}
+function d7NearestSize(v,list){ let best=null, bd=D7_SNAP+0.5;
+  list.forEach(t=>{ const d=Math.abs(t-v); if(d<bd){ bd=d; best=t; } }); return best; }
+// Readout pinned under (or above) the box being resized.
+function d7Dims(x,y,w,h,mw,mh){
+  let g=doc.getElementById('d7-guides'); if(!g){ g=doc.createElement('div'); g.id='d7-guides'; doc.body.appendChild(g); }
+  const win=doc.defaultView, d=doc.createElement('div'); d.className='d7-dim';
+  d.innerHTML='<span><b class="'+(mw?'on':'')+'">'+Math.round(w)+'</b> &times; <b class="'+(mh?'on':'')+'">'+Math.round(h)+'</b></span>'
+    +((mw||mh)?('<i>same '+(mw&&mh?'size':(mw?'width':'height'))+'</i>'):'');
+  let top=y+h+10; if(top>win.innerHeight-36) top=Math.max(6,y-36);
+  d.style.left=Math.max(60,Math.min(win.innerWidth-60,x+w/2))+'px'; d.style.top=top+'px';
+  g.appendChild(d);
+}
 function d7CollectTargets(exclude){
   const win=doc.defaultView, xs=[], ys=[];
   const addX=x=>{ if(x>=0&&x<=win.innerWidth) xs.push(Math.round(x)); };
@@ -835,6 +870,7 @@ function d7StartResize(e,h){ d7HistPush(); e.preventDefault(); e.stopPropagation
   const fr=d7CurBox(); if(!fr)return; d7Float(fr); // resize the floated box → never reflows the surrounding content
   const c=h.className, L0=parseFloat(fr.style.left)||0, T0=parseFloat(fr.style.top)||0, r=fr.getBoundingClientRect(), W0=r.width, H0=r.height, sx=e.clientX, sy=e.clientY; d7drag={};
   const offX=r.left-L0, offY=r.top-T0, TG=d7CollectTargets(fr); // viewport<->style offset + snap targets
+  const SZ=d7CollectSizes(fr), R0=L0+W0, B0=T0+H0; // other images' sizes + the edges that stay put
   const mv=ev=>{ let dw=ev.clientX-sx, dh=ev.clientY-sy, L=L0,T=T0,W=W0,H=H0;
     if(c.indexOf('br')>-1){ W=W0+dw; H=H0+dh; }
     else if(c.indexOf('bl')>-1){ W=W0-dw; H=H0+dh; L=L0+dw; }
@@ -848,8 +884,18 @@ function d7StartResize(e,h){ d7HistPush(); e.preventDefault(); e.stopPropagation
     else if(c.indexOf('b')>-1){ const s=d7Nearest([T+H+offY],TG.ys); if(s){ H=(s.guide-offY)-T; gy=s.guide; } }
     if(W<40){ if(c.indexOf('l')>-1) L=L0+(W0-40); W=40; gx=null; }
     if(H<40){ if(c.indexOf('t')>-1) T=T0+(H0-40); H=40; gy=null; }
+    // Lock to another image's exact measurement, so two can be matched without
+    // eyeballing it. Only where an edge guide has not already claimed the axis,
+    // and keeping whichever edge is not being dragged where it is.
+    if(gx==null){ const s=d7NearestSize(W,SZ.ws); if(s!=null){ W=s; if(c.indexOf('l')>-1) L=R0-W; } }
+    if(gy==null){ const s=d7NearestSize(H,SZ.hs); if(s!=null){ H=s; if(c.indexOf('t')>-1) T=B0-H; } }
+    // Flag the match from the final figure, not from whether we snapped: an
+    // edge guide can land it on the same size on its own, and the readout
+    // should confirm that too.
+    const mw=SZ.ws.indexOf(Math.round(W))>-1, mh=SZ.hs.indexOf(Math.round(H))>-1;
     fr.style.left=L+'px'; fr.style.top=T+'px'; fr.style.width=W+'px'; fr.style.height=H+'px'; d7PositionBox();
-    d7ClearGuides(); if(gx!=null) d7Guide(true,gx); if(gy!=null) d7Guide(false,gy); };
+    d7ClearGuides(); if(gx!=null) d7Guide(true,gx); if(gy!=null) d7Guide(false,gy);
+    d7Dims(L+offX, T+offY, W, H, mw, mh); };
   const up=()=>{ doc.removeEventListener('mousemove',mv); doc.removeEventListener('mouseup',up); d7ClearGuides(); d7drag=null; };
   doc.addEventListener('mousemove',mv); doc.addEventListener('mouseup',up);
 }
