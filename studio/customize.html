@@ -441,6 +441,28 @@ document.getElementById('download').addEventListener('click',async ()=>{
   // strip inline-editor artefacts (KEEP the user's image size/position inline styles)
   clone.querySelectorAll('#d7-editor-style,#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar').forEach(el=>el.remove());
   clone.querySelectorAll('.d7-ihi').forEach(el=>el.classList.remove('d7-ihi'));
+  // A frame the user only ever clicked carries the PREVIEW's pixel width. Shipping
+  // that pins a responsive image to the width of the Studio pane, so a full-bleed
+  // hero stops filling a wider screen. Undo those frames entirely; the ones the
+  // user actually sized, moved, zoomed, cropped or brightened keep their numbers.
+  clone.querySelectorAll('.d7-frame[data-d7auto]').forEach(fr=>{
+    const im=fr.querySelector('img');
+    const touched = fr.hasAttribute('data-d7float') ||
+      (im && (im.dataset.d7z||im.dataset.d7b||im.dataset.d7px||im.dataset.d7py));
+    if(touched) return;
+    if(fr.hasAttribute('data-d7adopt')){        // the template's own element: put it back as it was
+      fr.setAttribute('style', fr.dataset.d7frstyle||'');
+      if(!fr.getAttribute('style')) fr.removeAttribute('style');
+      if(im){ im.setAttribute('style', fr.dataset.d7imgstyle||'');
+              if(!im.getAttribute('style')) im.removeAttribute('style'); }
+      fr.classList.remove('d7-frame');
+      return;
+    }
+    if(!im) return;                              // a wrapper we added: take it back out
+    im.setAttribute('style', fr.dataset.d7imgstyle||'');
+    if(!im.getAttribute('style')) im.removeAttribute('style');
+    fr.parentNode.insertBefore(im, fr); fr.remove();
+  });
   clone.querySelectorAll('[data-d7del]').forEach(el=>el.remove()); // actually remove deleted elements from the delivered file
   clone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
   clone.querySelectorAll('.d7-hi').forEach(el=>el.classList.remove('d7-hi'));
@@ -459,7 +481,7 @@ document.getElementById('download').addEventListener('click',async ()=>{
   } else { // icons all left as they are: drop the marker attributes entirely
     ['data-d7icon','data-d7icondeco'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   }
-  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0','data-d7logo','data-d7logotext'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
+  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0','data-d7logo','data-d7logotext','data-d7auto','data-d7imgstyle','data-d7frstyle'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   // .d7-frame wrappers + .d7-ph placeholders are KEPT (they hold the crop/size/placement and keep the layout stable)
   // make the file self-contained: inline the shared template.css + template.js (bespoke templates use them)
   await inlineAsset(clone,'link[rel="stylesheet"][href*="template.css"]',css=>{const s=doc.createElement('style');s.textContent=css;return s;});
@@ -876,6 +898,9 @@ function d7EnsureFrame(img){
     const ar=adopt.getBoundingClientRect();
     adopt.classList.add('d7-frame'); adopt.dataset.d7adopt='1';
     adopt.dataset.d7ow=ar.width; adopt.dataset.d7oh=ar.height;
+    adopt.dataset.d7auto='1';   // size came from the preview, not from the user
+    adopt.dataset.d7imgstyle=img.getAttribute('style')||'';
+    adopt.dataset.d7frstyle=adopt.getAttribute('style')||'';
     // pin the current size so dragging a handle beats the template's own
     // aspect-ratio / width rules, which would otherwise snap it back
     adopt.style.width=ar.width+'px'; adopt.style.height=ar.height+'px'; adopt.style.maxWidth='none';
@@ -885,6 +910,8 @@ function d7EnsureFrame(img){
     return adopt;
   }
   fr=doc.createElement('span'); fr.className='d7-frame';
+  fr.dataset.d7auto='1';                               // ditto
+  fr.dataset.d7imgstyle=img.getAttribute('style')||''; // to put the image back untouched
   fr.style.display=(cs.display.indexOf('inline')>-1)?'inline-block':'block';
   fr.style.width=r.width+'px'; fr.style.height=r.height+'px';
   fr.style.overflow='hidden'; fr.style.lineHeight='0'; fr.style.verticalAlign='top'; fr.style.maxWidth='none';
@@ -1144,7 +1171,11 @@ function d7Float(fr){
   // a hero's heading into the middle when its background image was grabbed.
   if(cs.position!=='absolute' && cs.position!=='fixed'){
     const ph=doc.createElement('span'); ph.className='d7-ph';
-    ph.style.cssText='display:'+cs.display+';width:'+r.width+'px;height:'+r.height+'px;margin:'+cs.marginTop+' '+cs.marginRight+' '+cs.marginBottom+' '+cs.marginLeft+';vertical-align:'+cs.verticalAlign+';flex:'+(cs.flex||'0 0 auto')+';visibility:hidden;pointer-events:none';
+    // Carry the element's placement, not just its size. A grid item placed by
+    // grid-area leaves a hole the placeholder must fill; without it the bare
+    // span is auto-placed into a NEW implicit row and the grid grows by a
+    // whole row, which pushed a hero's heading hundreds of px down the page.
+    ph.style.cssText='display:'+cs.display+';width:'+r.width+'px;height:'+r.height+'px;margin:'+cs.marginTop+' '+cs.marginRight+' '+cs.marginBottom+' '+cs.marginLeft+';vertical-align:'+cs.verticalAlign+';flex:'+(cs.flex||'0 0 auto')+';grid-area:'+(cs.gridArea||'auto')+';align-self:'+(cs.alignSelf||'auto')+';justify-self:'+(cs.justifySelf||'auto')+';order:'+(cs.order||'0')+';visibility:hidden;pointer-events:none';
     fr.parentNode.insertBefore(ph, fr);
   }
   // Only a frame WE inserted leaves a styled slot behind worth hiding. An
@@ -1174,24 +1205,29 @@ function d7StartMove(e){ d7HistPush(); // snapshot before a move or (in reframe 
   // full-bleed background image above the copy layered over it, so merely
   // clicking a hero image made its heading vanish. Layer order is the
   // editor's to change only when Bring forward / Send back is used.
-  const fr=d7CurBox(); if(!fr)return; d7Float(fr);
+  const fr=d7CurBox(); if(!fr)return;
+  const wasFloated=!!fr.dataset.d7float; let movedAny=false; // a click that never drags changes nothing
+  d7Float(fr);
   const L0=parseFloat(fr.style.left)||0, T0=parseFloat(fr.style.top)||0, sx=e.clientX, sy=e.clientY; d7drag={};
   const r0=fr.getBoundingClientRect(), W=r0.width, H=r0.height, T=d7CollectTargets(fr); // targets fixed at drag start
-  const mv=ev=>{ let L=L0+(ev.clientX-sx), Tp=T0+(ev.clientY-sy);
+  const mv=ev=>{ movedAny=true; let L=L0+(ev.clientX-sx), Tp=T0+(ev.clientY-sy);
     const vx=r0.left+(L-L0), vy=r0.top+(Tp-T0); // predicted viewport position
     const sX=d7Nearest([vx,vx+W/2,vx+W], T.xs), sY=d7Nearest([vy,vy+H/2,vy+H], T.ys);
     if(sX){ L+=sX.snap; } if(sY){ Tp+=sY.snap; }
     fr.style.left=L+'px'; fr.style.top=Tp+'px'; d7PositionBox();
     d7ClearGuides(); if(sX) d7Guide(true,sX.guide); if(sY) d7Guide(false,sY.guide); };
-  const up=()=>{ doc.removeEventListener('mousemove',mv); doc.removeEventListener('mouseup',up); d7ClearGuides(); d7drag=null; };
+  const up=()=>{ doc.removeEventListener('mousemove',mv); doc.removeEventListener('mouseup',up); d7ClearGuides(); d7drag=null;
+    if(!movedAny && !wasFloated){ d7Unfloat(fr); d7PositionBox(); } };
   doc.addEventListener('mousemove',mv); doc.addEventListener('mouseup',up);
 }
 function d7StartResize(e,h){ d7HistPush(); e.preventDefault(); e.stopPropagation();
-  const fr=d7CurBox(); if(!fr)return; d7Float(fr); // resize the floated box → never reflows the surrounding content
+  const fr=d7CurBox(); if(!fr)return;
+  const wasFloatedR=!!fr.dataset.d7float, autoBefore=fr.dataset.d7auto; let sizedAny=false;
+  d7Float(fr); // resize the floated box → never reflows the surrounding content
   const c=h.className, L0=parseFloat(fr.style.left)||0, T0=parseFloat(fr.style.top)||0, r=fr.getBoundingClientRect(), W0=r.width, H0=r.height, sx=e.clientX, sy=e.clientY; d7drag={};
   const offX=r.left-L0, offY=r.top-T0, TG=d7CollectTargets(fr); // viewport<->style offset + snap targets
   const SZ=d7CollectSizes(fr), R0=L0+W0, B0=T0+H0; // other images' sizes + the edges that stay put
-  const mv=ev=>{ let dw=ev.clientX-sx, dh=ev.clientY-sy, L=L0,T=T0,W=W0,H=H0;
+  const mv=ev=>{ sizedAny=true; delete fr.dataset.d7auto; let dw=ev.clientX-sx, dh=ev.clientY-sy, L=L0,T=T0,W=W0,H=H0;
     if(c.indexOf('br')>-1){ W=W0+dw; H=H0+dh; }
     else if(c.indexOf('bl')>-1){ W=W0-dw; H=H0+dh; L=L0+dw; }
     else if(c.indexOf('tr')>-1){ W=W0+dw; H=H0-dh; T=T0+dh; }
@@ -1216,7 +1252,8 @@ function d7StartResize(e,h){ d7HistPush(); e.preventDefault(); e.stopPropagation
     fr.style.left=L+'px'; fr.style.top=T+'px'; fr.style.width=W+'px'; fr.style.height=H+'px'; d7PositionBox();
     d7ClearGuides(); if(gx!=null) d7Guide(true,gx); if(gy!=null) d7Guide(false,gy);
     d7Dims(L+offX, T+offY, W, H, mw, mh); };
-  const up=()=>{ doc.removeEventListener('mousemove',mv); doc.removeEventListener('mouseup',up); d7ClearGuides(); d7drag=null; };
+  const up=()=>{ doc.removeEventListener('mousemove',mv); doc.removeEventListener('mouseup',up); d7ClearGuides(); d7drag=null;
+    if(!sizedAny){ if(autoBefore) fr.dataset.d7auto=autoBefore; if(!wasFloatedR){ d7Unfloat(fr); d7PositionBox(); } } };
   doc.addEventListener('mousemove',mv); doc.addEventListener('mouseup',up);
 }
 function d7MenuAction(a){
