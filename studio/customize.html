@@ -557,6 +557,10 @@ function d7EditorCSS(){ return [
   '#d7-guides .d7-gl{position:fixed;background:#FF2D55;box-shadow:0 0 0 .5px rgba(255,45,85,.35)}',
   '#d7-guides .d7-gl.v{top:0;bottom:0;width:1.5px}',
   '#d7-guides .d7-gl.h{left:0;right:0;height:1.5px}',
+  '#d7-guides .d7-eq{position:fixed;background:#FF2D55}',
+  '#d7-guides .d7-eq.h{height:3px;transform:translateY(-50%);border-left:1px solid #FF2D55;border-right:1px solid #FF2D55;box-shadow:0 0 0 .5px rgba(255,45,85,.3)}',
+  '#d7-guides .d7-eq.v{width:3px;transform:translateX(-50%);border-top:1px solid #FF2D55;border-bottom:1px solid #FF2D55;box-shadow:0 0 0 .5px rgba(255,45,85,.3)}',
+  '#d7-guides .d7-eqlab{position:fixed;transform:translate(-50%,-50%);background:#FF2D55;color:#fff;border-radius:4px;padding:2px 5px;font:700 10px/1 Inter,sans-serif;white-space:nowrap}',
   // live width x height readout while resizing; a figure turns green when it
   // has locked to another image's exact measurement
   '#d7-guides .d7-dim{position:fixed;transform:translateX(-50%);background:#0B362A;color:#fff;border-radius:7px;padding:5px 9px;font:600 11.5px/1 Inter,sans-serif;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.34);display:flex;gap:6px;align-items:center}',
@@ -987,6 +991,61 @@ function d7Dims(x,y,w,h,mw,mh){
   d.style.left=Math.max(60,Math.min(win.innerWidth-60,x+w/2))+'px'; d.style.top=top+'px';
   g.appendChild(d);
 }
+
+/* ---- Equal spacing ---------------------------------------------------
+   The pink lines say when edges line up. These say when the gaps either
+   side of the dragged box are the SAME, which is what you want for a row
+   of numbered steps or cards: snap it to dead centre and draw both gaps
+   so the match is visible. ---------------------------------------------- */
+function d7CollectPeers(exclude){
+  const win=doc.defaultView, er=exclude.getBoundingClientRect(), out=[];
+  if(er.width<8||er.height<8) return out;
+  doc.body.querySelectorAll('div,span,li,i,img,a,button,p,h2,h3,figure,article,section').forEach(el=>{
+    if(el===exclude||exclude.contains(el)||el.contains(exclude))return;
+    if(el.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar'))return;
+    const b=el.getBoundingClientRect();
+    if(b.width<8||b.height<8||b.bottom<0||b.top>win.innerHeight)return;
+    // only boxes of roughly the same size count as peers in a row
+    if(Math.abs(b.width-er.width)>Math.max(14,er.width*0.3))return;
+    if(Math.abs(b.height-er.height)>Math.max(14,er.height*0.3))return;
+    out.push(b);
+  });
+  return out;
+}
+// Nearest peer on each side along one axis, among peers sharing the other axis.
+function d7EqualGap(peers, box, axis){
+  const near=[], S=axis==='x';
+  const c=S?(box.top+box.height/2):(box.left+box.width/2);
+  peers.forEach(b=>{ const bc=S?(b.top+b.height/2):(b.left+b.width/2);
+    if(Math.abs(bc-c)>Math.max(14,(S?box.height:box.width)*0.6))return;   // same row / column
+    near.push(b); });
+  if(near.length<2) return null;
+  const lo=S?box.left:box.top, hi=S?box.right:box.bottom;
+  let prev=null, next=null;
+  near.forEach(b=>{ const bHi=S?b.right:b.bottom, bLo=S?b.left:b.top;
+    if(bHi<=lo+1 && (!prev || bHi>(S?prev.right:prev.bottom))) prev=b;
+    if(bLo>=hi-1 && (!next || bLo<(S?next.left:next.top))) next=b; });
+  if(!prev||!next) return null;
+  const gapA=lo-(S?prev.right:prev.bottom), gapB=(S?next.left:next.top)-hi;
+  if(gapA<0||gapB<0) return null;
+  if(Math.abs(gapA-gapB)>D7_SNAP) return null;
+  return {prev:prev, next:next, shift:(gapB-gapA)/2, gap:(gapA+gapB)/2};
+}
+// Two matching bars, one in each gap, with the figure.
+function d7EqBars(box, eq, axis){
+  let g=doc.getElementById('d7-guides'); if(!g){ g=doc.createElement('div'); g.id='d7-guides'; doc.body.appendChild(g); }
+  const S=axis==='x', v=Math.round(eq.gap);
+  const mk=(from,to)=>{ const d=doc.createElement('div'); d.className='d7-eq '+(S?'h':'v');
+    if(S){ d.style.left=from+'px'; d.style.width=Math.max(0,to-from)+'px'; d.style.top=Math.round(box.top+box.height/2)+'px'; }
+    else { d.style.top=from+'px'; d.style.height=Math.max(0,to-from)+'px'; d.style.left=Math.round(box.left+box.width/2)+'px'; }
+    g.appendChild(d);
+    const lab=doc.createElement('div'); lab.className='d7-eqlab'; lab.textContent=v;
+    if(S){ lab.style.left=Math.round((from+to)/2)+'px'; lab.style.top=Math.round(box.top+box.height/2)+'px'; }
+    else { lab.style.left=Math.round(box.left+box.width/2)+'px'; lab.style.top=Math.round((from+to)/2)+'px'; }
+    g.appendChild(lab); };
+  if(S){ mk(Math.round(eq.prev.right), Math.round(box.left)); mk(Math.round(box.right), Math.round(eq.next.left)); }
+  else { mk(Math.round(eq.prev.bottom), Math.round(box.top)); mk(Math.round(box.bottom), Math.round(eq.next.top)); }
+}
 function d7CollectTargets(exclude){
   const win=doc.defaultView, xs=[], ys=[];
   const addX=x=>{ if(x>=0&&x<=win.innerWidth) xs.push(Math.round(x)); };
@@ -1223,12 +1282,25 @@ function d7StartMove(e){ d7HistPush(); // snapshot before a move or (in reframe 
   d7Float(fr);
   const L0=parseFloat(fr.style.left)||0, T0=parseFloat(fr.style.top)||0, sx=e.clientX, sy=e.clientY; d7drag={};
   const r0=fr.getBoundingClientRect(), W=r0.width, H=r0.height, T=d7CollectTargets(fr); // targets fixed at drag start
+  const PEERS=d7CollectPeers(fr); // boxes of the same size, for equal-gap snapping
   const mv=ev=>{ movedAny=true; let L=L0+(ev.clientX-sx), Tp=T0+(ev.clientY-sy);
     const vx=r0.left+(L-L0), vy=r0.top+(Tp-T0); // predicted viewport position
     const sX=d7Nearest([vx,vx+W/2,vx+W], T.xs), sY=d7Nearest([vy,vy+H/2,vy+H], T.ys);
     if(sX){ L+=sX.snap; } if(sY){ Tp+=sY.snap; }
+    // Centre the box between its two neighbours when the gaps either side are
+    // already nearly equal. The snap only applies where an edge guide has not
+    // claimed the axis, but the gaps are measured either way: an edge guide can
+    // land on equal spacing by itself and that still deserves the indicator.
+    const probe=()=>({left:r0.left+(L-L0), right:r0.left+(L-L0)+W, top:r0.top+(Tp-T0), bottom:r0.top+(Tp-T0)+H, width:W, height:H});
+    let eqX=d7EqualGap(PEERS, probe(), 'x'); if(eqX && !sX) L+=eqX.shift;
+    let eqY=d7EqualGap(PEERS, probe(), 'y'); if(eqY && !sY) Tp+=eqY.shift;
+    if(eqX) eqX=d7EqualGap(PEERS, probe(), 'x');   // re-measure after the shift
+    if(eqY) eqY=d7EqualGap(PEERS, probe(), 'y');
     fr.style.left=L+'px'; fr.style.top=Tp+'px'; d7PositionBox();
-    d7ClearGuides(); if(sX) d7Guide(true,sX.guide); if(sY) d7Guide(false,sY.guide); };
+    d7ClearGuides(); if(sX) d7Guide(true,sX.guide); if(sY) d7Guide(false,sY.guide);
+    const now={left:r0.left+(L-L0), right:r0.left+(L-L0)+W, top:r0.top+(Tp-T0), bottom:r0.top+(Tp-T0)+H, width:W, height:H};
+    if(eqX) d7EqBars(now, eqX, 'x');
+    if(eqY) d7EqBars(now, eqY, 'y'); };
   const up=()=>{ doc.removeEventListener('mousemove',mv); doc.removeEventListener('mouseup',up); d7ClearGuides(); d7drag=null;
     if(!movedAny && !wasFloated){ d7Unfloat(fr); d7PositionBox(); } };
   doc.addEventListener('mousemove',mv); doc.addEventListener('mouseup',up);
