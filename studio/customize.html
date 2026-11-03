@@ -481,7 +481,7 @@ document.getElementById('download').addEventListener('click',async ()=>{
   } else { // icons all left as they are: drop the marker attributes entirely
     ['data-d7icon','data-d7icondeco'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   }
-  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0','data-d7logo','data-d7logotext','data-d7auto','data-d7imgstyle','data-d7frstyle','data-d7pre','data-d7tr'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
+  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0','data-d7logo','data-d7logotext','data-d7auto','data-d7imgstyle','data-d7frstyle','data-d7pre','data-d7tr','data-d7cb'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   // .d7-frame wrappers + .d7-ph placeholders are KEPT (they hold the crop/size/placement and keep the layout stable)
   // make the file self-contained: inline the shared template.css + template.js (bespoke templates use them)
   await inlineAsset(clone,'link[rel="stylesheet"][href*="template.css"]',css=>{const s=doc.createElement('style');s.textContent=css;return s;});
@@ -1283,6 +1283,18 @@ function d7StartPan(e){ e.preventDefault(); e.stopPropagation();
   const up=()=>{ doc.removeEventListener('mousemove',mv); doc.removeEventListener('mouseup',up); d7drag=null; };
   doc.addEventListener('mousemove',mv); doc.addEventListener('mouseup',up);
 }
+// Make the frame's parent the containing block, so a hover transform higher up
+// cannot move the goalposts after the box has been placed. d7UnpinCB puts the
+// parent back when the box returns to the flow.
+function d7PinCB(fr){ const p=fr.parentElement, win=doc.defaultView;
+  if(!p || p===doc.body || p===doc.documentElement) return;
+  if(win.getComputedStyle(p).position!=='static') return;
+  if(!p.hasAttribute('data-d7cb')) p.setAttribute('data-d7cb', p.style.position||'');
+  p.style.position='relative';
+}
+function d7UnpinCB(fr){ const p=fr.parentElement; if(!p||!p.hasAttribute('data-d7cb')) return;
+  p.style.position=p.getAttribute('data-d7cb'); p.removeAttribute('data-d7cb');
+}
 // Take the frame OUT OF FLOW (absolute) so resizing/moving it never pushes the surrounding text.
 // A hidden placeholder holds the original slot, so nothing else on the page shifts.
 function d7Float(fr){
@@ -1317,6 +1329,15 @@ function d7Float(fr){
   // carry the element's own stacking across, so going absolute does not quietly
   // reorder it against the content around it
   if(cs.zIndex && cs.zIndex!=='auto') fr.style.zIndex=cs.zIndex;
+  // Anchor the box to its own parent. An element can be the containing block
+  // for an absolute child purely because it carries a transform, and templates
+  // put transform on :hover (a card that lifts 4px when you point at it). The
+  // containing block then comes and goes with the pointer: left and top mean
+  // one thing while the card is hovered and something else when it is not, so
+  // an icon dropped in the right place shot hundreds of px away the moment the
+  // cursor left the card. Making the parent a containing block in its own
+  // right pins the coordinates either way.
+  d7PinCB(fr);
   const op=fr.offsetParent||doc.body, opr=op.getBoundingClientRect();
   fr.style.left=(r.left-opr.left+(op.scrollLeft||0))+'px';
   fr.style.top=(r.top-opr.top+(op.scrollTop||0))+'px';
@@ -1325,7 +1346,7 @@ function d7Float(fr){
 function d7Unfloat(fr){
   let sib=fr.previousElementSibling; while(sib && !(sib.classList&&sib.classList.contains('d7-ph'))) sib=sib.previousElementSibling;
   if(sib) sib.remove();
-  d7Reclip(fr); d7RestoreSlot(fr);
+  d7Reclip(fr); d7RestoreSlot(fr); d7UnpinCB(fr);
   let pre={position:'',left:'',top:'',margin:'',zIndex:''};
   try{ if(fr.dataset.d7pre) pre=JSON.parse(fr.dataset.d7pre); }catch(e){}
   fr.style.position=pre.position||''; fr.style.left=pre.left||''; fr.style.top=pre.top||'';
