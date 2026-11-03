@@ -1289,23 +1289,12 @@ body::after{
    offset out on every open. Reset to 0 on phones (see the media query below),
    where the offset was never tuned and would push the block off the panel. */
 .pk-mast,.pk-row{ translate:var(--pk-x,50px) var(--pk-y,-135px); }
-/* line 1: cycling word with the icon trailing it; both lines stay flush-left.
+/* line 1: the cycling word; both lines stay flush-left.
    --pk-gap adds breathing room so line-one descenders clear line two. */
-.pk-slot{ display:flex; align-items:center; gap:clamp(8px,1vw,14px); min-height:1em;
-  margin-bottom:var(--pk-gap,2px); }
-/* glossy 3-D icon set (inline SVG: gradient body, embossed detail, specular) */
-.pk-defs{ position:absolute; width:0; height:0; overflow:hidden; }
-.pk-icon{ display:block; flex:none;
-  width:clamp(36px,4.6vw,62px); height:clamp(36px,4.6vw,62px);
-  filter:drop-shadow(0 10px 16px rgba(13,13,12,.18));
-  animation:pkBob 4s ease-in-out infinite; }
-.pk-icon svg{ width:100%; height:100%; display:block; overflow:visible; }
-@keyframes pkBob{ 0%,100%{transform:translateY(-2px) rotate(-2.4deg)} 50%{transform:translateY(2px) rotate(2.4deg)} }
+.pk-slot{ display:block; min-height:1em; margin-bottom:var(--pk-gap,2px); }
 .pk-word{ display:inline-block; }
 .pk-mast.anim .pk-word{ animation:pkWordIn .5s cubic-bezier(.2,.7,.2,1) both; }
-.pk-mast.anim .pk-icon{ animation:pkBob 4s ease-in-out infinite, pkIconIn .5s cubic-bezier(.2,.7,.2,1) .06s both; }
 @keyframes pkWordIn{ from{opacity:0;transform:translateY(.32em);filter:blur(10px)} to{opacity:1;transform:none;filter:blur(0)} }
-@keyframes pkIconIn{ from{opacity:0;transform:scale(.7) rotate(-14deg)} to{opacity:1;transform:scale(1) rotate(0)} }
 .pk-row{ display:flex; align-items:center; gap:clamp(18px,3vw,44px); flex-wrap:wrap; }
 .pk-btns{ display:flex; gap:12px; flex-wrap:wrap; }
 .pk-sbtn{ display:inline-flex; align-items:center; gap:10px; height:56px; padding:0 22px;
@@ -1369,7 +1358,7 @@ body::after{
   .pk-track{ gap:18px 28px; }
 }
 @media (prefers-reduced-motion:reduce){
-  .pk-layer,.pk-icon,.pk-mast.anim .pk-word,.pk-mast.anim .pk-icon,.pk-track.is-loop{ animation:none!important; }
+  .pk-layer,.pk-mast.anim .pk-word,.pk-track.is-loop{ animation:none!important; }
 }
 
 /* Gallery browser: horizontal filter bar on top, 4-up grid below */
