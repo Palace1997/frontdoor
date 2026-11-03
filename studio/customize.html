@@ -703,6 +703,7 @@ function d7EnsureTextBar(){
     +'<span class="d7-sep"></span><input type="color" title="Text colour">'
     +'<span class="d7-sep"></span><button data-t="bold" style="font-weight:800">B</button><button data-t="italic" style="font-style:italic">I</button>'
     +'<span class="d7-sep"></span><button data-t="left" title="Align left">☷</button><button data-t="center" title="Align centre">≡</button><button data-t="right" title="Align right">☷</button>'
+    +'<span class="d7-sep"></span><button data-t="movebox" title="Move or resize the whole block this text sits in">Move / size</button>'
     +'<span class="d7-sep"></span><button data-t="nodeco" title="Remove the dot or line before this text">Remove dot</button><button data-t="del" class="d7-del" title="Delete this element">Delete</button>'
     +'<span class="d7-sep"></span><button data-t="done">Done</button>';
   doc.body.appendChild(b);
@@ -711,6 +712,30 @@ function d7EnsureTextBar(){
   b.querySelector('input[type=color]').addEventListener('input',e=>{ if(d7EditEl) d7EditEl.style.color=e.target.value; });
   b.querySelector('select.d7-font').addEventListener('change',e=>{ if(!d7EditEl)return; const f=D7_FONTS[+e.target.value]||D7_FONTS[0]; d7LoadFont(f.g); d7EditEl.style.fontFamily=f.v; e.target.selectedIndex=0; d7EditEl.focus(); });
   return b;
+}
+// What is worth moving is usually the card the text sits in, not the line of
+// text itself: a badge like "Free / 15-minute consultation" is a positioned
+// block with its own background. Walk up to the nearest ancestor that paints
+// like a block, but refuse anything close to full-page size so a paragraph
+// inside a coloured section does not hand back the whole section.
+function d7BoxTarget(el){
+  if(!el) return el;
+  const win=doc.defaultView; let n=el, guard=0;
+  while(n && n!==doc.body && guard++<4){
+    const cs=win.getComputedStyle(n);
+    const painted=(cs.backgroundColor&&cs.backgroundColor!=='rgba(0, 0, 0, 0)'&&cs.backgroundColor!=='transparent')
+      ||(cs.backgroundImage&&cs.backgroundImage!=='none')
+      ||parseFloat(cs.borderTopWidth||0)>0
+      ||(cs.boxShadow&&cs.boxShadow!=='none')
+      ||cs.position==='absolute'||cs.position==='fixed';
+    if(painted){
+      if(n===el) return n;
+      const b=n.getBoundingClientRect();
+      return (b.width<=win.innerWidth*0.85 && b.height<=win.innerHeight*0.8) ? n : el;
+    }
+    n=n.parentElement;
+  }
+  return el;
 }
 function d7ShowTextBar(el){
   ['d7-imgbox','d7-imgbar','d7-ctx','d7-actbar'].forEach(id=>{ const e=doc.getElementById(id); if(e)e.style.display='none'; });
@@ -730,6 +755,7 @@ function d7TextAction(t){ const el=d7EditEl; if(t==='done'){ d7CommitText(); ret
   else if(t==='bold'){ const on=parseInt(el.style.fontWeight||cs.fontWeight)>=600; el.style.fontWeight=on?'400':'700'; bar.querySelector('[data-t="bold"]').classList.toggle('on',!on); }
   else if(t==='italic'){ const on=(el.style.fontStyle||cs.fontStyle)==='italic'; el.style.fontStyle=on?'normal':'italic'; bar.querySelector('[data-t="italic"]').classList.toggle('on',!on); }
   else if(t==='left'||t==='center'||t==='right'){ el.style.textAlign=t; }
+  else if(t==='movebox'){ const box=d7BoxTarget(el); d7CommitText(); d7SelectBox(box); toast('Drag to move, pull a corner to resize'); return; }
   else if(t==='nodeco'){ el.setAttribute('data-d7nodeco','1'); bar.querySelector('[data-t="nodeco"]').style.display='none'; el.focus(); return; }
   else if(t==='del'){ d7CommitText(); d7DeleteEl(el); return; }
   el.focus();
