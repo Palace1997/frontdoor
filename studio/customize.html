@@ -40,6 +40,8 @@ body{margin:0;font-family:var(--font-sans);color:var(--ink);background:var(--can
 .group>summary::after{content:"+";color:var(--muted);font-size:18px;font-family:var(--font-sans)}
 .group[open]>summary::after{content:"–"}
 .field{margin-top:12px}
+.field .rngval{font-weight:700;color:var(--ink)}
+.field input[type=range]{accent-color:var(--green,#00A583);margin-top:4px}
 /* flashes the field that matches whatever was just clicked in the preview.
    A ring rather than a bar in the margin, which the panel's overflow clips. */
 .field.d7-fieldhi{border-radius:8px;animation:d7FieldFlash 2.4s ease}
@@ -189,6 +191,8 @@ const GROUPS = [
   {title:"Brand & colour", open:true, fields:[
     {id:"navCta", label:"Button label (nav)", type:"text"},
     {id:"accent", label:"Brand colour", type:"color"},
+    {id:"logoImg", label:"Logo image (replaces the name)", type:"logo"},
+    {id:"logoH", label:"Logo height", type:"range", min:18, max:90, def:36},
     {id:"hero", label:"Hero image", type:"image"},
     {id:"about", label:"About image", type:"image"},
   ]},
@@ -250,6 +254,33 @@ function setField(id,val){ if(!doc)return; doc.querySelectorAll('[data-field="'+
   if(id==='phone'){ const t='tel:'+String(val).replace(/[^\d+]/g,''); doc.querySelectorAll('a[href^="tel:"]').forEach(a=>a.setAttribute('href',t)); }
   else if(id==='email'){ const e=String(val).trim(); doc.querySelectorAll('a[href^="mailto:"]').forEach(a=>a.setAttribute('href','mailto:'+e)); }
 }
+/* ---- Logo: swap the wordmark for a client's own image -----------------
+   Templates draw the logo as a letter badge plus the business name. When a
+   logo image is given, both are hidden and the picture takes their place in
+   the same link, header and footer alike. Clearing the field puts the
+   wordmark back. ---------------------------------------------------------- */
+function applyLogo(){
+  if(!doc) return;
+  const uIn=document.getElementById('f_logoImg'), hIn=document.getElementById('f_logoH');
+  if(!uIn) return;
+  const url=(uIn.value||'').trim(), h=(hIn&&hIn.value)||36;
+  doc.querySelectorAll('[data-field="brandMark"]').forEach(mark=>{
+    const link=mark.closest('a')||mark.parentElement; if(!link) return;
+    const name=link.querySelector('[data-field="brandName"]');
+    let img=link.querySelector('img.d7-logoimg');
+    if(url){
+      if(!img){ img=doc.createElement('img'); img.className='d7-logoimg'; img.alt=''; link.insertBefore(img, link.firstChild); }
+      if(img.getAttribute('src')!==url) img.setAttribute('src',url);
+      img.style.height=h+'px';
+      mark.setAttribute('data-d7logohide','1');
+      if(name) name.setAttribute('data-d7logohide','1');
+    } else {
+      if(img) img.remove();
+      mark.removeAttribute('data-d7logohide');
+      if(name) name.removeAttribute('data-d7logohide');
+    }
+  });
+}
 function setImg(id,src){ if(!doc)return; const el=doc.querySelector('[data-img="'+id+'"]'); if(el)el.src=src; }
 function setAccent(hex){ if(!doc)return; const d=darken(hex);
   let st=doc.getElementById('d7-accent'); if(!st){st=doc.createElement('style');st.id='d7-accent';doc.head.appendChild(st);}
@@ -270,7 +301,12 @@ GROUPS.forEach((g,gi)=>{
   for(let i=0;i<g.fields.length;i++){
     const f=g.fields[i];
     const wrap=document.createElement('div'); wrap.className='field'+(f.type==='color'?' field--color':'');
-    if(f.type==='image'){
+    if(f.type==='logo'){
+      wrap.innerHTML='<label>'+f.label+'</label><div class="imgrow"><input type="text" id="f_'+f.id+'" placeholder="Logo URL, or upload"><label class="upload">Upload<input type="file" accept="image/*" data-logo="'+f.id+'"></label></div>';
+    } else if(f.type==='range'){
+      wrap.innerHTML='<label>'+f.label+' <b class="rngval" id="v_'+f.id+'">'+f.def+'</b>px</label>'
+        +'<input type="range" id="f_'+f.id+'" min="'+f.min+'" max="'+f.max+'" step="1" value="'+f.def+'" style="width:100%">';
+    } else if(f.type==='image'){
       wrap.innerHTML='<label>'+f.label+'</label><div class="imgrow"><input type="text" id="f_'+f.id+'" placeholder="Image URL"><label class="upload">Upload<input type="file" accept="image/*" data-img="'+f.id+'"></label></div>';
     } else if(f.type==='color'){
       wrap.innerHTML='<label style="width:100%">'+f.label+'</label><input type="color" id="c_'+f.id+'" value="#2E8B8B"><input type="text" id="f_'+f.id+'" value="#2E8B8B">';
@@ -294,7 +330,13 @@ GROUPS.forEach((g,gi)=>{
 function attach(){
   GROUPS.forEach(g=>g.fields.forEach(f=>{
     const inp=document.getElementById('f_'+f.id); if(!inp)return;
-    if(f.type==='image'){
+    if(f.type==='logo'){
+      inp.addEventListener('input',applyLogo);
+      const lf=document.querySelector('input[type=file][data-logo="'+f.id+'"]');
+      if(lf)lf.addEventListener('change',()=>{const fl=lf.files[0];if(!fl)return;const rd=new FileReader();rd.onload=e=>{inp.value=e.target.result;applyLogo();};rd.readAsDataURL(fl);});
+    } else if(f.type==='range'){
+      inp.addEventListener('input',()=>{ const o=document.getElementById('v_'+f.id); if(o)o.textContent=inp.value; applyLogo(); });
+    } else if(f.type==='image'){
       inp.addEventListener('input',()=>setImg(f.id,inp.value));
       const file=document.querySelector('input[type=file][data-img="'+f.id+'"]');
       if(file)file.addEventListener('change',()=>{const fr=file.files[0];if(!fr)return;const rd=new FileReader();rd.onload=e=>{inp.value=e.target.result;setImg(f.id,e.target.result);};rd.readAsDataURL(fr);});
@@ -320,7 +362,9 @@ function populate(){
   d7ResetHistory(); // fresh undo history per loaded template
   GROUPS.forEach(g=>g.fields.forEach(f=>{
     const inp=document.getElementById('f_'+f.id); if(!inp)return;
-    if(f.type==='image'){
+    if(f.type==='logo'||f.type==='range'){
+      inp.disabled=false; return;   // held in the form, re-applied below
+    } else if(f.type==='image'){
       const el=doc.querySelector('[data-img="'+f.id+'"]');
       inp.value=el?(el.getAttribute('src')||''):''; inp.disabled=!el;
     } else if(f.type==='color'){
@@ -333,6 +377,7 @@ function populate(){
     }
   }));
   for(let n=1;n<=6;n++)toggleCard(n); for(let n=1;n<=4;n++)toggleCheck(n);
+  applyLogo(); // a chosen logo survives switching template
 }
 attach();
 frame.addEventListener('load',populate);
@@ -380,6 +425,9 @@ document.getElementById('download').addEventListener('click',async ()=>{
   clone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
   clone.querySelectorAll('.d7-hi').forEach(el=>el.classList.remove('d7-hi'));
   // persist "remove decoration": the editor CSS is stripped, so bake a rule for [data-d7nodeco] (and keep the attribute)
+  if(clone.querySelector('.d7-logoimg')){ const lg=doc.createElement('style');
+    lg.textContent='[data-d7logohide]{display:none!important}img.d7-logoimg{display:inline-block;width:auto;max-width:none;object-fit:contain;vertical-align:middle}';
+    (clone.querySelector('head')||clone).appendChild(lg); }
   if(clone.querySelector('[data-d7nodeco]')){ const nd=doc.createElement('style'); nd.textContent='[data-d7nodeco]::before,[data-d7nodeco]::after{content:none!important;display:none!important}'; (clone.querySelector('head')||clone).appendChild(nd); }
   // same for the icon choices: bake the rules, keep the attributes that drive them
   if(clone.getAttribute('data-d7icons')==='off' || clone.querySelector('[data-d7iconoff]')){
@@ -432,6 +480,8 @@ function d7EditorCSS(){ return [
   '#d7-ctx button:hover{background:#F0F6F3;color:#00846a}',
   '#d7-ctx hr{border:0;border-top:1px solid #E5E2DC;margin:4px 2px}',
   '[data-d7nodeco]::before,[data-d7nodeco]::after{content:none!important;display:none!important}',
+  '[data-d7logohide]{display:none!important}',
+  'img.d7-logoimg{display:inline-block;width:auto;max-width:none;object-fit:contain;vertical-align:middle}',
   '#d7-imgbar{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:2147483000;background:#0B362A;color:#fff;border-radius:9px;padding:7px 10px;display:flex;gap:9px;align-items:center;font:600 12px/1 Inter,sans-serif;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.32)}',
   '#d7-imgbar .d7-zoom{display:flex;align-items:center;gap:7px}',
   '#d7-imgbar .d7-lbl{opacity:.75}',
