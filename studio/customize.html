@@ -40,6 +40,14 @@ body{margin:0;font-family:var(--font-sans);color:var(--ink);background:var(--can
 .group>summary::after{content:"+";color:var(--muted);font-size:18px;font-family:var(--font-sans)}
 .group[open]>summary::after{content:"–"}
 .field{margin-top:12px}
+/* flashes the field that matches whatever was just clicked in the preview.
+   A ring rather than a bar in the margin, which the panel's overflow clips. */
+.field.d7-fieldhi{border-radius:8px;animation:d7FieldFlash 2.4s ease}
+@keyframes d7FieldFlash{
+  0%,55%{background:rgba(0,165,131,.14);box-shadow:0 0 0 2px rgba(0,165,131,.5)}
+  100%{background:transparent;box-shadow:0 0 0 2px rgba(0,165,131,0)}
+}
+@media (prefers-reduced-motion:reduce){ .field.d7-fieldhi{animation:none;box-shadow:0 0 0 2px rgba(0,165,131,.5)} }
 .field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px;letter-spacing:.01em}
 .field input,.field textarea{width:100%;font-family:inherit;font-size:14px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--canvas);color:var(--ink)}
 .field textarea{resize:vertical;min-height:58px}
@@ -69,7 +77,10 @@ body{margin:0;font-family:var(--font-sans);color:var(--ink);background:var(--can
 .pbtn--file{display:inline-flex;align-items:center;cursor:pointer}.pbtn--file input{display:none}
 /* ---- preview ---- */
 .preview{position:relative;display:flex;flex-direction:column;background:#e9eaec}
-.preview__bar{flex:none;height:52px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;padding:0 14px 0 20px;border-bottom:1px solid var(--line);background:var(--panel)}
+/* four columns for four children: picker · device · icons · close. With only
+   three the close button fell into an implicit fourth column and overflowed
+   the bar, which is why it floated over the preview below. */
+.preview__bar{flex:none;height:52px;display:grid;grid-template-columns:1fr auto 1fr auto;align-items:center;gap:10px;padding:0 14px 0 20px;border-bottom:1px solid var(--line);background:var(--panel)}
 .preview__bar>.tpl{justify-self:start}
 .preview__bar>.seg{justify-self:center}
 .preview__bar>.close-x{justify-self:end}
@@ -131,8 +142,10 @@ iframe{width:100%;height:100%;border:0;display:block}
         </select>
       </div>
       <div class="seg"><button data-w="desktop" class="on">Desktop</button><button data-w="mobile">Mobile</button></div>
+      <!-- some clients want no decorative icons at all; this hides every one
+           on the site in a single click, and the choice is kept on export -->
+      <div class="seg" id="iconSeg" title="Show or hide the decorative icons across this site"><button data-ic="on" class="on">Icons on</button><button data-ic="off">Icons off</button></div>
       <a href="../index.html" id="closeStudio" class="close-x" title="Close Studio, back to homepage" aria-label="Close Studio">&times;</a>
-      <span style="width:150px"></span>
     </div>
     <div class="preview__stage"><div class="frameWrap" id="frameWrap"><iframe id="frame" src="editable-practice.html"></iframe></div></div>
   </main>
@@ -331,12 +344,19 @@ window.addEventListener('keydown',e=>{ if(!(e.ctrlKey||e.metaKey))return; const 
 // template picker (cache-bust so freshly-instrumented templates always load)
 document.getElementById('tpl').addEventListener('change',e=>{frame.src=e.target.value+'?t='+Date.now();});
 
-// device toggle
-document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.seg button').forEach(x=>x.classList.remove('on'));
+// device + icon toggles. Scoped per .seg: a shared handler used to clear the
+// "on" state across every segmented control on the bar, not just its own.
+document.querySelectorAll('.seg').forEach(seg=>seg.addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b||!seg.contains(b)) return;
+  seg.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
   b.classList.add('on');
-  document.getElementById('frameWrap').classList.toggle('mobile',b.dataset.w==='mobile');
-  if(typeof d7Deselect==='function') d7Deselect(); // overlay coords go stale when the frame resizes
+  if(b.dataset.w){
+    document.getElementById('frameWrap').classList.toggle('mobile',b.dataset.w==='mobile');
+    if(typeof d7Deselect==='function') d7Deselect(); // overlay coords go stale when the frame resizes
+  } else if(b.dataset.ic && typeof d7ApplyIconMode==='function'){
+    d7IconMode=b.dataset.ic; d7ApplyIconMode();
+    toast(b.dataset.ic==='off'?'Icons hidden across the site':'Icons shown');
+  }
 }));
 
 // toast helper
@@ -354,13 +374,24 @@ document.getElementById('download').addEventListener('click',async ()=>{
   const so=clone.querySelector('#d7-studio-only'); if(so)so.remove(); // keep scroll animations in the delivered file
   clone.querySelectorAll('.reveal.is-in').forEach(e=>e.classList.remove('is-in')); // restore reveal-on-scroll for visitors
   // strip inline-editor artefacts (KEEP the user's image size/position inline styles)
-  clone.querySelectorAll('#d7-editor-style,#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides').forEach(el=>el.remove());
+  clone.querySelectorAll('#d7-editor-style,#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar').forEach(el=>el.remove());
+  clone.querySelectorAll('.d7-ihi').forEach(el=>el.classList.remove('d7-ihi'));
   clone.querySelectorAll('[data-d7del]').forEach(el=>el.remove()); // actually remove deleted elements from the delivered file
   clone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
   clone.querySelectorAll('.d7-hi').forEach(el=>el.classList.remove('d7-hi'));
   // persist "remove decoration": the editor CSS is stripped, so bake a rule for [data-d7nodeco] (and keep the attribute)
   if(clone.querySelector('[data-d7nodeco]')){ const nd=doc.createElement('style'); nd.textContent='[data-d7nodeco]::before,[data-d7nodeco]::after{content:none!important;display:none!important}'; (clone.querySelector('head')||clone).appendChild(nd); }
-  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
+  // same for the icon choices: bake the rules, keep the attributes that drive them
+  if(clone.getAttribute('data-d7icons')==='off' || clone.querySelector('[data-d7iconoff]')){
+    const ic=doc.createElement('style');
+    ic.textContent='[data-d7icons="off"] [data-d7icon]{display:none!important}'
+      +'[data-d7icons="off"] [data-d7icondeco]::before,[data-d7icons="off"] [data-d7icondeco]::after{content:none!important;display:none!important}'
+      +'[data-d7iconoff]{display:none!important}';
+    (clone.querySelector('head')||clone).appendChild(ic);
+  } else { // icons all left as they are: drop the marker attributes entirely
+    ['data-d7icon','data-d7icondeco'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
+  }
+  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   // .d7-frame wrappers + .d7-ph placeholders are KEPT (they hold the crop/size/placement and keep the layout stable)
   // make the file self-contained: inline the shared template.css + template.js (bespoke templates use them)
   await inlineAsset(clone,'link[rel="stylesheet"][href*="template.css"]',css=>{const s=doc.createElement('style');s.textContent=css;return s;});
@@ -416,10 +447,30 @@ function d7EditorCSS(){ return [
   '#d7-actbar button{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:5px;padding:6px 9px;cursor:pointer;font:inherit}',
   '#d7-actbar button:hover{background:#00A583}',
   '#d7-actbar button.d7-del:hover{background:#d8513f}',
+  // ---- Icons: hidden site-wide via the toolbar, or one at a time ----
+  '[data-d7icons="off"] [data-d7icon]{display:none!important}',
+  '[data-d7icons="off"] [data-d7icondeco]::before,[data-d7icons="off"] [data-d7icondeco]::after{content:none!important;display:none!important}',
+  '[data-d7iconoff]{display:none!important}',
+  '[data-d7icon]{cursor:pointer}',
+  '[data-d7icon].d7-ihi{outline:2px solid #00A583;outline-offset:3px;border-radius:4px}',
+  '#d7-iconbar{position:absolute;z-index:2147483002;display:flex;gap:5px;align-items:center;background:#0B362A;color:#fff;border-radius:9px;padding:6px 7px;font:600 11px/1 Inter,sans-serif;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.34)}',
+  '#d7-iconbar button{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:6px;width:30px;height:30px;display:grid;place-items:center;cursor:pointer;padding:0}',
+  '#d7-iconbar button:hover{background:#00A583}',
+  '#d7-iconbar button svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}',
+  '#d7-iconbar .d7-ib-txt{width:auto;padding:0 9px;font:inherit}',
+  '#d7-iconbar .d7-ib-del:hover{background:#d8513f}',
+  '#d7-iconbar .d7-ib-lbl{opacity:.7;padding:0 5px 0 3px}',
+  '#d7-iconbar .d7-ib-sep{width:1px;height:20px;background:rgba(255,255,255,.26);margin:0 2px}',
   '#d7-guides{position:fixed;inset:0;pointer-events:none;z-index:2147483040}',
   '#d7-guides .d7-gl{position:fixed;background:#FF2D55;box-shadow:0 0 0 .5px rgba(255,45,85,.35)}',
   '#d7-guides .d7-gl.v{top:0;bottom:0;width:1.5px}',
   '#d7-guides .d7-gl.h{left:0;right:0;height:1.5px}',
+  // live width x height readout while resizing; a figure turns green when it
+  // has locked to another image's exact measurement
+  '#d7-guides .d7-dim{position:fixed;transform:translateX(-50%);background:#0B362A;color:#fff;border-radius:7px;padding:5px 9px;font:600 11.5px/1 Inter,sans-serif;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.34);display:flex;gap:6px;align-items:center}',
+  '#d7-guides .d7-dim b{font-weight:700}',
+  '#d7-guides .d7-dim b.on{color:#49E0A6}',
+  '#d7-guides .d7-dim i{font-style:normal;font-weight:600;opacity:.8;border-left:1px solid rgba(255,255,255,.28);padding-left:6px}',
   '#d7-txtbar{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:2147483000;background:#0B362A;color:#fff;border-radius:9px;padding:6px 9px;display:flex;gap:7px;align-items:center;font:600 12px/1 Inter,sans-serif;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.32)}',
   '#d7-txtbar button{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:6px;padding:7px 9px;cursor:pointer;font:inherit;min-width:30px}',
   '#d7-txtbar button:hover,#d7-txtbar button.on{background:#00A583}',
@@ -433,15 +484,125 @@ function d7EditorCSS(){ return [
 function d7HasText(el){ for(const n of el.childNodes){ if(n.nodeType===3 && n.textContent.trim()) return true; } return false; }
 function d7TextTarget(el){
   if(!el||el.nodeType!==1) return null;
-  if(el.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides')) return null;
+  if(el.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar')) return null;
   let n=el;
   while(n && n!==doc.body){ if(d7HasText(n)) return n; n=n.parentElement; }
   return null;
 }
 function d7ClearHi(){ doc.querySelectorAll('.d7-hi').forEach(e=>e.classList.remove('d7-hi')); }
+/* ---- Icons -----------------------------------------------------------
+   Templates draw small marks three different ways: an inline <svg>, an empty
+   <i> styled with CSS, and a ::before on an element that also holds text.
+   Tag all three so the toolbar can hide the lot, and so a single <svg> can be
+   clicked and swapped for one of the presets below. Only inline SVGs can be
+   swapped; the CSS-drawn ones can be hidden but not redrawn. -------------- */
+const D7_ICONS=[
+  {k:'Check',  d:'<path d="M20 6L9 17l-5-5"/>'},
+  {k:'Heart',  d:'<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 10-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 000-7.8z"/>'},
+  {k:'People', d:'<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.9"/><path d="M16 3.1a4 4 0 010 7.8"/>'},
+  {k:'Chat',   d:'<path d="M21 11.5a8.4 8.4 0 01-9 8.4 9 9 0 01-4-.9L3 21l1.9-5a8.4 8.4 0 01-.9-4 8.4 8.4 0 018.4-8.4h.6a8.4 8.4 0 018 8z"/>'},
+  {k:'Leaf',   d:'<path d="M11 20A7 7 0 019.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8a7 7 0 01-10 10z"/><path d="M2 21c0-3 1.9-5.7 4.5-7"/>'},
+  {k:'Star',   d:'<path d="M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6-5.3-2.9L6.7 19.6l1.1-6L3.4 9.4l6-.8z"/>'},
+  {k:'Shield', d:'<path d="M12 3l8 3v6c0 4.6-3.4 8.3-8 9-4.6-.7-8-4.4-8-9V6z"/>'},
+  {k:'Clock',  d:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'}
+];
+const D7_SVGATTRS=['viewBox','fill','stroke','stroke-width','stroke-linecap','stroke-linejoin'];
+function d7MarkIcons(){
+  if(!doc) return; const win=doc.defaultView;
+  doc.body.querySelectorAll('svg').forEach(s=>{
+    if(s.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar')) return;
+    const b=s.getBoundingClientRect();
+    if(b.width>72||b.height>72) return;        // an illustration, not an icon
+    s.setAttribute('data-d7icon','svg');
+  });
+  doc.body.querySelectorAll('i,em,span').forEach(el=>{
+    if(el.children.length||(el.textContent||'').trim()) return;   // must be an empty glyph
+    if(el.hasAttribute('data-d7icon')) return;
+    const b=el.getBoundingClientRect(); if(b.width<4||b.width>48||b.height>48) return;
+    el.setAttribute('data-d7icon','css');
+  });
+  // a ::before glyph on an element that also carries text: hide the pseudo only
+  doc.body.querySelectorAll('li,p,h3,h4,a,div,span').forEach(el=>{
+    if(el.hasAttribute('data-d7icon')||el.hasAttribute('data-d7icondeco')) return;
+    ['::before','::after'].forEach(ps=>{
+      if(el.hasAttribute('data-d7icondeco')) return;
+      let cs; try{ cs=win.getComputedStyle(el,ps); }catch(e){ return; }
+      if(!cs||cs.content==='none'||cs.content==='normal') return;
+      const w=parseFloat(cs.width)||0, h=parseFloat(cs.height)||0;
+      if(w>0&&w<=34&&h>0&&h<=34) el.setAttribute('data-d7icondeco','1');
+    });
+  });
+}
+function d7SetIcon(el,g){
+  if(!el||el.tagName.toLowerCase()!=='svg') return;
+  if(!el.hasAttribute('data-d7icon0')){
+    const a={}; D7_SVGATTRS.forEach(n=>{ a[n]=el.getAttribute(n); });
+    el.setAttribute('data-d7icon0', JSON.stringify({a:a,h:el.innerHTML}));
+  }
+  el.setAttribute('viewBox','0 0 24 24'); el.setAttribute('fill','none');
+  el.setAttribute('stroke','currentColor'); el.setAttribute('stroke-width','2');
+  el.setAttribute('stroke-linecap','round'); el.setAttribute('stroke-linejoin','round');
+  el.innerHTML=g.d;
+}
+function d7RestoreIcon(el){
+  if(!el) return; el.removeAttribute('data-d7iconoff');
+  const raw=el.getAttribute('data-d7icon0'); if(!raw) return;
+  try{ const o=JSON.parse(raw);
+    D7_SVGATTRS.forEach(n=>{ if(o.a[n]==null) el.removeAttribute(n); else el.setAttribute(n,o.a[n]); });
+    el.innerHTML=o.h;
+  }catch(e){}
+  el.removeAttribute('data-d7icon0');
+}
+let d7IconSel=null;
+function d7IconBar(){
+  let b=doc.getElementById('d7-iconbar'); if(b) return b;
+  b=doc.createElement('div'); b.id='d7-iconbar';
+  let html='<span class="d7-ib-lbl">Icon</span>';
+  D7_ICONS.forEach((g,i)=>{ html+='<button data-ig="'+i+'" title="'+g.k+'"><svg viewBox="0 0 24 24">'+g.d+'</svg></button>'; });
+  html+='<span class="d7-ib-sep"></span>'
+      + '<button class="d7-ib-txt" data-ia="reset" title="Put the original icon back">Reset</button>'
+      + '<button class="d7-ib-txt d7-ib-del" data-ia="remove" title="Hide this icon">Remove</button>';
+  b.innerHTML=html;
+  doc.body.appendChild(b);
+  b.addEventListener('mousedown',e=>e.stopPropagation());
+  b.addEventListener('click',e=>{
+    const t=e.target.closest('button'); if(!t||!d7IconSel) return;
+    e.preventDefault(); e.stopPropagation(); d7HistPush();
+    const ig=t.getAttribute('data-ig'), ia=t.getAttribute('data-ia');
+    if(ig!=null) d7SetIcon(d7IconSel, D7_ICONS[+ig]);
+    else if(ia==='remove'){ d7IconSel.setAttribute('data-d7iconoff','1'); d7DeselectIcon(); return; }
+    else if(ia==='reset') d7RestoreIcon(d7IconSel);
+  });
+  return b;
+}
+function d7SelectIcon(el){
+  d7DeselectIcon(); d7IconSel=el; el.classList.add('d7-ihi');
+  const bar=d7IconBar(), win=doc.defaultView, r=el.getBoundingClientRect();
+  // swapping only applies to inline SVG; a CSS-drawn mark can only be hidden
+  const isSvg=el.tagName.toLowerCase()==='svg';
+  bar.querySelectorAll('[data-ig]').forEach(b=>{ b.style.display=isSvg?'':'none'; });
+  bar.querySelector('[data-ia=reset]').style.display=isSvg?'':'none';
+  bar.querySelector('.d7-ib-lbl').textContent=isSvg?'Icon':'CSS icon';
+  bar.style.display='flex';
+  const bh=bar.offsetHeight||40; let y=r.top+win.scrollY-bh-8;
+  if(y<win.scrollY+4) y=r.bottom+win.scrollY+8;
+  bar.style.top=y+'px';
+  bar.style.left=Math.max(6,Math.min(r.left+win.scrollX, win.scrollX+win.innerWidth-bar.offsetWidth-6))+'px';
+}
+function d7DeselectIcon(){
+  if(d7IconSel){ d7IconSel.classList.remove('d7-ihi'); d7IconSel=null; }
+  const b=doc&&doc.getElementById('d7-iconbar'); if(b) b.style.display='none';
+}
+let d7IconMode='on';
+function d7ApplyIconMode(){
+  if(!doc) return;
+  if(d7IconMode==='off'){ doc.documentElement.setAttribute('data-d7icons','off'); d7DeselectIcon(); }
+  else doc.documentElement.removeAttribute('data-d7icons');
+}
 function initInlineEditor(){
   if(!doc || doc.__d7ed) return; doc.__d7ed=true; d7Sel=null; d7EditEl=null; d7SelBox=null;
   const st=doc.createElement('style'); st.id='d7-editor-style'; st.textContent=d7EditorCSS(); doc.head.appendChild(st);
+  d7MarkIcons(); d7ApplyIconMode();
   const body=doc.body;
   body.addEventListener('mouseover',e=>{ if(d7drag)return; d7ClearHi();
     if(e.target.tagName==='IMG'){ e.target.classList.add('d7-hi'); return; }
@@ -449,7 +610,11 @@ function initInlineEditor(){
   body.addEventListener('mouseout',()=>{ if(!d7drag) d7ClearHi(); });
   body.addEventListener('click',e=>{
     const tgt=e.target;
-    if(tgt.closest && tgt.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides')) return;
+    if(tgt.closest && tgt.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar')) return;
+    // an icon takes the click before text editing, so the picker is reachable
+    const ic=tgt.closest && tgt.closest('[data-d7icon]');
+    if(ic){ e.preventDefault(); e.stopPropagation(); d7Deselect(); d7SelectIcon(ic); return; }
+    d7DeselectIcon();
     if(e.altKey){ const im=d7ImgUnder(e.clientX,e.clientY); if(im){ e.preventDefault(); e.stopPropagation(); d7SelectImg(im); return; } } // grab an image behind other content
     if(tgt.tagName==='IMG'){ e.preventDefault(); e.stopPropagation(); d7SelectImg(tgt); return; }
     const t=d7TextTarget(tgt);
@@ -459,7 +624,7 @@ function initInlineEditor(){
     d7Deselect();
   }, true);
   body.addEventListener('contextmenu',e=>{
-    if(e.target.closest && e.target.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides')) return;
+    if(e.target.closest && e.target.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar')) return;
     e.preventDefault();
     const img=(e.target.tagName==='IMG')?e.target:(e.altKey?d7ImgUnder(e.clientX,e.clientY):null);
     if(img){ d7SelectImg(img); d7ShowMenu(e.clientX,e.clientY,img); }
@@ -475,6 +640,31 @@ function initInlineEditor(){
 // with a floating text toolbar until you pick another element / click empty / press Done.
 let d7EditEl=null;
 function d7OnEditInput(){ const el=d7EditEl; if(!el)return; const id=el.getAttribute('data-field'); if(id){ const inp=document.getElementById('f_'+id); if(inp) inp.value=el.textContent.trim(); } }
+/* ---- Keep the two panes in step -------------------------------------
+   Clicking something in the preview brings its field into view on the left,
+   opening the section it lives in, so you never have to hunt for the field
+   that matches what you just clicked. ---------------------------------- */
+function d7FieldIdFor(el){
+  if(!el||el.nodeType!==1) return null;
+  if(el.getAttribute('data-img')) return el.getAttribute('data-img');
+  if(el.getAttribute('data-field')) return el.getAttribute('data-field');
+  const up=el.closest('[data-field]'); if(up) return up.getAttribute('data-field');
+  const down=el.querySelector&&el.querySelector('[data-field]');
+  return down?down.getAttribute('data-field'):null;
+}
+let d7FieldT=null;
+function d7RevealField(id){
+  if(!id) return false;
+  const inp=document.getElementById('f_'+id); if(!inp) return false;
+  const det=inp.closest('details.group'); if(det&&!det.open) det.open=true;
+  const row=inp.closest('.field')||inp;
+  row.scrollIntoView({block:'center',behavior:'smooth'});
+  document.querySelectorAll('.d7-fieldhi').forEach(e=>e.classList.remove('d7-fieldhi'));
+  row.classList.add('d7-fieldhi');
+  clearTimeout(d7FieldT);
+  d7FieldT=setTimeout(()=>row.classList.remove('d7-fieldhi'),2400);
+  return true;
+}
 function d7OnEditPaste(ev){ ev.preventDefault(); const t=(ev.clipboardData||doc.defaultView.clipboardData).getData('text/plain'); doc.execCommand('insertText',false,t); }
 function d7CommitText(){ if(d7EditEl){ d7EditEl.removeAttribute('contenteditable'); d7EditEl.removeEventListener('input',d7OnEditInput); d7EditEl.removeEventListener('paste',d7OnEditPaste); d7EditEl=null; } const b=doc.getElementById('d7-txtbar'); if(b)b.style.display='none'; }
 function d7MakeEditable(el){
@@ -483,6 +673,7 @@ function d7MakeEditable(el){
   d7CommitText();
   el.setAttribute('contenteditable','true'); el.focus(); d7EditEl=el;
   el.addEventListener('input',d7OnEditInput); el.addEventListener('paste',d7OnEditPaste);
+  d7RevealField(d7FieldIdFor(el));
   d7ShowTextBar(el);
 }
 function d7RgbToHex(rgb){ const m=rgb&&rgb.match(/\d+/g); if(!m)return null; return '#'+m.slice(0,3).map(n=>(+n).toString(16).padStart(2,'0')).join(''); }
@@ -515,6 +706,7 @@ function d7EnsureTextBar(){
     +'<span class="d7-sep"></span><input type="color" title="Text colour">'
     +'<span class="d7-sep"></span><button data-t="bold" style="font-weight:800">B</button><button data-t="italic" style="font-style:italic">I</button>'
     +'<span class="d7-sep"></span><button data-t="left" title="Align left">☷</button><button data-t="center" title="Align centre">≡</button><button data-t="right" title="Align right">☷</button>'
+    +'<span class="d7-sep"></span><button data-t="movebox" title="Move or resize the whole block this text sits in">Move / size</button>'
     +'<span class="d7-sep"></span><button data-t="nodeco" title="Remove the dot or line before this text">Remove dot</button><button data-t="del" class="d7-del" title="Delete this element">Delete</button>'
     +'<span class="d7-sep"></span><button data-t="done">Done</button>';
   doc.body.appendChild(b);
@@ -523,6 +715,30 @@ function d7EnsureTextBar(){
   b.querySelector('input[type=color]').addEventListener('input',e=>{ if(d7EditEl) d7EditEl.style.color=e.target.value; });
   b.querySelector('select.d7-font').addEventListener('change',e=>{ if(!d7EditEl)return; const f=D7_FONTS[+e.target.value]||D7_FONTS[0]; d7LoadFont(f.g); d7EditEl.style.fontFamily=f.v; e.target.selectedIndex=0; d7EditEl.focus(); });
   return b;
+}
+// What is worth moving is usually the card the text sits in, not the line of
+// text itself: a badge like "Free / 15-minute consultation" is a positioned
+// block with its own background. Walk up to the nearest ancestor that paints
+// like a block, but refuse anything close to full-page size so a paragraph
+// inside a coloured section does not hand back the whole section.
+function d7BoxTarget(el){
+  if(!el) return el;
+  const win=doc.defaultView; let n=el, guard=0;
+  while(n && n!==doc.body && guard++<4){
+    const cs=win.getComputedStyle(n);
+    const painted=(cs.backgroundColor&&cs.backgroundColor!=='rgba(0, 0, 0, 0)'&&cs.backgroundColor!=='transparent')
+      ||(cs.backgroundImage&&cs.backgroundImage!=='none')
+      ||parseFloat(cs.borderTopWidth||0)>0
+      ||(cs.boxShadow&&cs.boxShadow!=='none')
+      ||cs.position==='absolute'||cs.position==='fixed';
+    if(painted){
+      if(n===el) return n;
+      const b=n.getBoundingClientRect();
+      return (b.width<=win.innerWidth*0.85 && b.height<=win.innerHeight*0.8) ? n : el;
+    }
+    n=n.parentElement;
+  }
+  return el;
 }
 function d7ShowTextBar(el){
   ['d7-imgbox','d7-imgbar','d7-ctx','d7-actbar'].forEach(id=>{ const e=doc.getElementById(id); if(e)e.style.display='none'; });
@@ -542,6 +758,7 @@ function d7TextAction(t){ const el=d7EditEl; if(t==='done'){ d7CommitText(); ret
   else if(t==='bold'){ const on=parseInt(el.style.fontWeight||cs.fontWeight)>=600; el.style.fontWeight=on?'400':'700'; bar.querySelector('[data-t="bold"]').classList.toggle('on',!on); }
   else if(t==='italic'){ const on=(el.style.fontStyle||cs.fontStyle)==='italic'; el.style.fontStyle=on?'normal':'italic'; bar.querySelector('[data-t="italic"]').classList.toggle('on',!on); }
   else if(t==='left'||t==='center'||t==='right'){ el.style.textAlign=t; }
+  else if(t==='movebox'){ const box=d7BoxTarget(el); d7CommitText(); d7SelectBox(box); toast('Drag to move, pull a corner to resize'); return; }
   else if(t==='nodeco'){ el.setAttribute('data-d7nodeco','1'); bar.querySelector('[data-t="nodeco"]').style.display='none'; el.focus(); return; }
   else if(t==='del'){ d7CommitText(); d7DeleteEl(el); return; }
   el.focus();
@@ -551,9 +768,44 @@ function d7TextAction(t){ const el=d7EditEl; if(t==='done'){ d7CommitText(); ret
 //     in a fixed .d7-frame (overflow:hidden) so zoom crops the photo without growing the box. ---
 let d7zTop=200, d7Reframe=false;
 function d7Frame(img){ const p=img&&img.parentElement; return (p&&p.classList&&p.classList.contains('d7-frame'))?p:null; }
+// Templates usually wrap a single image in their own styled element: the arch
+// shape, the white border, the clip and the shadow all live on that wrapper,
+// never on the <img>. Wrapping the image AGAIN in a bare .d7-frame and then
+// floating that inner wrapper left every one of those behind, which is why a
+// resized image used to snap back to a plain rectangle. Where the parent is a
+// wrapper like that, adopt it as the frame so the decorated element is the one
+// being moved and resized.
+function d7AdoptableWrap(img){
+  const p=img.parentElement; if(!p||p===doc.body||p.tagName==='PICTURE') return null;
+  if(p.classList&&p.classList.contains('d7-frame')) return p;
+  if(p.children.length!==1) return null;              // must hold this image alone
+  if((p.textContent||'').trim()) return null;         // ...and no text of its own
+  const cs=doc.defaultView.getComputedStyle(p);
+  const decorated =
+       (cs.borderRadius && cs.borderRadius!=='0px')
+    || cs.overflow==='hidden'
+    || parseFloat(cs.borderTopWidth||0)>0
+    || (cs.boxShadow && cs.boxShadow!=='none')
+    || (cs.clipPath && cs.clipPath!=='none')
+    || (cs.aspectRatio && cs.aspectRatio!=='auto');
+  return decorated ? p : null;
+}
 function d7EnsureFrame(img){
   let fr=d7Frame(img); if(fr) return fr;
   const win=doc.defaultView, r=img.getBoundingClientRect(), cs=win.getComputedStyle(img);
+  const adopt=d7AdoptableWrap(img);
+  if(adopt){
+    const ar=adopt.getBoundingClientRect();
+    adopt.classList.add('d7-frame'); adopt.dataset.d7adopt='1';
+    adopt.dataset.d7ow=ar.width; adopt.dataset.d7oh=ar.height;
+    // pin the current size so dragging a handle beats the template's own
+    // aspect-ratio / width rules, which would otherwise snap it back
+    adopt.style.width=ar.width+'px'; adopt.style.height=ar.height+'px'; adopt.style.maxWidth='none';
+    img.style.width='100%'; img.style.height='100%'; img.style.display='block'; img.style.margin='0';
+    img.style.objectFit=(cs.objectFit&&cs.objectFit!=='fill')?cs.objectFit:'cover';
+    img.style.transformOrigin='center'; img.style.maxWidth='none';
+    return adopt;
+  }
   fr=doc.createElement('span'); fr.className='d7-frame';
   fr.style.display=(cs.display.indexOf('inline')>-1)?'inline-block':'block';
   fr.style.width=r.width+'px'; fr.style.height=r.height+'px';
@@ -583,19 +835,49 @@ function d7SelectImg(img){
   const sl=bar.querySelector('.d7-zoomrange'); if(sl) sl.value=parseFloat(img.dataset.d7z||'1');
   const bi=bar.querySelector('.d7-bright'); if(bi) bi.value=parseFloat(img.dataset.d7b||'1');
   d7SetReframe(false); // each new selection starts in normal (move) mode
+  d7RevealField(img.getAttribute('data-img'));
   d7PositionBox();
 }
 function d7SetReframe(on){ d7Reframe=!!on;
   const b=doc.querySelector('#d7-imgbar .d7-reframe'); if(b) b.classList.toggle('on',d7Reframe);
   const box=doc.getElementById('d7-imgbox'); if(box) box.classList.toggle('d7-panmode',d7Reframe);
 }
-function d7Deselect(){ d7CommitText(); d7Sel=null; d7SelBox=null; d7SetReframe(false); d7ClearGuides(); ['d7-imgbox','d7-imgbar','d7-ctx','d7-txtbar','d7-actbar'].forEach(id=>{ const e=doc.getElementById(id); if(e)e.style.display='none'; }); }
+function d7Deselect(){ d7CommitText(); d7Sel=null; d7SelBox=null; d7SetReframe(false); d7ClearGuides(); ['d7-imgbox','d7-imgbar','d7-ctx','d7-txtbar','d7-actbar','d7-iconbar'].forEach(id=>{ const e=doc.getElementById(id); if(e)e.style.display='none'; }); }
 // ---- Smart alignment guides (Canva-style): snap a dragged/resized box to other elements'
 //      edges & centres and the page centre, popping a pink line when they line up. ----
 const D7_SNAP=6; // px threshold
 function d7ClearGuides(){ const g=doc&&doc.getElementById('d7-guides'); if(g) g.innerHTML=''; }
 function d7Guide(vertical,pos){ let g=doc.getElementById('d7-guides'); if(!g){ g=doc.createElement('div'); g.id='d7-guides'; doc.body.appendChild(g); }
   const l=doc.createElement('div'); l.className='d7-gl '+(vertical?'v':'h'); if(vertical) l.style.left=pos+'px'; else l.style.top=pos+'px'; g.appendChild(l); }
+// ---- Size matching: the guides say when edges line up, these say when the box
+//      is the same SIZE as another image, with the figures to confirm it. ----
+function d7CollectSizes(exclude){
+  const ws=[], hs=[], seen=[];
+  doc.body.querySelectorAll('img').forEach(im=>{
+    if(im.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar'))return;
+    // Measure whatever the editor would treat as THIS image's frame, so the
+    // figures compare like with like. Comparing a dragged frame's outer size
+    // against a bare img's inner size is out by the frame's border.
+    const el=d7AdoptableWrap(im)||im;
+    if(el===exclude||exclude.contains(el)||el.contains(exclude))return;
+    if(seen.indexOf(el)>-1)return; seen.push(el);
+    const b=el.getBoundingClientRect(); if(b.width<24||b.height<24)return;
+    ws.push(Math.round(b.width)); hs.push(Math.round(b.height));
+  });
+  return {ws,hs};
+}
+function d7NearestSize(v,list){ let best=null, bd=D7_SNAP+0.5;
+  list.forEach(t=>{ const d=Math.abs(t-v); if(d<bd){ bd=d; best=t; } }); return best; }
+// Readout pinned under (or above) the box being resized.
+function d7Dims(x,y,w,h,mw,mh){
+  let g=doc.getElementById('d7-guides'); if(!g){ g=doc.createElement('div'); g.id='d7-guides'; doc.body.appendChild(g); }
+  const win=doc.defaultView, d=doc.createElement('div'); d.className='d7-dim';
+  d.innerHTML='<span><b class="'+(mw?'on':'')+'">'+Math.round(w)+'</b> &times; <b class="'+(mh?'on':'')+'">'+Math.round(h)+'</b></span>'
+    +((mw||mh)?('<i>same '+(mw&&mh?'size':(mw?'width':'height'))+'</i>'):'');
+  let top=y+h+10; if(top>win.innerHeight-36) top=Math.max(6,y-36);
+  d.style.left=Math.max(60,Math.min(win.innerWidth-60,x+w/2))+'px'; d.style.top=top+'px';
+  g.appendChild(d);
+}
 function d7CollectTargets(exclude){
   const win=doc.defaultView, xs=[], ys=[];
   const addX=x=>{ if(x>=0&&x<=win.innerWidth) xs.push(Math.round(x)); };
@@ -605,7 +887,7 @@ function d7CollectTargets(exclude){
   addX(win.innerWidth/2); // page horizontal centre
   doc.body.querySelectorAll('[data-field],[data-img],section,header,footer,h1,h2,h3,p,img,button,a,.btn').forEach(el=>{
     if(el===exclude||exclude.contains(el)||el.contains(exclude))return;
-    if(el.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides'))return;
+    if(el.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar'))return;
     const b=el.getBoundingClientRect(); if(b.width<8||b.height<8||b.bottom<0||b.top>win.innerHeight)return;
     addX(b.left); addX(b.left+b.width/2); addX(b.right); addY(b.top); addY(b.top+b.height/2); addY(b.bottom); });
   return {xs,ys};
@@ -664,13 +946,13 @@ function d7UndoDelete(){ const el=d7DelStack.pop(); if(el){ el.style.display='';
 // ---- Undo / Redo: snapshot the live preview content before each edit, step back/forward ----
 let d7Hist=[], d7Future=[], d7SnapLock=false;
 function d7SnapHTML(){ if(!doc)return ''; const b=doc.body.cloneNode(true);
-  b.querySelectorAll('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides').forEach(e=>e.remove()); // never capture editor overlays
+  b.querySelectorAll('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar').forEach(e=>e.remove()); // never capture editor overlays
   b.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
-  b.querySelectorAll('.d7-hi').forEach(e=>e.classList.remove('d7-hi'));
+  b.querySelectorAll('.d7-hi,.d7-ihi').forEach(e=>{e.classList.remove('d7-hi');e.classList.remove('d7-ihi');});
   return b.innerHTML; }
 function d7HistPush(){ if(d7SnapLock||!doc)return; d7Hist.push(d7SnapHTML()); if(d7Hist.length>30)d7Hist.shift(); d7Future.length=0; d7UpdateHistBtns(); }
-function d7RestoreHTML(html){ if(!doc)return; d7CommitText(); d7Deselect();
-  const keep=[]; ['d7-imgbox','d7-imgbar','d7-ctx','d7-txtbar','d7-actbar'].forEach(id=>{ const e=doc.getElementById(id); if(e){ keep.push(e); e.remove(); } });
+function d7RestoreHTML(html){ if(!doc)return; d7CommitText(); d7Deselect(); d7DeselectIcon();
+  const keep=[]; ['d7-imgbox','d7-imgbar','d7-ctx','d7-txtbar','d7-actbar','d7-iconbar'].forEach(id=>{ const e=doc.getElementById(id); if(e){ keep.push(e); e.remove(); } });
   d7SnapLock=true; doc.body.innerHTML=html; d7SnapLock=false; // body-level listeners survive (editor uses delegation)
   keep.forEach(e=>doc.body.appendChild(e)); d7DelStack=[]; }
 function d7DoUndo(){ if(!d7Hist.length||!doc){ return; } d7Future.push(d7SnapHTML()); d7RestoreHTML(d7Hist.pop()); d7UpdateHistBtns(); toast('Undo'); }
@@ -697,6 +979,9 @@ function d7ShowMenu(x,y,el){
 }
 function d7PositionBox(){
   const fr=d7CurBox(); if(!fr) return;
+  // the Zoom / Bright / Reframe controls stay up for as long as an image is
+  // selected, including all the way through a move or a resize
+  if(d7Sel){ const ib=doc.getElementById('d7-imgbar'); if(ib && ib.style.display!=='flex') ib.style.display='flex'; }
   const r=fr.getBoundingClientRect(), win=doc.defaultView, x=r.left+win.scrollX, y=r.top+win.scrollY;
   const box=doc.getElementById('d7-imgbox'); if(box){ box.style.left=x+'px'; box.style.top=y+'px'; box.style.width=r.width+'px'; box.style.height=r.height+'px'; }
   const ab=doc.getElementById('d7-actbar');
@@ -723,7 +1008,12 @@ function d7Unclip(fr){ const win=doc.defaultView;
   if(win.getComputedStyle(fr).position==='static') fr.style.position='relative';
   let n=fr.parentElement, guard=0;
   while(n && n!==doc.body && guard++<10){
-    if(win.getComputedStyle(n).overflow!=='visible'){ if(!n.hasAttribute('data-d7ov')) n.setAttribute('data-d7ov', n.style.overflow||''); n.style.overflow='visible'; }
+    // Leave page-level containers clipping. Releasing a card's overflow lets you
+    // drag an image out of it; releasing a full-width section's lets a resized
+    // background spill across the whole page.
+    const b=n.getBoundingClientRect();
+    const pageLevel = b.width>=win.innerWidth*0.9 && b.height>=win.innerHeight*0.9;
+    if(!pageLevel && win.getComputedStyle(n).overflow!=='visible'){ if(!n.hasAttribute('data-d7ov')) n.setAttribute('data-d7ov', n.style.overflow||''); n.style.overflow='visible'; }
     n=n.parentElement;
   }
 }
@@ -732,6 +1022,11 @@ function d7Reclip(fr){ let n=fr.parentElement, guard=0;
 }
 // hide the leftover styled slot (the frame's parent) once the image is moved
 function d7Neutralize(fr){ const p=fr.parentElement; if(!p||p.hasAttribute('data-d7fr'))return;
+  // Only when the parent exists purely to hold this frame. A hero section also
+  // holds the copy and its scrim, and blanking its background there wipes the
+  // section's own design.
+  const kids=[].slice.call(p.children).filter(c=>c!==fr&&!(c.classList&&c.classList.contains('d7-ph')));
+  if(kids.length) return;
   p.setAttribute('data-d7fr', JSON.stringify([p.style.background||'',p.style.boxShadow||'',p.style.border||''])); p.style.background='transparent'; p.style.boxShadow='none'; p.style.border='none';
 }
 function d7RestoreSlot(fr){ const p=fr.parentElement; if(!p||!p.hasAttribute('data-d7fr'))return;
@@ -764,8 +1059,14 @@ function d7Float(fr){
   const ph=doc.createElement('span'); ph.className='d7-ph';
   ph.style.cssText='display:'+cs.display+';width:'+r.width+'px;height:'+r.height+'px;margin:'+cs.marginTop+' '+cs.marginRight+' '+cs.marginBottom+' '+cs.marginLeft+';vertical-align:'+cs.verticalAlign+';flex:'+(cs.flex||'0 0 auto')+';visibility:hidden;pointer-events:none';
   fr.parentNode.insertBefore(ph, fr);
-  d7Unclip(fr); if(fr.classList&&fr.classList.contains('d7-frame')) d7Neutralize(fr); // only image frames leave a styled slot to hide
+  // Only a frame WE inserted leaves a styled slot behind worth hiding. An
+  // adopted wrapper IS the styled thing, so blanking its parent would strip
+  // the design the image is meant to keep.
+  d7Unclip(fr); if(fr.classList&&fr.classList.contains('d7-frame')&&!fr.dataset.d7adopt) d7Neutralize(fr);
   fr.style.position='absolute'; fr.style.margin='0'; fr.style.width=r.width+'px'; fr.style.height=r.height+'px';
+  // carry the element's own stacking across, so going absolute does not quietly
+  // reorder it against the content around it
+  if(cs.zIndex && cs.zIndex!=='auto') fr.style.zIndex=cs.zIndex;
   const op=fr.offsetParent||doc.body, opr=op.getBoundingClientRect();
   fr.style.left=(r.left-opr.left+(op.scrollLeft||0))+'px';
   fr.style.top=(r.top-opr.top+(op.scrollTop||0))+'px';
@@ -781,7 +1082,11 @@ function d7Unfloat(fr){
 function d7StartMove(e){ d7HistPush(); // snapshot before a move or (in reframe mode) a crop pan
   if(d7Reframe && d7Sel){ return d7StartPan(e); } // in reframe mode, dragging pans the crop instead of moving the frame
   e.preventDefault(); e.stopPropagation();
-  const fr=d7CurBox(); if(!fr)return; d7Float(fr); if(!fr.dataset.d7zi) d7SetZ(fr,100);
+  // No automatic z-index here. Raising the box to 100 on mousedown lifted a
+  // full-bleed background image above the copy layered over it, so merely
+  // clicking a hero image made its heading vanish. Layer order is the
+  // editor's to change only when Bring forward / Send back is used.
+  const fr=d7CurBox(); if(!fr)return; d7Float(fr);
   const L0=parseFloat(fr.style.left)||0, T0=parseFloat(fr.style.top)||0, sx=e.clientX, sy=e.clientY; d7drag={};
   const r0=fr.getBoundingClientRect(), W=r0.width, H=r0.height, T=d7CollectTargets(fr); // targets fixed at drag start
   const mv=ev=>{ let L=L0+(ev.clientX-sx), Tp=T0+(ev.clientY-sy);
@@ -797,6 +1102,7 @@ function d7StartResize(e,h){ d7HistPush(); e.preventDefault(); e.stopPropagation
   const fr=d7CurBox(); if(!fr)return; d7Float(fr); // resize the floated box → never reflows the surrounding content
   const c=h.className, L0=parseFloat(fr.style.left)||0, T0=parseFloat(fr.style.top)||0, r=fr.getBoundingClientRect(), W0=r.width, H0=r.height, sx=e.clientX, sy=e.clientY; d7drag={};
   const offX=r.left-L0, offY=r.top-T0, TG=d7CollectTargets(fr); // viewport<->style offset + snap targets
+  const SZ=d7CollectSizes(fr), R0=L0+W0, B0=T0+H0; // other images' sizes + the edges that stay put
   const mv=ev=>{ let dw=ev.clientX-sx, dh=ev.clientY-sy, L=L0,T=T0,W=W0,H=H0;
     if(c.indexOf('br')>-1){ W=W0+dw; H=H0+dh; }
     else if(c.indexOf('bl')>-1){ W=W0-dw; H=H0+dh; L=L0+dw; }
@@ -810,8 +1116,18 @@ function d7StartResize(e,h){ d7HistPush(); e.preventDefault(); e.stopPropagation
     else if(c.indexOf('b')>-1){ const s=d7Nearest([T+H+offY],TG.ys); if(s){ H=(s.guide-offY)-T; gy=s.guide; } }
     if(W<40){ if(c.indexOf('l')>-1) L=L0+(W0-40); W=40; gx=null; }
     if(H<40){ if(c.indexOf('t')>-1) T=T0+(H0-40); H=40; gy=null; }
+    // Lock to another image's exact measurement, so two can be matched without
+    // eyeballing it. Only where an edge guide has not already claimed the axis,
+    // and keeping whichever edge is not being dragged where it is.
+    if(gx==null){ const s=d7NearestSize(W,SZ.ws); if(s!=null){ W=s; if(c.indexOf('l')>-1) L=R0-W; } }
+    if(gy==null){ const s=d7NearestSize(H,SZ.hs); if(s!=null){ H=s; if(c.indexOf('t')>-1) T=B0-H; } }
+    // Flag the match from the final figure, not from whether we snapped: an
+    // edge guide can land it on the same size on its own, and the readout
+    // should confirm that too.
+    const mw=SZ.ws.indexOf(Math.round(W))>-1, mh=SZ.hs.indexOf(Math.round(H))>-1;
     fr.style.left=L+'px'; fr.style.top=T+'px'; fr.style.width=W+'px'; fr.style.height=H+'px'; d7PositionBox();
-    d7ClearGuides(); if(gx!=null) d7Guide(true,gx); if(gy!=null) d7Guide(false,gy); };
+    d7ClearGuides(); if(gx!=null) d7Guide(true,gx); if(gy!=null) d7Guide(false,gy);
+    d7Dims(L+offX, T+offY, W, H, mw, mh); };
   const up=()=>{ doc.removeEventListener('mousemove',mv); doc.removeEventListener('mouseup',up); d7ClearGuides(); d7drag=null; };
   doc.addEventListener('mousemove',mv); doc.addEventListener('mouseup',up);
 }
@@ -835,7 +1151,12 @@ function d7MenuAction(a){
 function d7ImgAction(a){ if(!d7Sel)return; const fr=d7Frame(d7Sel);
   if(a==='done'){ d7Deselect(); return; }
   if(a==='reframe'){ d7SetReframe(!d7Reframe); if(d7Reframe) toast('Reframe on, drag the photo to show a different part'); return; }
-  if(a==='reset'){ d7HistPush(); if(fr){ d7Unfloat(fr); fr.style.display=''; fr.style.width=(fr.dataset.d7ow||'')+'px'; fr.style.height=(fr.dataset.d7oh||'')+'px'; }
+  if(a==='reset'){ d7HistPush();
+    if(fr){ d7Unfloat(fr); fr.style.display='';
+      // an adopted wrapper gets its size cleared, not pinned, so the template's
+      // own aspect-ratio and width rules take back over
+      if(fr.dataset.d7adopt){ fr.style.width=''; fr.style.height=''; fr.style.maxWidth=''; }
+      else { fr.style.width=(fr.dataset.d7ow||'')+'px'; fr.style.height=(fr.dataset.d7oh||'')+'px'; } }
     d7Sel.style.transform=''; d7Sel.style.filter=''; d7Sel.style.objectPosition=''; delete d7Sel.dataset.d7z; delete d7Sel.dataset.d7b; delete d7Sel.dataset.d7px; delete d7Sel.dataset.d7py; d7SetReframe(false);
     const bar=doc.getElementById('d7-imgbar'), zr=bar.querySelector('.d7-zoomrange'), br=bar.querySelector('.d7-bright'); if(zr)zr.value=1; if(br)br.value=1; d7PositionBox(); return; }
   if(a==='replace'){ d7HistPush(); const inp=doc.createElement('input'); inp.type='file'; inp.accept='image/*';
