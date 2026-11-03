@@ -131,8 +131,10 @@ iframe{width:100%;height:100%;border:0;display:block}
         </select>
       </div>
       <div class="seg"><button data-w="desktop" class="on">Desktop</button><button data-w="mobile">Mobile</button></div>
+      <!-- some clients want no decorative icons at all; this hides every one
+           on the site in a single click, and the choice is kept on export -->
+      <div class="seg" id="iconSeg" title="Show or hide the decorative icons across this site"><button data-ic="on" class="on">Icons on</button><button data-ic="off">Icons off</button></div>
       <a href="../index.html" id="closeStudio" class="close-x" title="Close Studio, back to homepage" aria-label="Close Studio">&times;</a>
-      <span style="width:150px"></span>
     </div>
     <div class="preview__stage"><div class="frameWrap" id="frameWrap"><iframe id="frame" src="editable-practice.html"></iframe></div></div>
   </main>
@@ -331,12 +333,19 @@ window.addEventListener('keydown',e=>{ if(!(e.ctrlKey||e.metaKey))return; const 
 // template picker (cache-bust so freshly-instrumented templates always load)
 document.getElementById('tpl').addEventListener('change',e=>{frame.src=e.target.value+'?t='+Date.now();});
 
-// device toggle
-document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.seg button').forEach(x=>x.classList.remove('on'));
+// device + icon toggles. Scoped per .seg: a shared handler used to clear the
+// "on" state across every segmented control on the bar, not just its own.
+document.querySelectorAll('.seg').forEach(seg=>seg.addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b||!seg.contains(b)) return;
+  seg.querySelectorAll('button').forEach(x=>x.classList.remove('on'));
   b.classList.add('on');
-  document.getElementById('frameWrap').classList.toggle('mobile',b.dataset.w==='mobile');
-  if(typeof d7Deselect==='function') d7Deselect(); // overlay coords go stale when the frame resizes
+  if(b.dataset.w){
+    document.getElementById('frameWrap').classList.toggle('mobile',b.dataset.w==='mobile');
+    if(typeof d7Deselect==='function') d7Deselect(); // overlay coords go stale when the frame resizes
+  } else if(b.dataset.ic && typeof d7ApplyIconMode==='function'){
+    d7IconMode=b.dataset.ic; d7ApplyIconMode();
+    toast(b.dataset.ic==='off'?'Icons hidden across the site':'Icons shown');
+  }
 }));
 
 // toast helper
@@ -354,13 +363,24 @@ document.getElementById('download').addEventListener('click',async ()=>{
   const so=clone.querySelector('#d7-studio-only'); if(so)so.remove(); // keep scroll animations in the delivered file
   clone.querySelectorAll('.reveal.is-in').forEach(e=>e.classList.remove('is-in')); // restore reveal-on-scroll for visitors
   // strip inline-editor artefacts (KEEP the user's image size/position inline styles)
-  clone.querySelectorAll('#d7-editor-style,#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides').forEach(el=>el.remove());
+  clone.querySelectorAll('#d7-editor-style,#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar').forEach(el=>el.remove());
+  clone.querySelectorAll('.d7-ihi').forEach(el=>el.classList.remove('d7-ihi'));
   clone.querySelectorAll('[data-d7del]').forEach(el=>el.remove()); // actually remove deleted elements from the delivered file
   clone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
   clone.querySelectorAll('.d7-hi').forEach(el=>el.classList.remove('d7-hi'));
   // persist "remove decoration": the editor CSS is stripped, so bake a rule for [data-d7nodeco] (and keep the attribute)
   if(clone.querySelector('[data-d7nodeco]')){ const nd=doc.createElement('style'); nd.textContent='[data-d7nodeco]::before,[data-d7nodeco]::after{content:none!important;display:none!important}'; (clone.querySelector('head')||clone).appendChild(nd); }
-  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
+  // same for the icon choices: bake the rules, keep the attributes that drive them
+  if(clone.getAttribute('data-d7icons')==='off' || clone.querySelector('[data-d7iconoff]')){
+    const ic=doc.createElement('style');
+    ic.textContent='[data-d7icons="off"] [data-d7icon]{display:none!important}'
+      +'[data-d7icons="off"] [data-d7icondeco]::before,[data-d7icons="off"] [data-d7icondeco]::after{content:none!important;display:none!important}'
+      +'[data-d7iconoff]{display:none!important}';
+    (clone.querySelector('head')||clone).appendChild(ic);
+  } else { // icons all left as they are: drop the marker attributes entirely
+    ['data-d7icon','data-d7icondeco'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
+  }
+  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   // .d7-frame wrappers + .d7-ph placeholders are KEPT (they hold the crop/size/placement and keep the layout stable)
   // make the file self-contained: inline the shared template.css + template.js (bespoke templates use them)
   await inlineAsset(clone,'link[rel="stylesheet"][href*="template.css"]',css=>{const s=doc.createElement('style');s.textContent=css;return s;});
@@ -416,6 +436,20 @@ function d7EditorCSS(){ return [
   '#d7-actbar button{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:5px;padding:6px 9px;cursor:pointer;font:inherit}',
   '#d7-actbar button:hover{background:#00A583}',
   '#d7-actbar button.d7-del:hover{background:#d8513f}',
+  // ---- Icons: hidden site-wide via the toolbar, or one at a time ----
+  '[data-d7icons="off"] [data-d7icon]{display:none!important}',
+  '[data-d7icons="off"] [data-d7icondeco]::before,[data-d7icons="off"] [data-d7icondeco]::after{content:none!important;display:none!important}',
+  '[data-d7iconoff]{display:none!important}',
+  '[data-d7icon]{cursor:pointer}',
+  '[data-d7icon].d7-ihi{outline:2px solid #00A583;outline-offset:3px;border-radius:4px}',
+  '#d7-iconbar{position:absolute;z-index:2147483002;display:flex;gap:5px;align-items:center;background:#0B362A;color:#fff;border-radius:9px;padding:6px 7px;font:600 11px/1 Inter,sans-serif;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.34)}',
+  '#d7-iconbar button{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:6px;width:30px;height:30px;display:grid;place-items:center;cursor:pointer;padding:0}',
+  '#d7-iconbar button:hover{background:#00A583}',
+  '#d7-iconbar button svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}',
+  '#d7-iconbar .d7-ib-txt{width:auto;padding:0 9px;font:inherit}',
+  '#d7-iconbar .d7-ib-del:hover{background:#d8513f}',
+  '#d7-iconbar .d7-ib-lbl{opacity:.7;padding:0 5px 0 3px}',
+  '#d7-iconbar .d7-ib-sep{width:1px;height:20px;background:rgba(255,255,255,.26);margin:0 2px}',
   '#d7-guides{position:fixed;inset:0;pointer-events:none;z-index:2147483040}',
   '#d7-guides .d7-gl{position:fixed;background:#FF2D55;box-shadow:0 0 0 .5px rgba(255,45,85,.35)}',
   '#d7-guides .d7-gl.v{top:0;bottom:0;width:1.5px}',
@@ -439,15 +473,125 @@ function d7EditorCSS(){ return [
 function d7HasText(el){ for(const n of el.childNodes){ if(n.nodeType===3 && n.textContent.trim()) return true; } return false; }
 function d7TextTarget(el){
   if(!el||el.nodeType!==1) return null;
-  if(el.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides')) return null;
+  if(el.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar')) return null;
   let n=el;
   while(n && n!==doc.body){ if(d7HasText(n)) return n; n=n.parentElement; }
   return null;
 }
 function d7ClearHi(){ doc.querySelectorAll('.d7-hi').forEach(e=>e.classList.remove('d7-hi')); }
+/* ---- Icons -----------------------------------------------------------
+   Templates draw small marks three different ways: an inline <svg>, an empty
+   <i> styled with CSS, and a ::before on an element that also holds text.
+   Tag all three so the toolbar can hide the lot, and so a single <svg> can be
+   clicked and swapped for one of the presets below. Only inline SVGs can be
+   swapped; the CSS-drawn ones can be hidden but not redrawn. -------------- */
+const D7_ICONS=[
+  {k:'Check',  d:'<path d="M20 6L9 17l-5-5"/>'},
+  {k:'Heart',  d:'<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 10-7.8 7.8l1.1 1L12 21l7.7-7.6 1.1-1a5.5 5.5 0 000-7.8z"/>'},
+  {k:'People', d:'<path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.9"/><path d="M16 3.1a4 4 0 010 7.8"/>'},
+  {k:'Chat',   d:'<path d="M21 11.5a8.4 8.4 0 01-9 8.4 9 9 0 01-4-.9L3 21l1.9-5a8.4 8.4 0 01-.9-4 8.4 8.4 0 018.4-8.4h.6a8.4 8.4 0 018 8z"/>'},
+  {k:'Leaf',   d:'<path d="M11 20A7 7 0 019.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8a7 7 0 01-10 10z"/><path d="M2 21c0-3 1.9-5.7 4.5-7"/>'},
+  {k:'Star',   d:'<path d="M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6-5.3-2.9L6.7 19.6l1.1-6L3.4 9.4l6-.8z"/>'},
+  {k:'Shield', d:'<path d="M12 3l8 3v6c0 4.6-3.4 8.3-8 9-4.6-.7-8-4.4-8-9V6z"/>'},
+  {k:'Clock',  d:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'}
+];
+const D7_SVGATTRS=['viewBox','fill','stroke','stroke-width','stroke-linecap','stroke-linejoin'];
+function d7MarkIcons(){
+  if(!doc) return; const win=doc.defaultView;
+  doc.body.querySelectorAll('svg').forEach(s=>{
+    if(s.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar')) return;
+    const b=s.getBoundingClientRect();
+    if(b.width>72||b.height>72) return;        // an illustration, not an icon
+    s.setAttribute('data-d7icon','svg');
+  });
+  doc.body.querySelectorAll('i,em,span').forEach(el=>{
+    if(el.children.length||(el.textContent||'').trim()) return;   // must be an empty glyph
+    if(el.hasAttribute('data-d7icon')) return;
+    const b=el.getBoundingClientRect(); if(b.width<4||b.width>48||b.height>48) return;
+    el.setAttribute('data-d7icon','css');
+  });
+  // a ::before glyph on an element that also carries text: hide the pseudo only
+  doc.body.querySelectorAll('li,p,h3,h4,a,div,span').forEach(el=>{
+    if(el.hasAttribute('data-d7icon')||el.hasAttribute('data-d7icondeco')) return;
+    ['::before','::after'].forEach(ps=>{
+      if(el.hasAttribute('data-d7icondeco')) return;
+      let cs; try{ cs=win.getComputedStyle(el,ps); }catch(e){ return; }
+      if(!cs||cs.content==='none'||cs.content==='normal') return;
+      const w=parseFloat(cs.width)||0, h=parseFloat(cs.height)||0;
+      if(w>0&&w<=34&&h>0&&h<=34) el.setAttribute('data-d7icondeco','1');
+    });
+  });
+}
+function d7SetIcon(el,g){
+  if(!el||el.tagName.toLowerCase()!=='svg') return;
+  if(!el.hasAttribute('data-d7icon0')){
+    const a={}; D7_SVGATTRS.forEach(n=>{ a[n]=el.getAttribute(n); });
+    el.setAttribute('data-d7icon0', JSON.stringify({a:a,h:el.innerHTML}));
+  }
+  el.setAttribute('viewBox','0 0 24 24'); el.setAttribute('fill','none');
+  el.setAttribute('stroke','currentColor'); el.setAttribute('stroke-width','2');
+  el.setAttribute('stroke-linecap','round'); el.setAttribute('stroke-linejoin','round');
+  el.innerHTML=g.d;
+}
+function d7RestoreIcon(el){
+  if(!el) return; el.removeAttribute('data-d7iconoff');
+  const raw=el.getAttribute('data-d7icon0'); if(!raw) return;
+  try{ const o=JSON.parse(raw);
+    D7_SVGATTRS.forEach(n=>{ if(o.a[n]==null) el.removeAttribute(n); else el.setAttribute(n,o.a[n]); });
+    el.innerHTML=o.h;
+  }catch(e){}
+  el.removeAttribute('data-d7icon0');
+}
+let d7IconSel=null;
+function d7IconBar(){
+  let b=doc.getElementById('d7-iconbar'); if(b) return b;
+  b=doc.createElement('div'); b.id='d7-iconbar';
+  let html='<span class="d7-ib-lbl">Icon</span>';
+  D7_ICONS.forEach((g,i)=>{ html+='<button data-ig="'+i+'" title="'+g.k+'"><svg viewBox="0 0 24 24">'+g.d+'</svg></button>'; });
+  html+='<span class="d7-ib-sep"></span>'
+      + '<button class="d7-ib-txt" data-ia="reset" title="Put the original icon back">Reset</button>'
+      + '<button class="d7-ib-txt d7-ib-del" data-ia="remove" title="Hide this icon">Remove</button>';
+  b.innerHTML=html;
+  doc.body.appendChild(b);
+  b.addEventListener('mousedown',e=>e.stopPropagation());
+  b.addEventListener('click',e=>{
+    const t=e.target.closest('button'); if(!t||!d7IconSel) return;
+    e.preventDefault(); e.stopPropagation(); d7HistPush();
+    const ig=t.getAttribute('data-ig'), ia=t.getAttribute('data-ia');
+    if(ig!=null) d7SetIcon(d7IconSel, D7_ICONS[+ig]);
+    else if(ia==='remove'){ d7IconSel.setAttribute('data-d7iconoff','1'); d7DeselectIcon(); return; }
+    else if(ia==='reset') d7RestoreIcon(d7IconSel);
+  });
+  return b;
+}
+function d7SelectIcon(el){
+  d7DeselectIcon(); d7IconSel=el; el.classList.add('d7-ihi');
+  const bar=d7IconBar(), win=doc.defaultView, r=el.getBoundingClientRect();
+  // swapping only applies to inline SVG; a CSS-drawn mark can only be hidden
+  const isSvg=el.tagName.toLowerCase()==='svg';
+  bar.querySelectorAll('[data-ig]').forEach(b=>{ b.style.display=isSvg?'':'none'; });
+  bar.querySelector('[data-ia=reset]').style.display=isSvg?'':'none';
+  bar.querySelector('.d7-ib-lbl').textContent=isSvg?'Icon':'CSS icon';
+  bar.style.display='flex';
+  const bh=bar.offsetHeight||40; let y=r.top+win.scrollY-bh-8;
+  if(y<win.scrollY+4) y=r.bottom+win.scrollY+8;
+  bar.style.top=y+'px';
+  bar.style.left=Math.max(6,Math.min(r.left+win.scrollX, win.scrollX+win.innerWidth-bar.offsetWidth-6))+'px';
+}
+function d7DeselectIcon(){
+  if(d7IconSel){ d7IconSel.classList.remove('d7-ihi'); d7IconSel=null; }
+  const b=doc&&doc.getElementById('d7-iconbar'); if(b) b.style.display='none';
+}
+let d7IconMode='on';
+function d7ApplyIconMode(){
+  if(!doc) return;
+  if(d7IconMode==='off'){ doc.documentElement.setAttribute('data-d7icons','off'); d7DeselectIcon(); }
+  else doc.documentElement.removeAttribute('data-d7icons');
+}
 function initInlineEditor(){
   if(!doc || doc.__d7ed) return; doc.__d7ed=true; d7Sel=null; d7EditEl=null; d7SelBox=null;
   const st=doc.createElement('style'); st.id='d7-editor-style'; st.textContent=d7EditorCSS(); doc.head.appendChild(st);
+  d7MarkIcons(); d7ApplyIconMode();
   const body=doc.body;
   body.addEventListener('mouseover',e=>{ if(d7drag)return; d7ClearHi();
     if(e.target.tagName==='IMG'){ e.target.classList.add('d7-hi'); return; }
@@ -455,7 +599,11 @@ function initInlineEditor(){
   body.addEventListener('mouseout',()=>{ if(!d7drag) d7ClearHi(); });
   body.addEventListener('click',e=>{
     const tgt=e.target;
-    if(tgt.closest && tgt.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides')) return;
+    if(tgt.closest && tgt.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar')) return;
+    // an icon takes the click before text editing, so the picker is reachable
+    const ic=tgt.closest && tgt.closest('[data-d7icon]');
+    if(ic){ e.preventDefault(); e.stopPropagation(); d7Deselect(); d7SelectIcon(ic); return; }
+    d7DeselectIcon();
     if(e.altKey){ const im=d7ImgUnder(e.clientX,e.clientY); if(im){ e.preventDefault(); e.stopPropagation(); d7SelectImg(im); return; } } // grab an image behind other content
     if(tgt.tagName==='IMG'){ e.preventDefault(); e.stopPropagation(); d7SelectImg(tgt); return; }
     const t=d7TextTarget(tgt);
@@ -465,7 +613,7 @@ function initInlineEditor(){
     d7Deselect();
   }, true);
   body.addEventListener('contextmenu',e=>{
-    if(e.target.closest && e.target.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides')) return;
+    if(e.target.closest && e.target.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar')) return;
     e.preventDefault();
     const img=(e.target.tagName==='IMG')?e.target:(e.altKey?d7ImgUnder(e.clientX,e.clientY):null);
     if(img){ d7SelectImg(img); d7ShowMenu(e.clientX,e.clientY,img); }
@@ -630,7 +778,7 @@ function d7SetReframe(on){ d7Reframe=!!on;
   const b=doc.querySelector('#d7-imgbar .d7-reframe'); if(b) b.classList.toggle('on',d7Reframe);
   const box=doc.getElementById('d7-imgbox'); if(box) box.classList.toggle('d7-panmode',d7Reframe);
 }
-function d7Deselect(){ d7CommitText(); d7Sel=null; d7SelBox=null; d7SetReframe(false); d7ClearGuides(); ['d7-imgbox','d7-imgbar','d7-ctx','d7-txtbar','d7-actbar'].forEach(id=>{ const e=doc.getElementById(id); if(e)e.style.display='none'; }); }
+function d7Deselect(){ d7CommitText(); d7Sel=null; d7SelBox=null; d7SetReframe(false); d7ClearGuides(); ['d7-imgbox','d7-imgbar','d7-ctx','d7-txtbar','d7-actbar','d7-iconbar'].forEach(id=>{ const e=doc.getElementById(id); if(e)e.style.display='none'; }); }
 // ---- Smart alignment guides (Canva-style): snap a dragged/resized box to other elements'
 //      edges & centres and the page centre, popping a pink line when they line up. ----
 const D7_SNAP=6; // px threshold
@@ -642,7 +790,7 @@ function d7Guide(vertical,pos){ let g=doc.getElementById('d7-guides'); if(!g){ g
 function d7CollectSizes(exclude){
   const ws=[], hs=[], seen=[];
   doc.body.querySelectorAll('img').forEach(im=>{
-    if(im.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides'))return;
+    if(im.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar'))return;
     // Measure whatever the editor would treat as THIS image's frame, so the
     // figures compare like with like. Comparing a dragged frame's outer size
     // against a bare img's inner size is out by the frame's border.
@@ -675,7 +823,7 @@ function d7CollectTargets(exclude){
   addX(win.innerWidth/2); // page horizontal centre
   doc.body.querySelectorAll('[data-field],[data-img],section,header,footer,h1,h2,h3,p,img,button,a,.btn').forEach(el=>{
     if(el===exclude||exclude.contains(el)||el.contains(exclude))return;
-    if(el.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides'))return;
+    if(el.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar'))return;
     const b=el.getBoundingClientRect(); if(b.width<8||b.height<8||b.bottom<0||b.top>win.innerHeight)return;
     addX(b.left); addX(b.left+b.width/2); addX(b.right); addY(b.top); addY(b.top+b.height/2); addY(b.bottom); });
   return {xs,ys};
@@ -734,13 +882,13 @@ function d7UndoDelete(){ const el=d7DelStack.pop(); if(el){ el.style.display='';
 // ---- Undo / Redo: snapshot the live preview content before each edit, step back/forward ----
 let d7Hist=[], d7Future=[], d7SnapLock=false;
 function d7SnapHTML(){ if(!doc)return ''; const b=doc.body.cloneNode(true);
-  b.querySelectorAll('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides').forEach(e=>e.remove()); // never capture editor overlays
+  b.querySelectorAll('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar').forEach(e=>e.remove()); // never capture editor overlays
   b.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
-  b.querySelectorAll('.d7-hi').forEach(e=>e.classList.remove('d7-hi'));
+  b.querySelectorAll('.d7-hi,.d7-ihi').forEach(e=>{e.classList.remove('d7-hi');e.classList.remove('d7-ihi');});
   return b.innerHTML; }
 function d7HistPush(){ if(d7SnapLock||!doc)return; d7Hist.push(d7SnapHTML()); if(d7Hist.length>30)d7Hist.shift(); d7Future.length=0; d7UpdateHistBtns(); }
-function d7RestoreHTML(html){ if(!doc)return; d7CommitText(); d7Deselect();
-  const keep=[]; ['d7-imgbox','d7-imgbar','d7-ctx','d7-txtbar','d7-actbar'].forEach(id=>{ const e=doc.getElementById(id); if(e){ keep.push(e); e.remove(); } });
+function d7RestoreHTML(html){ if(!doc)return; d7CommitText(); d7Deselect(); d7DeselectIcon();
+  const keep=[]; ['d7-imgbox','d7-imgbar','d7-ctx','d7-txtbar','d7-actbar','d7-iconbar'].forEach(id=>{ const e=doc.getElementById(id); if(e){ keep.push(e); e.remove(); } });
   d7SnapLock=true; doc.body.innerHTML=html; d7SnapLock=false; // body-level listeners survive (editor uses delegation)
   keep.forEach(e=>doc.body.appendChild(e)); d7DelStack=[]; }
 function d7DoUndo(){ if(!d7Hist.length||!doc){ return; } d7Future.push(d7SnapHTML()); d7RestoreHTML(d7Hist.pop()); d7UpdateHistBtns(); toast('Undo'); }
