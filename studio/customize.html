@@ -851,8 +851,13 @@ function d7Frame(img){ const p=img&&img.parentElement; return (p&&p.classList&&p
 function d7AdoptableWrap(img){
   const p=img.parentElement; if(!p||p===doc.body||p.tagName==='PICTURE') return null;
   if(p.classList&&p.classList.contains('d7-frame')) return p;
-  if(p.children.length!==1) return null;              // must hold this image alone
-  if((p.textContent||'').trim()) return null;         // ...and no text of its own
+  // The wrapper may also hold things pinned on top of the image, a tag or a
+  // caption pill; those belong to the frame and ride along with it. Anything
+  // in normal flow means this is a layout container, not this image's frame.
+  const win0=doc.defaultView;
+  const sibs=[].slice.call(p.children).filter(c=>c!==img);
+  if(sibs.some(c=>{ const cs=win0.getComputedStyle(c); return cs.position!=='absolute'&&cs.position!=='fixed'; })) return null;
+  for(const n of p.childNodes){ if(n.nodeType===3 && n.nodeValue.trim()) return null; } // no loose text of its own
   const cs=doc.defaultView.getComputedStyle(p);
   const decorated =
        (cs.borderRadius && cs.borderRadius!=='0px')
@@ -1084,9 +1089,12 @@ function d7Unclip(fr){ const win=doc.defaultView;
     // Leave page-level containers clipping. Releasing a card's overflow lets you
     // drag an image out of it; releasing a full-width section's lets a resized
     // background spill across the whole page.
-    const b=n.getBoundingClientRect();
+    const b=n.getBoundingClientRect(), ncs=win.getComputedStyle(n);
     const pageLevel = b.width>=win.innerWidth*0.9 && b.height>=win.innerHeight*0.9;
-    if(!pageLevel && win.getComputedStyle(n).overflow!=='visible'){ if(!n.hasAttribute('data-d7ov')) n.setAttribute('data-d7ov', n.style.overflow||''); n.style.overflow='visible'; }
+    // A rounded ancestor is clipping to make the shape, not to hide overflow.
+    // Releasing it squares off the corners, which is the whole look.
+    const rounded = ncs.borderRadius && ncs.borderRadius!=='0px';
+    if(!pageLevel && !rounded && ncs.overflow!=='visible'){ if(!n.hasAttribute('data-d7ov')) n.setAttribute('data-d7ov', n.style.overflow||''); n.style.overflow='visible'; }
     n=n.parentElement;
   }
 }
