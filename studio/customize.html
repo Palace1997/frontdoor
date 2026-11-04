@@ -899,7 +899,7 @@ function d7EnsureTextBar(){
     +'<span class="d7-sep"></span><button data-t="bold" style="font-weight:800">B</button><button data-t="italic" style="font-style:italic">I</button>'
     +'<span class="d7-sep"></span><button data-t="left" title="Align left">☷</button><button data-t="center" title="Align centre">≡</button><button data-t="right" title="Align right">☷</button>'
     +'<span class="d7-sep"></span><button data-t="movebox" title="Move or resize the whole block this text sits in">Move / size</button>'
-    +'<span class="d7-sep"></span><button data-t="nodeco" title="Remove the dot or line before this text">Remove dot</button><button data-t="del" class="d7-del" title="Delete this element">Delete</button>'
+    +'<span class="d7-sep"></span><button data-t="nodeco" title="Remove the dot, dash or line drawn before this text">Remove dot</button><button data-t="del" class="d7-del" title="Delete this element">Delete</button>'
     +'<span class="d7-sep"></span><button data-t="done">Done</button>';
   doc.body.appendChild(b);
   b.addEventListener('mousedown',e=>{ if(e.target.tagName!=='INPUT' && e.target.tagName!=='SELECT') e.preventDefault(); }); // keep text focused, but let the font select open
@@ -944,7 +944,11 @@ function d7ShowTextBar(el){
   const col=d7RgbToHex(cs.color); if(col) b.querySelector('input[type=color]').value=col;
   b.querySelector('[data-t="bold"]').classList.toggle('on', parseInt(cs.fontWeight)>=600);
   b.querySelector('[data-t="italic"]').classList.toggle('on', cs.fontStyle==='italic');
-  b.querySelector('[data-t="nodeco"]').style.display = d7HasDeco(el)?'':'none'; // only offer "Remove dot" when there's a ::before/::after to hide
+  // only offer the control when something is actually drawn, and name the mark
+  const nd=b.querySelector('[data-t="nodeco"]');
+  const shape=d7DecoShape(el);
+  nd.style.display = shape?'':'none';
+  if(shape) nd.textContent = d7DecoLabel(el);
 }
 function d7TextAction(t){ const el=d7EditEl; if(t==='done'){ d7CommitText(); return; } if(!el)return;
   const bar=doc.getElementById('d7-txtbar'), cs=doc.defaultView.getComputedStyle(el);
@@ -1241,8 +1245,28 @@ function d7EnsureMenu(){
   m.addEventListener('click',e=>{ const a=e.target.getAttribute&&e.target.getAttribute('data-m'); if(a){ d7MenuAction(a); m.style.display='none'; } });
   return m;
 }
-function d7HasDeco(el){ try{ const w=doc.defaultView, b=w.getComputedStyle(el,'::before').content, a=w.getComputedStyle(el,'::after').content;
-  return (b&&b!=='none'&&b!=='normal')||(a&&a!=='none'&&a!=='normal'); }catch(e){ return false; } }
+function d7HasDeco(el){ return !!d7DecoShape(el); }
+// Which kind of mark sits before the text, so the button can say what it will
+// remove. Eyebrows are decorated with a dash far more often than a dot, and a
+// button reading "Remove dot" next to a line does not look like the control
+// you want. Returns 'line', 'dot', or null when there is nothing drawn.
+function d7DecoShape(el){
+  if(!el||!el.nodeType||el.nodeType!==1) return null;
+  try{
+    const w=doc.defaultView; let shape=null;
+    ['::before','::after'].forEach(ps=>{
+      if(shape) return;
+      const cs=w.getComputedStyle(el,ps);
+      if(!cs || cs.content==='none' || cs.content==='normal') return;
+      if(cs.display==='none' || cs.visibility==='hidden') return;   // template already hides it
+      const ww=parseFloat(cs.width)||0, hh=parseFloat(cs.height)||0;
+      if(ww<=0 && hh<=0) { shape='dot'; return; }                   // a glyph, measured as text
+      shape = (ww>=hh*2.5) ? 'line' : 'dot';
+    });
+    return shape;
+  }catch(e){ return null; }
+}
+function d7DecoLabel(el){ return d7DecoShape(el)==='line' ? 'Remove line' : 'Remove dot'; }
 function d7DeleteEl(el){ if(!el||el===doc.body)return; d7HistPush(); el.setAttribute('data-d7del','1'); el.style.display='none'; d7DelStack.push(el); toast('Deleted, Ctrl+Z to undo'); }
 function d7UndoDelete(){ const el=d7DelStack.pop(); if(el){ el.style.display=''; el.removeAttribute('data-d7del'); toast('Restored'); } }
 // ---- Undo / Redo: snapshot the live preview content before each edit, step back/forward ----
@@ -1271,7 +1295,7 @@ function d7ShowMenu(x,y,el){
   } else { d7CtxEl=el;
     html+='<button data-m="movebox">Move / resize</button>';
     if(d7TextTarget(el)) html+='<button data-m="edittext">Edit text</button>';
-    if(d7HasDeco(el)) html+='<button data-m="nodeco">Remove line / decoration</button>';
+    if(d7HasDeco(el)) html+='<button data-m="nodeco">'+d7DecoLabel(el)+'</button>';
     html+='<hr><button data-m="centerh">Center horizontally</button><button data-m="centerv">Center vertically</button>';
     html+='<hr><button data-m="front">Bring to front</button><button data-m="back">Send to back</button>';
     html+='<hr><button data-m="delete">Delete this</button>';
