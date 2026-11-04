@@ -1254,7 +1254,8 @@ body::after{
    Inter Tight headline, brand icon tile cycles word by word, cream strip
    with a curved notch underneath. Scoped to .pk-* so nothing else moves.
    ===================================================================== */
-#features{ padding:0; --pk-ink:#0D0D0C; --pk-cream:#FBF6EF; --pk-tint:#3FB874; }
+#features{ padding:0; --pk-ink:#0D0D0C; --pk-cream:#FBF6EF; --pk-tint:#3FB874;
+  --pk-sand:#F3EFE7; --pk-mint:#EAF4EE; --pk-oat:#F6F0E6; --pk-deep:#E6F2EB; }
 #features.section--dark{ background:var(--pk-cream); color:var(--pk-ink); }
 .pk-panel{ position:relative; min-height:74vh; display:flex; overflow:hidden; isolation:isolate;
   background:var(--pk-cream); }
@@ -1316,11 +1317,23 @@ body::after{
 /* static grid of everything included, with a staggered entrance on open */
 .pk-grid{ background:var(--pk-cream); font-family:var(--font-sans); color:var(--ink);
   padding:clamp(46px,6vw,88px) clamp(22px,5vw,80px) clamp(50px,7vw,98px); }
-.pk-grid-in{ max-width:1180px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr);
-  gap:clamp(30px,3.6vw,56px); }
-.pk-item-ic{ display:block; width:clamp(42px,3.4vw,52px); height:clamp(42px,3.4vw,52px);
-  color:var(--pk-tint); margin-bottom:clamp(12px,1.2vw,18px); }
-.pk-item-ic svg{ width:100%; height:100%; display:block; }
+/* Bento: a 4-column grid of tinted tiles with one tall anchor. No borders, the
+   tiles are told apart by three soft washes instead. */
+.pk-grid-in{ max-width:1180px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr);
+  gap:clamp(11px,1.1vw,16px); }
+.pk-item{ border-radius:clamp(18px,1.7vw,26px); padding:clamp(19px,1.9vw,28px); background:var(--pk-sand); }
+.pk-item:nth-child(3n+2){ background:var(--pk-mint); }
+.pk-item:nth-child(3n+3){ background:var(--pk-oat); }
+.pk-item.pk-item--w2{ grid-column:span 2; }
+.pk-item.pk-item--lg{ grid-column:span 2; grid-row:span 2; background:var(--pk-deep);
+  display:flex; flex-direction:column; justify-content:space-between; }
+.pk-item.pk-item--lg h3{ font-size:clamp(22px,2.2vw,30px); margin-bottom:10px; }
+.pk-item.pk-item--lg p{ font-size:clamp(15px,1.3vw,17px); max-width:32ch; }
+.pk-item-ic{ display:grid; place-items:center; width:clamp(42px,3.4vw,50px); height:clamp(42px,3.4vw,50px);
+  border-radius:50%; background:rgba(255,255,255,.76); margin-bottom:clamp(12px,1.2vw,18px); }
+.pk-item-ic svg{ width:46%; height:46%; display:block; fill:none; stroke:var(--green);
+  stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
+.pk-item--lg .pk-item-ic{ width:clamp(52px,4.2vw,60px); height:clamp(52px,4.2vw,60px); }
 .pk-item h3{ font-family:var(--font-display); font-size:clamp(18px,1.5vw,21px); font-weight:500; letter-spacing:-.01em;
   line-height:1.25; text-transform:none; color:var(--ink); margin:0 0 8px; }
 .pk-item p{ font-size:clamp(14.5px,1.2vw,16px); line-height:1.55; color:var(--g-500); margin:0; }
@@ -1333,8 +1346,10 @@ body::after{
 .pk-item.reveal:nth-child(7){ transition-delay:.40s }
 .pk-item.reveal:nth-child(8){ transition-delay:.46s }
 .pk-item.reveal:nth-child(9){ transition-delay:.52s }
-@media (max-width:900px){ .pk-grid-in{ grid-template-columns:repeat(2,1fr); } }
-@media (max-width:560px){ .pk-grid-in{ grid-template-columns:1fr; } }
+@media (max-width:900px){ .pk-grid-in{ grid-template-columns:repeat(2,1fr); }
+  .pk-item.pk-item--lg{ grid-row:auto; } }
+@media (max-width:560px){ .pk-grid-in{ grid-template-columns:1fr; }
+  .pk-item.pk-item--lg,.pk-item.pk-item--w2{ grid-column:span 1; } }
 
 /* full-bleed marquee of everything included */
 .pk-marquee{ margin-top:clamp(24px,3vw,40px); overflow:hidden;
