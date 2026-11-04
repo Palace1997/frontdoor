@@ -159,9 +159,6 @@ iframe{width:100%;height:100%;border:0;display:block}
         </select>
       </div>
       <div class="seg"><button data-w="desktop" class="on">Desktop</button><button data-w="mobile">Mobile</button></div>
-      <!-- some clients want no decorative icons at all; this hides every one
-           on the site in a single click, and the choice is kept on export -->
-      <div class="seg" id="iconSeg" title="Show or hide the decorative icons across this site"><button data-ic="on" class="on">Icons on</button><button data-ic="off">Icons off</button></div>
       <a href="../index.html" id="closeStudio" class="close-x" title="Close Studio, back to homepage" aria-label="Close Studio">&times;</a>
     </div>
     <div class="preview__stage"><div class="frameWrap" id="frameWrap"><iframe id="frame" src="editable-practice.html"></iframe></div></div>
@@ -433,9 +430,6 @@ document.querySelectorAll('.seg').forEach(seg=>seg.addEventListener('click',e=>{
   if(b.dataset.w){
     document.getElementById('frameWrap').classList.toggle('mobile',b.dataset.w==='mobile');
     if(typeof d7Deselect==='function') d7Deselect(); // overlay coords go stale when the frame resizes
-  } else if(b.dataset.ic && typeof d7ApplyIconMode==='function'){
-    d7IconMode=b.dataset.ic; d7ApplyIconMode();
-    toast(b.dataset.ic==='off'?'Icons hidden across the site':'Icons shown');
   }
 }));
 
@@ -488,15 +482,14 @@ document.getElementById('download').addEventListener('click',async ()=>{
     (clone.querySelector('head')||clone).appendChild(lg); }
   if(clone.querySelector('[data-d7nodeco]')){ const nd=doc.createElement('style'); nd.textContent='[data-d7nodeco]::before,[data-d7nodeco]::after{content:none!important;display:none!important}'; (clone.querySelector('head')||clone).appendChild(nd); }
   // same for the icon choices: bake the rules, keep the attributes that drive them
-  if(clone.getAttribute('data-d7icons')==='off' || clone.querySelector('[data-d7iconoff]')){
+  // persist any icon the user removed one at a time, then drop the markers the
+  // editor used to find icons in the first place
+  if(clone.querySelector('[data-d7iconoff]')){
     const ic=doc.createElement('style');
-    ic.textContent='[data-d7icons="off"] [data-d7icon]{display:none!important}'
-      +'[data-d7icons="off"] [data-d7icondeco]::before,[data-d7icons="off"] [data-d7icondeco]::after{content:none!important;display:none!important}'
-      +'[data-d7iconoff]{display:none!important}';
+    ic.textContent='[data-d7iconoff]{display:none!important}';
     (clone.querySelector('head')||clone).appendChild(ic);
-  } else { // icons all left as they are: drop the marker attributes entirely
-    ['data-d7icon','data-d7icondeco'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   }
+  clone.querySelectorAll('[data-d7icon]').forEach(el=>el.removeAttribute('data-d7icon'));
   ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0','data-d7logo','data-d7logotext','data-d7auto','data-d7imgstyle','data-d7frstyle','data-d7pre','data-d7tr','data-d7cb'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   // .d7-frame wrappers + .d7-ph placeholders are KEPT (they hold the crop/size/placement and keep the layout stable)
   // make the file self-contained: inline the shared template.css + template.js (bespoke templates use them)
@@ -577,8 +570,6 @@ function d7EditorCSS(){ return [
   '#d7-actbar button:hover{background:#00A583}',
   '#d7-actbar button.d7-del:hover{background:#d8513f}',
   // ---- Icons: hidden site-wide via the toolbar, or one at a time ----
-  '[data-d7icons="off"] [data-d7icon]{display:none!important}',
-  '[data-d7icons="off"] [data-d7icondeco]::before,[data-d7icons="off"] [data-d7icondeco]::after{content:none!important;display:none!important}',
   '[data-d7iconoff]{display:none!important}',
   '[data-d7icon]{cursor:pointer}',
   '[data-d7icon].d7-ihi{outline:2px solid #00A583;outline-offset:3px;border-radius:4px}',
@@ -650,7 +641,7 @@ const D7_ICONS=[
 ];
 const D7_SVGATTRS=['viewBox','fill','stroke','stroke-width','stroke-linecap','stroke-linejoin'];
 function d7MarkIcons(){
-  if(!doc) return; const win=doc.defaultView;
+  if(!doc) return;
   doc.body.querySelectorAll('svg').forEach(s=>{
     if(s.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar')) return;
     const b=s.getBoundingClientRect();
@@ -662,17 +653,6 @@ function d7MarkIcons(){
     if(el.hasAttribute('data-d7icon')) return;
     const b=el.getBoundingClientRect(); if(b.width<4||b.width>48||b.height>48) return;
     el.setAttribute('data-d7icon','css');
-  });
-  // a ::before glyph on an element that also carries text: hide the pseudo only
-  doc.body.querySelectorAll('li,p,h3,h4,a,div,span').forEach(el=>{
-    if(el.hasAttribute('data-d7icon')||el.hasAttribute('data-d7icondeco')) return;
-    ['::before','::after'].forEach(ps=>{
-      if(el.hasAttribute('data-d7icondeco')) return;
-      let cs; try{ cs=win.getComputedStyle(el,ps); }catch(e){ return; }
-      if(!cs||cs.content==='none'||cs.content==='normal') return;
-      const w=parseFloat(cs.width)||0, h=parseFloat(cs.height)||0;
-      if(w>0&&w<=34&&h>0&&h<=34) el.setAttribute('data-d7icondeco','1');
-    });
   });
 }
 function d7SetIcon(el,g){
@@ -739,16 +719,10 @@ function d7DeselectIcon(){
   if(d7IconSel){ d7IconSel.classList.remove('d7-ihi'); d7IconSel=null; }
   const b=doc&&doc.getElementById('d7-iconbar'); if(b) b.style.display='none';
 }
-let d7IconMode='on';
-function d7ApplyIconMode(){
-  if(!doc) return;
-  if(d7IconMode==='off'){ doc.documentElement.setAttribute('data-d7icons','off'); d7DeselectIcon(); }
-  else doc.documentElement.removeAttribute('data-d7icons');
-}
 function initInlineEditor(){
   if(!doc || doc.__d7ed) return; doc.__d7ed=true; d7Sel=null; d7EditEl=null; d7SelBox=null;
   const st=doc.createElement('style'); st.id='d7-editor-style'; st.textContent=d7EditorCSS(); doc.head.appendChild(st);
-  d7MarkIcons(); d7ApplyIconMode();
+  d7MarkIcons();
   const body=doc.body;
   body.addEventListener('mouseover',e=>{ if(d7drag)return; d7ClearHi();
     if(e.target.tagName==='IMG'){ e.target.classList.add('d7-hi'); return; }
