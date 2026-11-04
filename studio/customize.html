@@ -448,7 +448,7 @@ document.getElementById('download').addEventListener('click',async ()=>{
   const so=clone.querySelector('#d7-studio-only'); if(so)so.remove(); // keep scroll animations in the delivered file
   clone.querySelectorAll('.reveal.is-in').forEach(e=>e.classList.remove('is-in')); // restore reveal-on-scroll for visitors
   // strip inline-editor artefacts (KEEP the user's image size/position inline styles)
-  clone.querySelectorAll('#d7-editor-style,#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar').forEach(el=>el.remove());
+  clone.querySelectorAll('#d7-editor-style,#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar,#d7-gapband,#d7-gaphandle').forEach(el=>el.remove());
   clone.querySelectorAll('.d7-ihi').forEach(el=>el.classList.remove('d7-ihi'));
   clone.querySelectorAll('.d7-pvhi').forEach(el=>el.classList.remove('d7-pvhi'));
   // A frame the user only ever clicked carries the PREVIEW's pixel width. Shipping
@@ -612,7 +612,14 @@ function d7EditorCSS(){ return [
   '#d7-txtbar .d7-grip:hover,#d7-imgbar .d7-grip:hover{color:#fff}',
   '#d7-txtbar .d7-grip svg,#d7-imgbar .d7-grip svg{width:11px;height:18px;fill:currentColor;display:block}',
   '#d7-txtbar.d7-dragging,#d7-imgbar.d7-dragging{user-select:none}',
-  '#d7-txtbar.d7-dragging .d7-grip,#d7-imgbar.d7-dragging .d7-grip{cursor:grabbing}'
+  '#d7-txtbar.d7-dragging .d7-grip,#d7-imgbar.d7-dragging .d7-grip{cursor:grabbing}',
+  // ---- Spacing handles: drag the empty band above or below a section ----
+  '#d7-gapband{position:fixed;z-index:2147482900;pointer-events:none;background:rgba(0,165,131,.12);'
+    +'border-top:1px dashed rgba(0,165,131,.55);border-bottom:1px dashed rgba(0,165,131,.55)}',
+  '#d7-gaphandle{position:fixed;z-index:2147482901;transform:translateX(-50%);height:20px;padding:0 11px;'
+    +'border-radius:10px;background:#00A583;color:#fff;font:700 10.5px/20px Inter,sans-serif;white-space:nowrap;'
+    +'cursor:ns-resize;pointer-events:auto;box-shadow:0 4px 14px rgba(0,0,0,.28);user-select:none}',
+  '#d7-gaphandle:hover,#d7-gaphandle.on{background:#0B362A}'
 ].join(''); }
 function d7HasText(el){ for(const n of el.childNodes){ if(n.nodeType===3 && n.textContent.trim()) return true; } return false; }
 function d7TextTarget(el){
@@ -719,6 +726,73 @@ function d7DeselectIcon(){
   if(d7IconSel){ d7IconSel.classList.remove('d7-ihi'); d7IconSel=null; }
   const b=doc&&doc.getElementById('d7-iconbar'); if(b) b.style.display='none';
 }
+// ---- Spacing handles. The big empty bands between sections are section
+//      padding. Hovering one shows a grab pill in the middle of it; dragging
+//      down grows the band, dragging up shrinks it, for the band above a
+//      section and the one below it alike. ----
+let d7GapInfo=null, d7GapDrag=false;
+const D7_GAP_MIN=18;      // smaller than this is ordinary spacing, not a gap worth grabbing
+function d7GapParts(){
+  // belt and braces: never leave more than one of each behind
+  const bs=doc.querySelectorAll('[id="d7-gapband"]'), hs=doc.querySelectorAll('[id="d7-gaphandle"]');
+  for(let i=1;i<bs.length;i++) bs[i].remove();
+  for(let i=1;i<hs.length;i++) hs[i].remove();
+  let band=bs[0], h=hs[0];
+  if(!band){ band=doc.createElement('div'); band.id='d7-gapband'; band.style.display='none'; doc.body.appendChild(band); }
+  if(!h){ h=doc.createElement('div'); h.id='d7-gaphandle'; h.style.display='none'; doc.body.appendChild(h);
+    h.addEventListener('mousedown',d7GapStart); }
+  return [band,h];
+}
+// the band under the pointer, innermost first so a nested section wins
+function d7GapFind(x,y){
+  const win=doc.defaultView; let best=null;
+  doc.body.querySelectorAll('section,header,footer,main,article,div').forEach(el=>{
+    if(el.id && el.id.indexOf('d7-')===0) return;
+    const r=el.getBoundingClientRect();
+    if(r.width<win.innerWidth*0.55 || r.height<80) return;     // full-width blocks only
+    if(x<r.left || x>r.right) return;
+    const cs=win.getComputedStyle(el);
+    const pt=parseFloat(cs.paddingTop)||0, pb=parseFloat(cs.paddingBottom)||0;
+    const take=(side,size,top)=>{ if(size<D7_GAP_MIN || y<top || y>top+size) return;
+      if(!best || r.height<best.r.height) best={el,side,size,top,r}; };
+    take('top',pt,r.top);
+    take('bottom',pb,r.bottom-pb);
+  });
+  return best;
+}
+function d7GapShow(info){
+  const [band,h]=d7GapParts();
+  band.style.cssText+=';display:block;left:'+info.r.left+'px;width:'+info.r.width+'px;top:'+info.top+'px;height:'+info.size+'px';
+  h.style.display='block';
+  h.style.left=(info.r.left+info.r.width/2)+'px';
+  h.style.top=(info.top+info.size/2-10)+'px';
+  h.textContent='↕ '+(info.side==='top'?'Space above':'Space below')+' '+Math.round(info.size)+'px';
+  d7GapInfo=info;
+}
+function d7GapHide(){ if(d7GapDrag) return;
+  const band=doc.getElementById('d7-gapband'), h=doc.getElementById('d7-gaphandle');
+  if(band) band.style.display='none'; if(h) h.style.display='none'; d7GapInfo=null;
+}
+function d7GapStart(e){
+  if(!d7GapInfo) return;
+  e.preventDefault(); e.stopPropagation();
+  d7HistPush();
+  const info=d7GapInfo, el=info.el, startY=e.clientY, start=info.size;
+  const prop = info.side==='top' ? 'paddingTop' : 'paddingBottom';
+  const h=doc.getElementById('d7-gaphandle'); h.classList.add('on');
+  d7GapDrag=true;
+  const mv=ev=>{
+    const v=Math.max(0,Math.min(600, Math.round(start+(ev.clientY-startY))));  // down always grows the band
+    el.style[prop]=v+'px';
+    const r=el.getBoundingClientRect();
+    const top = info.side==='top' ? r.top : r.bottom-v;
+    d7GapShow({el,side:info.side,size:v,top,r});
+  };
+  const up=()=>{ doc.removeEventListener('mousemove',mv); doc.removeEventListener('mouseup',up);
+    d7GapDrag=false; h.classList.remove('on');
+    toast((info.side==='top'?'Space above':'Space below')+' set to '+Math.round(parseFloat(el.style[prop])||0)+'px'); };
+  doc.addEventListener('mousemove',mv); doc.addEventListener('mouseup',up);
+}
 function initInlineEditor(){
   if(!doc || doc.__d7ed) return; doc.__d7ed=true; d7Sel=null; d7EditEl=null; d7SelBox=null;
   const st=doc.createElement('style'); st.id='d7-editor-style'; st.textContent=d7EditorCSS(); doc.head.appendChild(st);
@@ -728,6 +802,14 @@ function initInlineEditor(){
     if(e.target.tagName==='IMG'){ e.target.classList.add('d7-hi'); return; }
     const t=d7TextTarget(e.target); if(t) t.classList.add('d7-hi'); });
   body.addEventListener('mouseout',()=>{ if(!d7drag) d7ClearHi(); });
+  // offer a spacing handle whenever the pointer sits in a section's own padding
+  body.addEventListener('mousemove',e=>{
+    if(d7drag||d7GapDrag) return;
+    if(e.target.id && e.target.id.indexOf('d7-')===0) return;   // already over the handle
+    const info=d7GapFind(e.clientX,e.clientY);
+    if(info) d7GapShow(info); else d7GapHide();
+  });
+  doc.defaultView.addEventListener('scroll',d7GapHide,{passive:true});
   body.addEventListener('click',e=>{
     const tgt=e.target;
     if(tgt.closest && tgt.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar')) return;
@@ -1272,12 +1354,16 @@ function d7UndoDelete(){ const el=d7DelStack.pop(); if(el){ el.style.display='';
 // ---- Undo / Redo: snapshot the live preview content before each edit, step back/forward ----
 let d7Hist=[], d7Future=[], d7SnapLock=false;
 function d7SnapHTML(){ if(!doc)return ''; const b=doc.body.cloneNode(true);
-  b.querySelectorAll('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar').forEach(e=>e.remove()); // never capture editor overlays
+  b.querySelectorAll('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar,#d7-gapband,#d7-gaphandle').forEach(e=>e.remove()); // never capture editor overlays
   b.querySelectorAll('[contenteditable]').forEach(e=>e.removeAttribute('contenteditable'));
   b.querySelectorAll('.d7-hi,.d7-ihi').forEach(e=>{e.classList.remove('d7-hi');e.classList.remove('d7-ihi');});
   return b.innerHTML; }
 function d7HistPush(){ if(d7SnapLock||!doc)return; d7Hist.push(d7SnapHTML()); if(d7Hist.length>30)d7Hist.shift(); d7Future.length=0; d7UpdateHistBtns(); }
 function d7RestoreHTML(html){ if(!doc)return; d7CommitText(); d7Deselect(); d7DeselectIcon();
+  // the spacing overlay is deliberately NOT kept: it is a hover affordance, and
+  // stashing then re-appending it raced with the next mousemove rebuilding it,
+  // which left two handles on the page. It comes back on the next hover.
+  doc.querySelectorAll('[id="d7-gapband"],[id="d7-gaphandle"]').forEach(e=>e.remove());
   const keep=[]; ['d7-imgbox','d7-imgbar','d7-ctx','d7-txtbar','d7-actbar','d7-iconbar'].forEach(id=>{ const e=doc.getElementById(id); if(e){ keep.push(e); e.remove(); } });
   d7SnapLock=true; doc.body.innerHTML=html; d7SnapLock=false; // body-level listeners survive (editor uses delegation)
   keep.forEach(e=>doc.body.appendChild(e)); d7DelStack=[]; }
