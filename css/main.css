@@ -1255,7 +1255,8 @@ body::after{
    with a curved notch underneath. Scoped to .pk-* so nothing else moves.
    ===================================================================== */
 #features{ padding:0; --pk-ink:#0D0D0C; --pk-cream:#FBF6EF; --pk-tint:#3FB874;
-  --pk-sand:#F3EFE7; --pk-mint:#EAF4EE; --pk-oat:#F6F0E6; --pk-deep:#E6F2EB; }
+  --pk-sand:#F3EFE7; --pk-mint:#EAF4EE; --pk-oat:#F6F0E6; --pk-deep:#E6F2EB;
+  --pk-sand-h:#EDE8DD; --pk-mint-h:#E0EFE7; --pk-oat-h:#F1E9DA; --pk-deep-h:#DAEBE1; }
 #features.section--dark{ background:var(--pk-cream); color:var(--pk-ink); }
 .pk-panel{ position:relative; min-height:74vh; display:flex; overflow:hidden; isolation:isolate;
   background:var(--pk-cream); }
@@ -1334,18 +1335,41 @@ body::after{
 .pk-item-ic svg{ width:46%; height:46%; display:block; fill:none; stroke:var(--green);
   stroke-width:1.75; stroke-linecap:round; stroke-linejoin:round; }
 .pk-item--lg .pk-item-ic{ width:clamp(52px,4.2vw,60px); height:clamp(52px,4.2vw,60px); }
+/* A tile lifts a little under the pointer. The lift uses the independent
+   `translate` property rather than a transform: .reveal animates transform on
+   the way in, so a hover transform would be overwritten and would inherit the
+   .7s entrance easing. Guarded by hover:hover so a tap on a phone does not
+   leave a tile stuck in the lifted state. */
+/* opacity and transform are restated at the entrance timing: this shorthand
+   replaces the one on .reveal, and leaving them out made the tiles pop in. */
+.pk-item{ transition:opacity .7s var(--ease), transform .7s var(--ease),
+  translate .3s var(--ease), box-shadow .3s var(--ease), background-color .3s var(--ease); }
+.pk-item-ic{ transition:scale .3s var(--ease), background-color .3s var(--ease); }
+@media (hover:hover){
+  .pk-item:hover{ translate:0 -3px; box-shadow:0 18px 34px -24px rgba(27,24,18,.42); background:var(--pk-sand-h); }
+  .pk-item:nth-child(3n+2):hover{ background:var(--pk-mint-h); }
+  .pk-item:nth-child(3n+3):hover{ background:var(--pk-oat-h); }
+  .pk-item.pk-item--lg:hover{ background:var(--pk-deep-h); }
+  .pk-item:hover .pk-item-ic{ scale:1.07; background:#fff; }
+}
+.pk-item:active{ translate:0 -1px; }
+@media (prefers-reduced-motion:reduce){
+  .pk-item,.pk-item-ic{ transition:none; }
+  .pk-item:hover,.pk-item:active{ translate:none; }
+  .pk-item:hover .pk-item-ic{ scale:none; }
+}
 .pk-item h3{ font-family:var(--font-display); font-size:clamp(18px,1.5vw,21px); font-weight:500; letter-spacing:-.01em;
   line-height:1.25; text-transform:none; color:var(--ink); margin:0 0 8px; }
 .pk-item p{ font-size:clamp(14.5px,1.2vw,16px); line-height:1.55; color:var(--g-500); margin:0; }
-.pk-item.reveal:nth-child(1){ transition-delay:.04s }
-.pk-item.reveal:nth-child(2){ transition-delay:.10s }
-.pk-item.reveal:nth-child(3){ transition-delay:.16s }
-.pk-item.reveal:nth-child(4){ transition-delay:.22s }
-.pk-item.reveal:nth-child(5){ transition-delay:.28s }
-.pk-item.reveal:nth-child(6){ transition-delay:.34s }
-.pk-item.reveal:nth-child(7){ transition-delay:.40s }
-.pk-item.reveal:nth-child(8){ transition-delay:.46s }
-.pk-item.reveal:nth-child(9){ transition-delay:.52s }
+.pk-item.reveal:nth-child(1){ transition-delay:.04s,.04s,0s,0s,0s }
+.pk-item.reveal:nth-child(2){ transition-delay:.10s,.10s,0s,0s,0s }
+.pk-item.reveal:nth-child(3){ transition-delay:.16s,.16s,0s,0s,0s }
+.pk-item.reveal:nth-child(4){ transition-delay:.22s,.22s,0s,0s,0s }
+.pk-item.reveal:nth-child(5){ transition-delay:.28s,.28s,0s,0s,0s }
+.pk-item.reveal:nth-child(6){ transition-delay:.34s,.34s,0s,0s,0s }
+.pk-item.reveal:nth-child(7){ transition-delay:.40s,.40s,0s,0s,0s }
+.pk-item.reveal:nth-child(8){ transition-delay:.46s,.46s,0s,0s,0s }
+.pk-item.reveal:nth-child(9){ transition-delay:.52s,.52s,0s,0s,0s }
 @media (max-width:900px){ .pk-grid-in{ grid-template-columns:repeat(2,1fr); }
   .pk-item.pk-item--lg{ grid-row:auto; } }
 @media (max-width:560px){ .pk-grid-in{ grid-template-columns:1fr; }
