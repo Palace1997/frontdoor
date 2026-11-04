@@ -26,7 +26,7 @@
     return '<article class="dcard">' +
       '<div class="dcard__thumb" data-preview="' + esc(d.id) + '" role="button" tabindex="0" aria-label="Preview the ' + esc(d.name) + ' design">' +
       (d.isNew ? '<span class="dcard__new">New</span>' : '') + chrome +
-      '<div class="dcard__shot"><iframe data-src="' + esc(d.file) + '?v=20261028" tabindex="-1" title="' + esc(d.name) + ' design preview" loading="lazy"></iframe></div>' +
+      '<div class="dcard__shot"><iframe data-src="' + esc(d.file) + '?v=20261104" tabindex="-1" title="' + esc(d.name) + ' design preview" loading="lazy"></iframe></div>' +
       '<div class="dcard__view"><span>Preview</span></div></div>' +
       '<div class="dcard__body">' + meta +
       '<h3>' + esc(d.name) + '</h3>' +
@@ -97,9 +97,9 @@
     if (!pv) buildPreview();
     lastFocus = document.activeElement;
     pvTitle.innerHTML = esc(d.name) + '<small>' + esc(areaName(d.area)) + ' · ' + esc(typeName(d.type)) + '</small>';
-    pvOpen.href = d.file + '?v=20261028';
+    pvOpen.href = d.file + '?v=20261104';
     pvChoose.href = 'index.html?design=' + encodeURIComponent(d.id) + '#start';
-    pvFrame.src = d.file + '?v=20261028';
+    pvFrame.src = d.file + '?v=20261104';
     pv.classList.add('is-open'); document.body.style.overflow = 'hidden';
     pv.querySelector('.pv__close').focus();
   }

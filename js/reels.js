@@ -34,7 +34,7 @@
     var fr = el.querySelector('iframe');
     fr.addEventListener('load', function () { el.classList.add('ready'); });
     // stagger the loads a little so they don't all hit at once
-    setTimeout(function () { fr.src = d.file + '?v=20261028'; }, i * 120);
+    setTimeout(function () { fr.src = d.file + '?v=20261104'; }, i * 120);
     return el;
   });
 
