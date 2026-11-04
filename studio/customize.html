@@ -614,7 +614,14 @@ function d7EditorCSS(){ return [
   '#d7-txtbar select.d7-font{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:6px;padding:7px 8px;font:inherit;cursor:pointer;max-width:140px}',
   '#d7-txtbar select.d7-font option{color:#1B1812}',
   '#d7-txtbar .d7-sz{min-width:30px;text-align:center;font-variant-numeric:tabular-nums}',
-  '#d7-txtbar .d7-sep{width:1px;height:20px;background:rgba(255,255,255,.22)}'
+  '#d7-txtbar .d7-sep{width:1px;height:20px;background:rgba(255,255,255,.22)}',
+  // the toolbars sit at the top of the preview, right where they cover a header
+  // being edited, so each one can be dragged out of the way by its grip
+  '#d7-txtbar .d7-grip,#d7-imgbar .d7-grip{cursor:grab;display:inline-flex;align-items:center;padding:0 3px;margin-right:1px;color:rgba(255,255,255,.5)}',
+  '#d7-txtbar .d7-grip:hover,#d7-imgbar .d7-grip:hover{color:#fff}',
+  '#d7-txtbar .d7-grip svg,#d7-imgbar .d7-grip svg{width:11px;height:18px;fill:currentColor;display:block}',
+  '#d7-txtbar.d7-dragging,#d7-imgbar.d7-dragging{user-select:none}',
+  '#d7-txtbar.d7-dragging .d7-grip,#d7-imgbar.d7-dragging .d7-grip{cursor:grabbing}'
 ].join(''); }
 function d7HasText(el){ for(const n of el.childNodes){ if(n.nodeType===3 && n.textContent.trim()) return true; } return false; }
 function d7TextTarget(el){
@@ -874,10 +881,45 @@ const D7_FONTS=[
 ];
 function d7LoadFont(g){ if(!g||!doc)return; const id='d7f-'+g.replace(/[^a-z0-9]/gi,''); if(doc.getElementById(id))return;
   const l=doc.createElement('link'); l.id=id; l.rel='stylesheet'; l.href='https://fonts.googleapis.com/css2?family='+g+'&display=swap'; doc.head.appendChild(l); }
+// ---- Draggable toolbars. Both bars are pinned to the top of the preview,
+//      which is exactly where they cover the text when a header is being
+//      edited. The grip moves a bar anywhere, and the spot is remembered so it
+//      does not jump back to the top every time a bar reopens. ----
+const D7_GRIP='<span class="d7-grip" title="Drag to move this toolbar, double-click to put it back">'
+  +'<svg viewBox="0 0 10 18"><circle cx="3" cy="4" r="1.3"/><circle cx="7" cy="4" r="1.3"/>'
+  +'<circle cx="3" cy="9" r="1.3"/><circle cx="7" cy="9" r="1.3"/>'
+  +'<circle cx="3" cy="14" r="1.3"/><circle cx="7" cy="14" r="1.3"/></svg></span>';
+let d7BarPos=null;   // shared by both bars, kept across template loads
+function d7ClampBar(b,x,y){
+  const win=doc.defaultView, r=b.getBoundingClientRect();
+  return [Math.max(6,Math.min(x, win.innerWidth-r.width-6)),
+          Math.max(6,Math.min(y, win.innerHeight-r.height-6))];
+}
+function d7ApplyBarPos(b){
+  if(!b||!d7BarPos) return;
+  const [x,y]=d7ClampBar(b,d7BarPos.x,d7BarPos.y);
+  b.style.left=x+'px'; b.style.top=y+'px'; b.style.transform='none';
+}
+function d7ResetBarPos(b){ d7BarPos=null; b.style.left=''; b.style.top=''; b.style.transform=''; }
+function d7MakeBarDraggable(b){
+  const grip=b.querySelector('.d7-grip'); if(!grip) return;
+  grip.addEventListener('dblclick',e=>{ e.preventDefault(); e.stopPropagation(); d7ResetBarPos(b); });
+  grip.addEventListener('mousedown',e=>{
+    e.preventDefault();      // keeps the text being edited focused
+    e.stopPropagation();     // and off the bar's own mousedown handler
+    const r=b.getBoundingClientRect(), dx=e.clientX-r.left, dy=e.clientY-r.top;
+    b.classList.add('d7-dragging');
+    const mv=ev=>{ const [x,y]=d7ClampBar(b, ev.clientX-dx, ev.clientY-dy);
+      b.style.left=x+'px'; b.style.top=y+'px'; b.style.transform='none'; d7BarPos={x,y}; };
+    const up=()=>{ doc.removeEventListener('mousemove',mv); doc.removeEventListener('mouseup',up);
+      b.classList.remove('d7-dragging'); };
+    doc.addEventListener('mousemove',mv); doc.addEventListener('mouseup',up);
+  });
+}
 function d7EnsureTextBar(){
   let b=doc.getElementById('d7-txtbar'); if(b) return b;
   b=doc.createElement('div'); b.id='d7-txtbar'; b.style.display='none';
-  b.innerHTML='<select class="d7-font" title="Font">'+D7_FONTS.map((f,i)=>'<option value="'+i+'">'+f.l+'</option>').join('')+'</select>'
+  b.innerHTML=D7_GRIP+'<select class="d7-font" title="Font">'+D7_FONTS.map((f,i)=>'<option value="'+i+'">'+f.l+'</option>').join('')+'</select>'
     +'<span class="d7-sep"></span><button data-t="dec">A-</button><span class="d7-sz">16</span><button data-t="inc">A+</button>'
     +'<span class="d7-sep"></span><input type="color" title="Text colour">'
     +'<span class="d7-sep"></span><button data-t="bold" style="font-weight:800">B</button><button data-t="italic" style="font-style:italic">I</button>'
@@ -889,6 +931,7 @@ function d7EnsureTextBar(){
   b.addEventListener('mousedown',e=>{ if(e.target.tagName!=='INPUT' && e.target.tagName!=='SELECT') e.preventDefault(); }); // keep text focused, but let the font select open
   b.addEventListener('click',e=>{ const t=e.target.getAttribute&&e.target.getAttribute('data-t'); if(t) d7TextAction(t); });
   b.querySelector('input[type=color]').addEventListener('input',e=>{ if(d7EditEl) d7EditEl.style.color=e.target.value; });
+  d7MakeBarDraggable(b);
   b.querySelector('select.d7-font').addEventListener('change',e=>{ if(!d7EditEl)return; const f=D7_FONTS[+e.target.value]||D7_FONTS[0]; d7LoadFont(f.g); d7EditEl.style.fontFamily=f.v; e.target.selectedIndex=0; d7EditEl.focus(); });
   return b;
 }
@@ -921,7 +964,7 @@ function d7BoxTarget(el){
 }
 function d7ShowTextBar(el){
   ['d7-imgbox','d7-imgbar','d7-ctx','d7-actbar'].forEach(id=>{ const e=doc.getElementById(id); if(e)e.style.display='none'; });
-  const b=d7EnsureTextBar(); b.style.display='flex';
+  const b=d7EnsureTextBar(); b.style.display='flex'; d7ApplyBarPos(b);
   const cs=doc.defaultView.getComputedStyle(el);
   b.querySelector('.d7-sz').textContent=Math.round(parseFloat(cs.fontSize));
   const col=d7RgbToHex(cs.color); if(col) b.querySelector('input[type=color]').value=col;
@@ -1192,17 +1235,18 @@ function d7EnsureBox(){
   box.style.display='block';
   let bar=doc.getElementById('d7-imgbar');
   if(!bar){ bar=doc.createElement('div'); bar.id='d7-imgbar';
-    bar.innerHTML='<span class="d7-zoom"><span class="d7-lbl">Zoom</span><input class="d7-zoomrange" type="range" min="1" max="3" step="0.01" value="1"></span>'
+    bar.innerHTML=D7_GRIP+'<span class="d7-zoom"><span class="d7-lbl">Zoom</span><input class="d7-zoomrange" type="range" min="1" max="3" step="0.01" value="1"></span>'
       +'<span class="d7-zoom"><span class="d7-lbl">Bright</span><input class="d7-bright" type="range" min="0.3" max="1.6" step="0.01" value="1"></span>'
       +'<button data-a="reframe" class="d7-reframe" title="Drag the photo to show a different part inside the frame">Reframe</button>'
       +'<button data-a="replace">Replace</button><button data-a="reset">Reset</button><button data-a="done">Done</button>';
     doc.body.appendChild(bar);
+    d7MakeBarDraggable(bar);
     bar.addEventListener('click',e=>{ const a=e.target.getAttribute&&e.target.getAttribute('data-a'); if(a) d7ImgAction(a); });
     bar.querySelectorAll('input[type=range]').forEach(r=>r.addEventListener('mousedown',d7HistPush)); // one undo step per slider drag
     bar.querySelector('.d7-zoomrange').addEventListener('input',e=>{ if(!d7Sel)return; d7Sel.dataset.d7z=e.target.value; d7ApplyZoom(d7Sel); });
     bar.querySelector('.d7-bright').addEventListener('input',e=>{ if(!d7Sel)return; d7Sel.dataset.d7b=e.target.value; d7Sel.style.filter=(parseFloat(e.target.value)===1)?'':('brightness('+e.target.value+')'); });
   }
-  bar.style.display='flex';
+  bar.style.display='flex'; d7ApplyBarPos(bar);
   // Floating action bar anchored to the selection box, so the layer / centre / delete
   // actions are visible without needing to know about the right-click menu.
   let ab=doc.getElementById('d7-actbar');
