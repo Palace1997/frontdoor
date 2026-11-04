@@ -101,10 +101,24 @@ body{margin:0;font-family:var(--font-sans);color:var(--ink);background:var(--can
 .preview__stage{flex:1;overflow:auto;display:flex;justify-content:center;padding:22px}
 .frameWrap{background:#fff;box-shadow:0 20px 60px -30px rgba(0,0,0,.4);border-radius:10px;overflow:hidden;transition:width .3s ease;width:100%;max-width:1180px;height:100%}
 .frameWrap.mobile{max-width:390px}
+/* Full-width preview: the editing panel folds away so the site can be judged at
+   the width it will really be used at. Declared BEFORE the narrow-screen media
+   query below, which must keep the last word on small screens. */
+/* one column, not "0 1fr": the hidden panel leaves the grid entirely, so the
+   preview would otherwise be placed into that zero-width first column */
+.app--wide{grid-template-columns:1fr}
+.app--wide .panel{display:none}
+.app--wide .preview__stage{padding:0}
+.app--wide .frameWrap{border-radius:0;box-shadow:none;transition:none}
+.app--wide .frameWrap:not(.mobile){max-width:none}
+#panelToggle svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#panelToggle.on{background:var(--ink);border-color:var(--ink);color:#fff}
 iframe{width:100%;height:100%;border:0;display:block}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--forest);color:#fff;padding:12px 20px;border-radius:100px;font-size:14px;font-weight:500;opacity:0;transition:.3s;pointer-events:none;z-index:50}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(max-width:900px){.app{grid-template-columns:1fr;grid-template-rows:1fr}.preview{display:none}}
+/* on a narrow screen the preview is hidden and only the panel shows, so the
+   panel must come back even when it was folded away on a wider screen */
+@media(max-width:900px){.app{grid-template-columns:1fr;grid-template-rows:1fr}.preview{display:none}.app--wide .panel{display:flex}}
 </style>
 </head>
 <body>
@@ -135,6 +149,7 @@ iframe{width:100%;height:100%;border:0;display:block}
   <main class="preview">
     <div class="preview__bar">
       <div class="tpl-group">
+        <button id="panelToggle" class="pv-ico" type="button" aria-pressed="false" title="Hide the editing panel (Ctrl+\) for a full-width preview" aria-label="Hide the editing panel"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="M9.6 4.5v15"/></svg></button>
         <button id="undoBtn" class="pv-ico" type="button" title="Undo (Ctrl+Z)" disabled>&#8630;</button>
         <button id="redoBtn" class="pv-ico" type="button" title="Redo (Ctrl+Shift+Z)" disabled>&#8631;</button>
         <select id="tpl" class="tpl" title="Choose a template">
@@ -499,6 +514,27 @@ document.getElementById('download').addEventListener('click',async ()=>{
 document.getElementById('reset').addEventListener('click',()=>{
   if(confirm('Reset the preview to the starting template?')){ frame.src=document.getElementById('tpl').value+'?t='+Date.now(); }
 });
+
+// Fold the editing panel away so the site can be judged at the width it will
+// really be used at. The preview loses its card framing too, so what is left
+// is just the site in a window. The choice is remembered between visits.
+const d7App=document.querySelector('.app'), d7PanelBtn=document.getElementById('panelToggle');
+function d7SetPanel(hidden){
+  d7App.classList.toggle('app--wide',hidden);
+  d7PanelBtn.classList.toggle('on',hidden);
+  d7PanelBtn.setAttribute('aria-pressed',hidden?'true':'false');
+  const t=hidden?'Show the editing panel (Ctrl+\\)':'Hide the editing panel (Ctrl+\\) for a full-width preview';
+  d7PanelBtn.title=t; d7PanelBtn.setAttribute('aria-label',t);
+  try{ localStorage.setItem('fd_studio_panel', hidden?'hidden':'shown'); }catch(e){}
+}
+d7PanelBtn.addEventListener('click',()=>d7SetPanel(!d7App.classList.contains('app--wide')));
+// Ctrl/Cmd+\ is the usual "toggle sidebar" shortcut and cannot be typed into a field by accident
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey) && !e.shiftKey && !e.altKey && e.key==='\\'){
+    e.preventDefault(); d7SetPanel(!d7App.classList.contains('app--wide'));
+  }
+});
+try{ if(localStorage.getItem('fd_studio_panel')==='hidden') d7SetPanel(true); }catch(e){}
 
 // close studio → back to homepage (confirm so unsaved edits aren't lost by accident)
 document.getElementById('closeStudio').addEventListener('click',e=>{
