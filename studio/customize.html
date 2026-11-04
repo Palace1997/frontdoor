@@ -441,6 +441,7 @@ document.getElementById('download').addEventListener('click',async ()=>{
   // strip inline-editor artefacts (KEEP the user's image size/position inline styles)
   clone.querySelectorAll('#d7-editor-style,#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar').forEach(el=>el.remove());
   clone.querySelectorAll('.d7-ihi').forEach(el=>el.classList.remove('d7-ihi'));
+  clone.querySelectorAll('.d7-pvhi').forEach(el=>el.classList.remove('d7-pvhi'));
   // A frame the user only ever clicked carries the PREVIEW's pixel width. Shipping
   // that pins a responsive image to the width of the Studio pane, so a full-bleed
   // hero stops filling a wider screen. Undo those frames entirely; the ones the
@@ -545,6 +546,8 @@ function d7EditorCSS(){ return [
   '[data-d7iconoff]{display:none!important}',
   '[data-d7icon]{cursor:pointer}',
   '[data-d7icon].d7-ihi{outline:2px solid #00A583;outline-offset:3px;border-radius:4px}',
+  // the preview flashes the matching element when a field on the left is picked
+  '.d7-pvhi{outline:2px solid #00A583!important;outline-offset:3px;box-shadow:0 0 0 7px rgba(0,165,131,.15)!important}',
   '#d7-iconbar{position:absolute;z-index:2147483002;display:flex;gap:5px;align-items:center;background:#0B362A;color:#fff;border-radius:9px;padding:6px 7px;font:600 11px/1 Inter,sans-serif;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.34)}',
   '#d7-iconbar button{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:6px;width:30px;height:30px;display:grid;place-items:center;cursor:pointer;padding:0}',
   '#d7-iconbar button:hover{background:#00A583}',
@@ -764,6 +767,43 @@ function d7RevealField(id){
   clearTimeout(d7FieldT);
   d7FieldT=setTimeout(()=>row.classList.remove('d7-fieldhi'),2400);
   return true;
+}
+// ---- Panel -> preview. Clicking something in the preview already reveals its
+//      field on the left; this is the same link the other way round, so picking
+//      a field scrolls the preview to what it edits and flashes it. ----
+let d7PvT=null;
+function d7PreviewTargets(id){
+  if(!doc||!id) return [];
+  // the logo fields all drive the one lockup
+  if(id==='logo'||id==='logoText'||id==='logoSize'){
+    const l=doc.querySelector('[data-d7logo]'); if(l) return [l];
+    const b=doc.querySelector('[data-field="brandName"]'); return b?[b]:[];
+  }
+  let els=[].slice.call(doc.querySelectorAll('[data-img="'+id+'"]'));
+  // a name or phone number usually sits in the nav AND the footer, so flash every copy
+  if(!els.length) els=[].slice.call(doc.querySelectorAll('[data-field="'+id+'"]'));
+  return els.filter(e=>{ const r=e.getBoundingClientRect(); return r.width>0 && r.height>0; });
+}
+function d7RevealInPreview(id){
+  const els=d7PreviewTargets(id); if(!els.length) return false;
+  // scroll the preview document itself. scrollIntoView would also pull the
+  // Studio's own layout around, which jolts the panel you are typing in.
+  const win=doc.defaultView, r=els[0].getBoundingClientRect();
+  const top=r.top+win.scrollY-(win.innerHeight/2-Math.min(r.height,win.innerHeight)/2);
+  win.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+  doc.querySelectorAll('.d7-pvhi').forEach(e=>e.classList.remove('d7-pvhi'));
+  els.forEach(e=>e.classList.add('d7-pvhi'));
+  clearTimeout(d7PvT);
+  d7PvT=setTimeout(()=>els.forEach(e=>e.classList.remove('d7-pvhi')),2200);
+  return true;
+}
+// one delegated listener, so the label, the input and the colour swatch all work
+form.addEventListener('focusin',e=>d7FieldPicked(e.target));
+form.addEventListener('click',e=>d7FieldPicked(e.target));
+function d7FieldPicked(t){
+  const row=t.closest&&t.closest('.field'); if(!row) return;
+  const el=row.querySelector('[id^="f_"]'); if(!el) return;
+  d7RevealInPreview(el.id.slice(2));
 }
 function d7OnEditPaste(ev){ ev.preventDefault(); const t=(ev.clipboardData||doc.defaultView.clipboardData).getData('text/plain'); doc.execCommand('insertText',false,t); }
 function d7CommitText(){ if(d7EditEl){ d7EditEl.removeAttribute('contenteditable'); d7EditEl.removeEventListener('input',d7OnEditInput); d7EditEl.removeEventListener('paste',d7OnEditPaste); d7EditEl=null; } const b=doc.getElementById('d7-txtbar'); if(b)b.style.display='none'; }
