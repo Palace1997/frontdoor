@@ -111,8 +111,9 @@ body{margin:0;font-family:var(--font-sans);color:var(--ink);background:var(--can
 .app--wide .preview__stage{padding:0}
 .app--wide .frameWrap{border-radius:0;box-shadow:none;transition:none}
 .app--wide .frameWrap:not(.mobile){max-width:none}
-#panelToggle svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#panelToggle svg,#revealToggle svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 #panelToggle.on{background:var(--ink);border-color:var(--ink);color:#fff}
+#revealToggle.on{background:var(--green);border-color:var(--green);color:#fff}
 iframe{width:100%;height:100%;border:0;display:block}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--forest);color:#fff;padding:12px 20px;border-radius:100px;font-size:14px;font-weight:500;opacity:0;transition:.3s;pointer-events:none;z-index:50}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -150,6 +151,7 @@ iframe{width:100%;height:100%;border:0;display:block}
     <div class="preview__bar">
       <div class="tpl-group">
         <button id="panelToggle" class="pv-ico" type="button" aria-pressed="false" title="Hide the editing panel (Ctrl+\) for a full-width preview" aria-label="Hide the editing panel"><svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2.5"/><path d="M9.6 4.5v15"/></svg></button>
+        <button id="revealToggle" class="pv-ico" type="button" aria-pressed="false" title="Show the parts that are normally hidden: FAQ answers and the mobile menu" aria-label="Show hidden parts"><svg viewBox="0 0 24 24"><path d="M2.4 12s3.8-7 9.6-7 9.6 7 9.6 7-3.8 7-9.6 7-9.6-7-9.6-7z"/><circle cx="12" cy="12" r="2.8"/></svg></button>
         <button id="undoBtn" class="pv-ico" type="button" title="Undo (Ctrl+Z)" disabled>&#8630;</button>
         <button id="redoBtn" class="pv-ico" type="button" title="Redo (Ctrl+Shift+Z)" disabled>&#8631;</button>
         <select id="tpl" class="tpl" title="Choose a template">
@@ -265,7 +267,14 @@ function darken(hex){
 }
 function setField(id,val){ if(!doc)return;
   // a logo carrying its own typed word is left alone; the name still drives everything else
-  doc.querySelectorAll('[data-field="'+id+'"]').forEach(el=>{ if(!el.hasAttribute('data-d7logotext')) el.textContent=val; });
+  doc.querySelectorAll('[data-field="'+id+'"]').forEach(el=>{
+    if(el.hasAttribute('data-d7logotext')) return;
+    // the mobile menu holds its own copy of a nav link and carries no field of
+    // its own, so find the twin BEFORE the text changes and move it too
+    const twins=(typeof d7NavTwins==='function')?d7NavTwins(el):[];
+    el.textContent=val;
+    twins.forEach(x=>{ x.textContent=val; });
+  });
   // business-info fields also drive the clickable links, not just the visible text
   if(id==='phone'){ const t='tel:'+String(val).replace(/[^\d+]/g,''); doc.querySelectorAll('a[href^="tel:"]').forEach(a=>a.setAttribute('href',t)); }
   else if(id==='email'){ const e=String(val).trim(); doc.querySelectorAll('a[href^="mailto:"]').forEach(a=>a.setAttribute('href','mailto:'+e)); }
@@ -452,6 +461,14 @@ document.getElementById('download').addEventListener('click',async ()=>{
   clone.querySelectorAll('#d7-editor-style,#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar,#d7-gapband,#d7-gaphandle').forEach(el=>el.remove());
   clone.querySelectorAll('.d7-ihi').forEach(el=>el.classList.remove('d7-ihi'));
   clone.querySelectorAll('.d7-pvhi').forEach(el=>el.classList.remove('d7-pvhi'));
+  // "Show hidden parts" is an editing aid: shut what it opened, re-hide what it
+  // un-hid, so the delivered site behaves the way a visitor expects
+  clone.querySelectorAll('[data-d7wasshut]').forEach(x=>{ x.removeAttribute('open'); x.removeAttribute('data-d7wasshut'); });
+  clone.querySelectorAll('[data-d7washidden]').forEach(el=>{
+    el.style.display=el.getAttribute('data-d7washidden')||'';
+    if(!el.getAttribute('style')) el.removeAttribute('style');
+    el.removeAttribute('data-d7washidden'); el.classList.remove('d7-revealed');
+  });
   // A frame the user only ever clicked carries the PREVIEW's pixel width. Shipping
   // that pins a responsive image to the width of the Studio pane, so a full-bleed
   // hero stops filling a wider screen. Undo those frames entirely; the ones the
@@ -530,6 +547,44 @@ document.addEventListener('keydown',e=>{
 });
 try{ if(localStorage.getItem('fd_studio_panel')==='hidden') d7SetPanel(true); }catch(e){}
 
+// ---- "Show hidden parts". Some copy only exists once a visitor clicks: FAQ
+//      answers behind a closed accordion, and the mobile menu, which is a
+//      separate block the template hides until the screen is narrow. This
+//      opens both so they can be clicked and edited, and puts them back. It is
+//      an editing aid only and never reaches a downloaded site. ----
+let d7Reveal=false;
+function d7RevealApply(on){
+  if(!doc) return;
+  if(on){
+    doc.querySelectorAll('details:not([open])').forEach(x=>{ x.setAttribute('data-d7wasshut','1'); x.open=true; });
+    // a block the template hides, sitting in the header and holding links: the mobile menu
+    doc.querySelectorAll('header *, nav *').forEach(el=>{
+      if(el.hasAttribute('data-d7washidden')) return;
+      if(!el.querySelector || !el.querySelector('a')) return;
+      if(doc.defaultView.getComputedStyle(el).display!=='none') return;
+      el.setAttribute('data-d7washidden', el.style.display||'');
+      el.style.display='block';
+      el.classList.add('d7-revealed');
+    });
+  } else {
+    doc.querySelectorAll('[data-d7wasshut]').forEach(x=>{ x.open=false; x.removeAttribute('data-d7wasshut'); });
+    doc.querySelectorAll('[data-d7washidden]').forEach(el=>{
+      el.style.display=el.getAttribute('data-d7washidden')||'';
+      el.removeAttribute('data-d7washidden'); el.classList.remove('d7-revealed');
+    });
+  }
+}
+function d7SetReveal(on){
+  d7Reveal=on;
+  const b=document.getElementById('revealToggle');
+  b.classList.toggle('on',on); b.setAttribute('aria-pressed',on?'true':'false');
+  const t=on?'Hide the normally hidden parts again':'Show the parts that are normally hidden: FAQ answers and the mobile menu';
+  b.title=t; b.setAttribute('aria-label',on?'Hide hidden parts':'Show hidden parts');
+  d7RevealApply(on);
+  toast(on?'Showing the hidden parts, outlined in green':'Back to how visitors see it');
+}
+document.getElementById('revealToggle').addEventListener('click',()=>d7SetReveal(!d7Reveal));
+
 // close studio → back to homepage (confirm so unsaved edits aren't lost by accident)
 document.getElementById('closeStudio').addEventListener('click',e=>{
   if(!confirm('Close the Studio and go back to the homepage?\n\nUnsaved edits will be lost, use Save or Download first if you want to keep them.')) e.preventDefault();
@@ -576,6 +631,8 @@ function d7EditorCSS(){ return [
   '[data-d7icon].d7-ihi{outline:2px solid #00A583;outline-offset:3px;border-radius:4px}',
   // the preview flashes the matching element when a field on the left is picked
   '.d7-pvhi{outline:2px solid #00A583!important;outline-offset:3px;box-shadow:0 0 0 7px rgba(0,165,131,.15)!important}',
+  // a block that is only on screen because "Show hidden parts" is on
+  '.d7-revealed{outline:2px dashed rgba(0,165,131,.75)!important;outline-offset:2px}',
   '#d7-iconbar{position:absolute;z-index:2147483002;display:flex;gap:5px;align-items:center;background:#0B362A;color:#fff;border-radius:9px;padding:6px 7px;font:600 11px/1 Inter,sans-serif;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.34)}',
   '#d7-iconbar button{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:6px;width:30px;height:30px;display:grid;place-items:center;cursor:pointer;padding:0}',
   '#d7-iconbar button:hover{background:#00A583}',
@@ -870,6 +927,7 @@ function initInlineEditor(){
   if(!doc || doc.__d7ed) return; doc.__d7ed=true; d7Sel=null; d7EditEl=null; d7SelBox=null;
   const st=doc.createElement('style'); st.id='d7-editor-style'; st.textContent=d7EditorCSS(); doc.head.appendChild(st);
   d7MarkIcons();
+  if(d7Reveal) d7RevealApply(true);   // the switch stays on across a template change
   const body=doc.body;
   body.addEventListener('mouseover',e=>{ if(d7drag)return; d7ClearHi();
     if(e.target.tagName==='IMG'){ e.target.classList.add('d7-hi'); return; }
@@ -914,7 +972,9 @@ function initInlineEditor(){
 // Text editing uses a commit-on-next-action model (no blur races): the element stays editable
 // with a floating text toolbar until you pick another element / click empty / press Done.
 let d7EditEl=null;
-function d7OnEditInput(){ const el=d7EditEl; if(!el)return; const id=el.getAttribute('data-field'); if(id){ const inp=document.getElementById('f_'+id); if(inp) inp.value=el.textContent.trim(); } }
+function d7OnEditInput(){ const el=d7EditEl; if(!el)return; const id=el.getAttribute('data-field'); if(id){ const inp=document.getElementById('f_'+id); if(inp) inp.value=el.textContent.trim(); }
+  // carry the same words to the link's copy in the mobile menu
+  if(d7EditTwins.length){ const t=el.textContent; d7EditTwins.forEach(x=>{ if(x.textContent!==t) x.textContent=t; }); } }
 /* ---- Keep the two panes in step -------------------------------------
    Clicking something in the preview brings its field into view on the left,
    opening the section it lives in, so you never have to hunt for the field
@@ -978,11 +1038,42 @@ function d7FieldPicked(t){
   d7RevealInPreview(el.id.slice(2));
 }
 function d7OnEditPaste(ev){ ev.preventDefault(); const t=(ev.clipboardData||doc.defaultView.clipboardData).getData('text/plain'); doc.execCommand('insertText',false,t); }
-function d7CommitText(){ if(d7EditEl){ d7EditEl.removeAttribute('contenteditable'); d7EditEl.removeEventListener('input',d7OnEditInput); d7EditEl.removeEventListener('paste',d7OnEditPaste); d7EditEl=null; } const b=doc.getElementById('d7-txtbar'); if(b)b.style.display='none'; }
+function d7CommitText(){ d7EditTwins=[]; if(d7EditEl){ d7EditEl.removeAttribute('contenteditable'); d7EditEl.removeEventListener('input',d7OnEditInput); d7EditEl.removeEventListener('paste',d7OnEditPaste); d7EditEl=null; } const b=doc.getElementById('d7-txtbar'); if(b)b.style.display='none'; }
+// ---- Keep the two menus in step. On the templates with a burger, the mobile
+//      menu is not the desktop links re-arranged: it is a separate block
+//      holding its own copies. Renaming a link used to change only the one you
+//      clicked, so the desktop nav said one thing and every phone visitor saw
+//      the old wording. These find the twin so both move together. ----
+function d7TextHost(a){                 // the element inside a link that holds the words
+  let n=a, guard=0;
+  while(n.children.length===1 && guard++<3
+        && ![].slice.call(n.childNodes).some(c=>c.nodeType===3 && c.textContent.trim())) n=n.children[0];
+  return n;
+}
+function d7NavTwins(el){
+  if(!el||!el.closest) return [];
+  const head=el.closest('header'); if(!head) return [];      // page nav only, never body copy
+  const a=el.closest('a'); if(!a) return [];
+  const href=a.getAttribute('href'); if(!href) return [];
+  const txt=(el.textContent||'').trim(); if(!txt) return [];
+  const out=[];
+  head.querySelectorAll('a').forEach(other=>{
+    if(other===a) return;
+    if(other.getAttribute('href')!==href) return;
+    if(other.querySelector('img,svg')) return;               // a logo lockup, not a menu word
+    if(other.closest('[data-d7logo]')) return;
+    if((other.textContent||'').trim()!==txt) return;          // only a true copy of this link
+    const host=d7TextHost(other);
+    if(host && out.indexOf(host)<0) out.push(host);
+  });
+  return out;
+}
+let d7EditTwins=[];
 function d7MakeEditable(el){
   if(d7EditEl===el){ el.focus(); return; }
   d7HistPush(); // one undo step per text-edit session
   d7CommitText();
+  d7EditTwins=d7NavTwins(el);   // worked out before the text changes, while the copies still match
   el.setAttribute('contenteditable','true'); el.focus(); d7EditEl=el;
   el.addEventListener('input',d7OnEditInput); el.addEventListener('paste',d7OnEditPaste);
   d7RevealField(d7FieldIdFor(el));
