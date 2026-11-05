@@ -249,6 +249,15 @@ const GROUPS = [
     {id:"contactTitle", label:"Heading", type:"text"},
     {id:"contactSub", label:"Sub-line", type:"text"},
   ]},
+  // The answers live behind a closed accordion in the preview, so they are
+  // easier to write here than to hunt for and click open.
+  {title:"FAQ", note:"Only the designs that have an FAQ will fill these in.", fields:[
+    {id:"faq1Q", label:"Question 1", type:"text"},{id:"faq1A", label:"Answer 1", type:"textarea"},
+    {id:"faq2Q", label:"Question 2", type:"text"},{id:"faq2A", label:"Answer 2", type:"textarea"},
+    {id:"faq3Q", label:"Question 3", type:"text"},{id:"faq3A", label:"Answer 3", type:"textarea"},
+    {id:"faq4Q", label:"Question 4", type:"text"},{id:"faq4A", label:"Answer 4", type:"textarea"},
+    {id:"faq5Q", label:"Question 5", type:"text"},{id:"faq5A", label:"Answer 5", type:"textarea"},
+  ]},
   {title:"Footer", fields:[
     {id:"footerText", label:"Closing line", type:"text"},
     {id:"footerLegal", label:"Legal / copyright", type:"text"},
@@ -508,7 +517,7 @@ document.getElementById('download').addEventListener('click',async ()=>{
     (clone.querySelector('head')||clone).appendChild(ic);
   }
   clone.querySelectorAll('[data-d7icon]').forEach(el=>el.removeAttribute('data-d7icon'));
-  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0','data-d7logo','data-d7logotext','data-d7auto','data-d7imgstyle','data-d7frstyle','data-d7pre','data-d7tr','data-d7cb'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
+  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0','data-d7logo','data-d7logotext','data-d7auto','data-d7imgstyle','data-d7frstyle','data-d7pre','data-d7tr','data-d7cb','data-d7bg0'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   // .d7-frame wrappers + .d7-ph placeholders are KEPT (they hold the crop/size/placement and keep the layout stable)
   // make the file self-contained: inline the shared template.css + template.js (bespoke templates use them)
   await inlineAsset(clone,'link[rel="stylesheet"][href*="template.css"]',css=>{const s=doc.createElement('style');s.textContent=css;return s;});
@@ -622,6 +631,9 @@ function d7EditorCSS(){ return [
   '#d7-imgbox.d7-panmode .d7-pan:active{cursor:grabbing}',
   '#d7-imgbox.d7-panmode .d7-c{display:none}',
   '#d7-actbar{position:absolute;z-index:2147483001;display:flex;gap:5px;background:#0B362A;color:#fff;border-radius:8px;padding:5px 6px;font:600 11px/1 Inter,sans-serif;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.3)}',
+  '#d7-actbar .d7-fill{display:inline-flex;align-items:center;gap:5px;padding:0 2px;cursor:pointer}',
+  '#d7-actbar .d7-fill span{opacity:.75}',
+  '#d7-actbar .d7-fill input[type=color]{width:26px;height:22px;padding:0;border:0;background:none;cursor:pointer;border-radius:5px}',
   '#d7-actbar button{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:5px;padding:6px 9px;cursor:pointer;font:inherit}',
   '#d7-actbar button:hover{background:#00A583}',
   '#d7-actbar button.d7-del:hover{background:#d8513f}',
@@ -1475,12 +1487,26 @@ function d7EnsureBox(){
   // actions are visible without needing to know about the right-click menu.
   let ab=doc.getElementById('d7-actbar');
   if(!ab){ ab=doc.createElement('div'); ab.id='d7-actbar';
-    ab.innerHTML='<button data-aa="front">Bring forward</button><button data-aa="back">Send back</button><button data-aa="centerh">Center</button><button class="d7-del" data-aa="delete">Delete</button>';
+    ab.innerHTML='<label class="d7-fill" title="Fill colour of this box"><span>Fill</span><input type="color"></label>'
+      +'<button data-aa="nofill" title="Remove the fill, let what is behind show through">Clear</button>'
+      +'<button data-aa="front">Bring forward</button><button data-aa="back">Send back</button><button data-aa="centerh">Center</button><button class="d7-del" data-aa="delete">Delete</button>';
     doc.body.appendChild(ab);
-    ab.addEventListener('mousedown',e=>e.stopPropagation());
+    ab.addEventListener('mousedown',e=>{ if(e.target.tagName!=='INPUT') e.stopPropagation(); });
+    // Fill colour for the selected box. The text colour is already editable, so
+    // a button whose label you can recolour but whose background you cannot was
+    // only half a control.
+    ab.querySelector('.d7-fill input').addEventListener('input',e=>{
+      const box=d7CurBox()||d7CtxEl; if(!box) return;
+      if(!box.hasAttribute('data-d7bg0')) box.setAttribute('data-d7bg0', box.style.background||'');
+      box.style.background=e.target.value;
+    });
+    ab.querySelector('.d7-fill input').addEventListener('mousedown',d7HistPush);
     ab.addEventListener('click',e=>{ const a=e.target.getAttribute&&e.target.getAttribute('data-aa'); if(a){ d7CtxEl=null; d7MenuAction(a); if(a==='delete') d7Deselect(); else d7PositionBox(); } });
   }
   ab.style.display='flex';
+  // show the box's current fill in the swatch, so it is a starting point
+  const sw=ab.querySelector('.d7-fill input'), cur=d7CurBox();
+  if(sw&&cur){ const c=d7RgbToHex(doc.defaultView.getComputedStyle(cur).backgroundColor); if(c) sw.value=c; }
   d7EnsureMenu();
 }
 let d7CtxEl=null, d7DelStack=[];
@@ -1804,6 +1830,9 @@ function d7MenuAction(a){
   // generic element actions (work on any element, not just images)
   if(a==='edittext'){ const tt=d7TextTarget(d7CtxEl); if(tt){ d7Deselect(); d7MakeEditable(tt); } return; }
   if(a==='nodeco'){ if(d7CtxEl) d7CtxEl.setAttribute('data-d7nodeco','1'); return; }
+  if(a==='nofill'){ const box=d7CurBox()||d7CtxEl; if(box){
+      if(!box.hasAttribute('data-d7bg0')) box.setAttribute('data-d7bg0', box.style.background||'');
+      box.style.background='transparent'; } return; }
   if(a==='movebox'){ if(d7CtxEl) d7SelectBox(d7CtxEl); return; }
   if(a==='centerh'||a==='centerv'){ const box=d7CurBox()||d7CtxEl; if(box) d7Center(box, a==='centerh'?'h':'v'); return; }
   if(a==='delete'){ d7DeleteEl(d7CtxEl||d7CurBox()); return; }
