@@ -255,7 +255,7 @@ DESIGNS.forEach(d => {
 
 // an index so the team can find the right link to send
 const rows = built.map(b => '<tr><td><b>' + esc(b.name) + '</b><br><span class="sm">' + esc(b.practice) + '</span></td><td>'
-  + esc(b.area) + '</td><td>' + esc(b.type) + '</td><td>' + b.q + '</td><td><a href="' + b.id + '.html">Open</a> &middot; '
+  + esc(b.area) + '</td><td>' + esc(b.type) + '</td><td><a href="' + b.id + '.html">Open</a> &middot; '
   + '<a href="' + b.id + '.html" class="copy" data-id="' + b.id + '">Copy link</a></td></tr>').join('');
 fs.writeFileSync(path.join(outDir, 'index.html'), `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
@@ -263,7 +263,7 @@ fs.writeFileSync(path.join(outDir, 'index.html'), `<!DOCTYPE html>
 <link rel="stylesheet" href="form.css?v=1"></head><body>
 <header class="hd"><div class="in"><p class="kicker">Internal</p><h1>Content Forms</h1>
 <p class="lede">One form per design, ${built.length} in all. Send a client the link for the design they chose. Their answers download as a file you load straight into the Studio with Import.</p></div></header>
-<main class="in"><table class="tbl"><tr><th>Design</th><th>Practice area</th><th>Size</th><th>Questions</th><th></th></tr>${rows}</table></main>
+<main class="in"><table class="tbl"><tr><th>Design</th><th>Practice area</th><th>Size</th><th></th></tr>${rows}</table></main>
 <script>document.addEventListener('click',function(e){var a=e.target.closest('.copy');if(!a)return;e.preventDefault();
 var u=new URL(a.getAttribute('href'),location.href).href;navigator.clipboard.writeText(u).then(function(){a.textContent='Copied';setTimeout(function(){a.textContent='Copy link';},1400);});});</script>
 </body></html>`);
