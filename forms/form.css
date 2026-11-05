@@ -24,13 +24,14 @@ main{padding:4px 0 76px;counter-reset:grp}
 /* A numbered section, the way a real form is numbered. */
 .grp{padding:38px 0 2px}
 .grp h2{font:500 20px/1.3 var(--disp);margin:0;counter-increment:grp}
-/* the two instruction sections are not questions, so they take no number */
-.grp--plain h2{counter-increment:none}
-.grp--plain h2::before{content:none}
 .grp h2::before{
   content:counter(grp,decimal-leading-zero);
   font:600 11.5px/1 var(--sans);letter-spacing:.09em;color:var(--green);
   margin-right:11px;vertical-align:3px}
+/* The two instruction sections are not questions, so they take no number.
+   These must stay below the rule above: same specificity, later wins. */
+.grp--plain h2{counter-increment:none}
+.grp--plain h2::before{content:none}
 .grp > .note{color:var(--muted);font-size:15px;margin:6px 0 0;max-width:56ch}
 
 .q{padding:19px 0 20px;border-top:1px solid var(--line)}

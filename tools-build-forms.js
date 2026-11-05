@@ -207,7 +207,7 @@ function page(d, body, count) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Content form, ${esc(d.name)} | FrontDoor</title>
-<link rel="stylesheet" href="form.css?v=2">
+<link rel="stylesheet" href="form.css?v=3">
 </head>
 <body>
 <header class="hd"><div class="in">
@@ -295,7 +295,7 @@ const rows = built.map(b => '<tr><td><b>' + esc(b.name) + '</b><br><span class="
 fs.writeFileSync(path.join(outDir, 'index.html'), `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex"><title>Content forms, all designs | FrontDoor</title>
-<link rel="stylesheet" href="form.css?v=2"></head><body>
+<link rel="stylesheet" href="form.css?v=3"></head><body>
 <header class="hd"><div class="in in--wide"><p class="kicker">Internal</p><h1>Content forms</h1>
 <p class="lede">One per design, ${built.length} in all. Send a client the link for the design they picked. They fill it in and send back a file, which goes straight into the Studio with Import.</p></div></header>
 <main class="in in--wide"><table class="tbl"><tr><th>Design</th><th>Practice area</th><th>Size</th><th></th></tr>${rows}</table></main>
