@@ -14,60 +14,88 @@ const TYPES = {}; window.SW_CATALOG.types.forEach(t => TYPES[t.id] = t.name);
 const GROUPS = JSON.parse(fs.readFileSync('/tmp/groups.json', 'utf8'));
 
 // What each field is for, in the client's language. Anything not listed falls
-// back to the Studio's own label.
+// back to the Studio's own label. Deliberately uneven: a field whose label says
+// it all gets no hint, because twenty identically-shaped sentences in a row is
+// what makes a form read as machine-written. Where a series repeats (services,
+// FAQs, stats) only the first one carries the explanation.
 const HINT = {
-  brandName:'The name as you want it read on the site, in the nav and the footer.',
-  phone:'The number you answer. It becomes a tap-to-call link on phones.',
-  email:'The address enquiries should reach. It becomes a mailto link.',
-  address:'Street, suite, town and state. Leave blank if you do not see people in person.',
-  hours:'When you are reachable, in plain words. For example, Mon to Fri 9am to 5pm.',
+  brandName:'As it should read in the nav and the footer.',
+  phone:'The line you actually answer.',
+  email:"Where inquiries should land. A shared inbox is fine.",
+  address:"Street, suite, city, state. Leave it blank if you're telehealth only.",
+  hours:"In plain words, the way you'd say them on the phone.",
   navCta:'The button at the top right. Two or three words.',
-  logoText:'Only if your logo is a word set differently from the business name. Otherwise leave blank.',
-  heroEyebrow:'The small line above the headline. Says what you are and where.',
-  heroTitle:'The first thing a visitor reads. Say what you do, not a slogan.',
-  heroSub:'One or two sentences under the headline. Who you help and how to start.',
-  heroCta1:'Main button. What should happen next, for example Book a free consult.',
-  heroCta2:'Second button, lower commitment, for example See our services.',
-  trustText:'A short line of reassurance under the buttons. Facts only.',
-  servicesTitle:'Heading for the list of what you offer.',
+  logoText:'Only if your logo reads differently from the business name.',
+  heroEyebrow:'The small line above the headline. What you are, and where.',
+  heroTitle:'The first line anyone reads. What you do, not a slogan.',
+  heroSub:'Who you work with and how someone starts. Two sentences.',
+  heroCta1:'Name the action. Request an appointment. Book a consult.',
+  heroCta2:'A second, lower-commitment button, if you want one.',
+  trustText:'A short line under the buttons. Facts only.',
+  servicesTitle:'Heading over the list of what you offer.',
   servicesSub:'One line under that heading.',
   aboutTitle:'Heading for the section about you or the practice.',
-  aboutText:'A short paragraph in your own voice. Who you are and how you work.',
-  quoteText:'A note in YOUR words about how you work. Not a client testimonial, and nothing about a specific person.',
-  quoteAuthor:'Who is speaking. Your name and credentials.',
-  quoteRole:'Their role, for example Clinical Director.',
+  aboutText:"How you work, in a short paragraph. Write it the way you'd say it.",
+  quoteText:'Set in large type, in your words. Your approach to care, not a client testimonial.',
+  quoteAuthor:"Name and credentials, the way you'd sign a letter.",
+  quoteRole:'Your title, or the city you practice in.',
   contactTitle:'Heading above the contact form.',
-  contactSub:'One line telling people what happens after they get in touch.',
+  contactSub:'One line on what happens after someone sends it.',
   footerText:'A closing line in the footer.',
-  footerLegal:'Your legal or copyright line.',
-  hero:'The main photograph at the top of the page.',
+  footerLegal:'Leave it blank and we build it from your business name.',
+  hero:'The main photograph at the top.',
   about:'The photograph beside your about section.'
 };
+HINT.svc1Desc = 'One or two plain sentences. Same for the cards below.';
+HINT.check1 = 'A short point. Leave any of them blank to drop it.';
+HINT.faq1Q = 'The way someone would actually ask it.';
+HINT.faq1A = 'Practical. What they need in order to act.';
+for (let n = 1; n <= 6; n++) { if (n > 1) HINT['svc' + n + 'Desc'] = ''; HINT['svc' + n + 'Title'] = ''; }
+for (let n = 2; n <= 4; n++) HINT['check' + n] = '';
+for (let n = 1; n <= 3; n++) { HINT['stat' + n + 'Num'] = ''; HINT['stat' + n + 'Label'] = ''; }
+for (let n = 2; n <= 5; n++) { HINT['faq' + n + 'Q'] = ''; HINT['faq' + n + 'A'] = ''; }
+
+// Labels we override, because the Studio's own ("Service 1, title") is written
+// for whoever is editing the site, not for the person who owns the practice.
+const LABEL = {
+  stat1Num:'First number', stat2Num:'Second number', stat3Num:'Third number',
+  stat1Label:'What it counts', stat2Label:'What it counts', stat3Label:'What it counts',
+  heroCta1:'Main button', quoteRole:'Title or city', accent:'Accent color'
+};
+const ORD = ['First','Second','Third','Fourth','Fifth','Sixth'];
 for (let n = 1; n <= 6; n++) {
-  HINT['svc' + n + 'Title'] = 'Name of service ' + n + '. Leave blank to remove the whole card.';
-  HINT['svc' + n + 'Desc'] = 'One or two plain sentences about service ' + n + '.';
+  LABEL['svc' + n + 'Title'] = ORD[n - 1] + ' service';
+  LABEL['svc' + n + 'Desc'] = ORD[n - 1] + ' service, what it is';
 }
-for (let n = 1; n <= 4; n++) HINT['check' + n] = 'Short point ' + n + '. Leave blank to drop it.';
-for (let n = 1; n <= 3; n++) {
-  HINT['stat' + n + 'Num'] = 'Figure ' + n + '. Only something you can evidence, no outcome or success rates.';
-  HINT['stat' + n + 'Label'] = 'What figure ' + n + ' counts.';
-}
-for (let n = 1; n <= 5; n++) {
-  HINT['faq' + n + 'Q'] = 'Question ' + n + ', as a client would ask it.';
-  HINT['faq' + n + 'A'] = 'Your answer to question ' + n + '. Keep it practical.';
-}
+HINT.accent = 'A hex code if you have one, or just name the color.';
 
+// The Studio's own group names are written for whoever edits the site. "Hero"
+// means nothing to the person who owns the practice.
+const SUBTITLE = {
+  'Business info':'Business details', 'Hero':'Top of the page',
+  'Brand & colour':'Brand and color', 'Brand & color':'Brand and color',
+  'Contact section':'Contact section'
+};
+const subTitle = t => SUBTITLE[t] || SUBTITLE[t.charAt(0).toUpperCase() + t.slice(1).toLowerCase()] || t;
 
-// The twenty asked up front. Chosen because each one is a FACT or a VOICE that
-// only the practice has, and that would be plainly wrong if the demo wording
-// shipped instead: another practice's phone number, another clinician's name
-// on the quote, invented figures in the stats band. Everything else is prose
-// the team writes, which is what the service promises anyway.
-const CORE = ['brandName','phone','email','address',
-  'heroTitle','heroSub','heroCta1',
-  'svc1Title','svc2Title','svc3Title',
-  'aboutText','quoteText','quoteAuthor','quoteRole',
-  'stat1Num','stat1Label','stat2Num','stat2Label','stat3Num','stat3Label'];
+// The twenty asked up front, in five short groups rather than one slab of
+// questions. Each one is a FACT or a VOICE that only the practice has, and that
+// would be plainly wrong if the demo wording shipped instead: another practice's
+// phone number, another clinician's name on the quote, invented figures in the
+// stats band. Everything else is prose we write, which is the service anyway.
+const CORE_GROUPS = [
+  { title:'How to reach you', note:'',
+    ids:['brandName','phone','email','address'] },
+  { title:'The top of the page', note:'',
+    ids:['heroTitle','heroSub','heroCta1'] },
+  { title:'What you offer', note:'Three cards run across the page. Leave one blank and that card comes off.',
+    ids:['svc1Title','svc2Title','svc3Title'] },
+  { title:'In your own words', note:'',
+    ids:['aboutText','quoteText','quoteAuthor','quoteRole'] },
+  { title:'Three numbers', note:'Only things you can back up. No outcome or success rates.',
+    pairs:true, ids:['stat1Num','stat1Label','stat2Num','stat2Label','stat3Num','stat3Label'] }
+];
+const CORE = CORE_GROUPS.reduce((a, g) => a.concat(g.ids), []);
 
 const esc = s => String(s == null ? '' : s)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -95,14 +123,6 @@ function imagesIn(html) {
   return out;
 }
 
-function guide(sample) {
-  const n = (sample || '').length;
-  if (!n) return '';
-  if (n <= 28) return 'about ' + n + ' characters';
-  if (n <= 90) return 'roughly ' + n + ' characters, one short line';
-  return 'roughly ' + n + ' characters, about ' + Math.max(1, Math.round(n / 95)) + ' lines';
-}
-
 function buildForm(d) {
   const file = path.join(ROOT, d.file);
   const html = fs.readFileSync(file, 'utf8');
@@ -110,48 +130,73 @@ function buildForm(d) {
   const imgs = imagesIn(html);
   const labelOf = {}; GROUPS.forEach(g => g.fields.forEach(f => labelOf[f.id] = f.label));
 
-  function row(id, label, sample) {
+  // The demo wording goes in the placeholder, so each field shows what it is
+  // replacing without a second line underneath repeating it.
+  function row(id, label, sample, small, hintOver) {
     const big = (sample || '').length > 95;
-    const hint = HINT[id] || label;
-    return '<div class="q"><label for="' + id + '">' + esc(label) + '</label>'
-      + '<p class="hint">' + esc(hint) + (guide(sample) ? ' <span class="len">' + esc(guide(sample)) + '</span>' : '') + '</p>'
+    // No entry means no hint. Repeating the label underneath the label is the
+    // kind of filler a generator produces and a reader notices.
+    const hint = hintOver !== undefined ? hintOver : (HINT[id] || '');
+    return '<div class="q' + (small ? ' q--sm' : '') + '"><label for="' + id + '">' + esc(label) + '</label>'
+      + (hint ? '<p class="hint">' + esc(hint) + '</p>' : '')
       + (big
-        ? '<textarea id="' + id + '" name="' + id + '" rows="3" placeholder="' + esc((sample || '').slice(0, 160)) + '"></textarea>'
+        ? '<textarea id="' + id + '" name="' + id + '" rows="3" placeholder="' + esc(sample || '') + '"></textarea>'
         : '<input type="text" id="' + id + '" name="' + id + '" placeholder="' + esc((sample || '').slice(0, 90)) + '">')
-      + (sample ? '<p class="eg">Currently shows: <span>' + esc(sample.slice(0, 180)) + (sample.length > 180 ? '…' : '') + '</span></p>' : '')
       + '</div>';
   }
 
-  // ---- the twenty ----
-  const core = CORE.filter(id => id in have);
-  let main = '<section class="grp"><h2>The Twenty</h2>'
-    + '<p class="note">These are the things only you can tell us. Everything else on the page we write for you from these answers.</p>';
-  core.forEach(id => { main += row(id, labelOf[id] || id, have[id]); });
-  main += '</section>';
+  // ---- the twenty, in five short groups ----
+  let core = 0, main = '';
+  CORE_GROUPS.forEach(g => {
+    const ids = g.ids.filter(id => id in have);
+    if (!ids.length) return;
+    core += ids.length;
+    main += '<section class="grp"><h2>' + esc(g.title) + '</h2>'
+      + (g.note ? '<p class="note">' + esc(g.note) + '</p>' : '');
+    if (g.pairs) {
+      for (let i = 0; i < ids.length; i += 2) {
+        main += '<div class="pair">' + row(ids[i], LABEL[ids[i]] || labelOf[ids[i]] || ids[i], have[ids[i]], true)
+          + (ids[i + 1] ? row(ids[i + 1], LABEL[ids[i + 1]] || labelOf[ids[i + 1]] || ids[i + 1], have[ids[i + 1]]) : '')
+          + '</div>';
+      }
+    } else {
+      ids.forEach(id => { main += row(id, LABEL[id] || labelOf[id] || id, have[id]); });
+    }
+    main += '</section>';
+  });
 
-  main += '<section class="grp"><h2>Photographs and logo</h2>'
-    + '<p class="note">Email us your photographs and logo and we will place them. No need to list anything here. '
-    + 'Where you have none we use stock photography and swap it later whenever you are ready.</p></section>';
+  main += '<section class="grp grp--plain"><h2>Photographs and logo</h2>'
+    + "<p class=\"note\">Attach your photographs and logo to the same reply and we'll place them. "
+    + "If you don't have photographs yet we use stock, and swap them whenever you're ready.</p></section>";
 
   // ---- everything else, folded away ----
-  let extraRows = '';
+  let extraRows = '', extraCount = 0;
   GROUPS.forEach(g => {
     const rows = g.fields.filter(f => (f.id in have) && CORE.indexOf(f.id) < 0 && f.type !== 'color' && f.type !== 'logo' && f.type !== 'range' && f.type !== 'image');
     if (!rows.length) return;
-    extraRows += '<h3 class="sub">' + esc(g.title) + '</h3>';
-    rows.forEach(f => { extraRows += row(f.id, f.label, have[f.id]); });
+    extraRows += '<h3 class="sub">' + esc(subTitle(g.title)) + '</h3>';
+    rows.forEach(f => { extraRows += row(f.id, LABEL[f.id] || f.label, have[f.id]); extraCount++; });
   });
   extraRows += '<h3 class="sub">Brand</h3>'
-    + row('accent', 'Brand colour', d.accent)
+    + row('accent', 'Accent color', d.accent)
     + row('logoText', 'Logo wording', '');
-  extraRows += '<h3 class="sub">Photographs</h3>';
-  imgs.forEach((im, i) => { extraRows += row(im.id || ('img' + (i + 1)), im.alt || ('Photograph ' + (i + 1)), ''); });
+  extraCount += 2;
+  if (imgs.length) {
+    extraRows += '<h3 class="sub">Photographs</h3>';
+    // The alt text describes the stock shot that is in the slot now, so it
+    // belongs under the label as context, not as the label itself.
+    imgs.forEach((im, i) => {
+      extraRows += row(im.id || ('img' + (i + 1)), 'Photograph ' + (i + 1),
+        '', false, im.alt ? 'In that slot now: ' + im.alt.charAt(0).toLowerCase() + im.alt.slice(1) + '.' : '');
+      extraCount++;
+    });
+  }
 
-  const extra = '<details class="more"><summary>Want more control? Open the rest (optional)</summary>'
-    + '<p class="note">Nothing here is needed. Fill in anything you already have strong wording for, and we will write the rest.</p>'
+  const extra = '<details class="more"><summary>The other ' + extraCount + ' fields, all optional</summary>'
+    + "<p class=\"note\">None of this is needed. Fill in whatever you already have wording for.</p>"
     + extraRows + '</details>';
 
-  return { count: core.length, html: page(d, main + extra, core.length) };
+  return { count: core, html: page(d, main + extra, core) };
 }
 
 function page(d, body, count) {
@@ -161,27 +206,27 @@ function page(d, body, count) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Website Content Form, ${esc(d.name)} design | FrontDoor</title>
-<link rel="stylesheet" href="form.css?v=1">
+<title>Content form, ${esc(d.name)} | FrontDoor</title>
+<link rel="stylesheet" href="form.css?v=2">
 </head>
 <body>
 <header class="hd"><div class="in">
   <p class="kicker">FrontDoor, a service of iTrust Insights</p>
-  <h1>Your Website Content</h1>
-  <p class="lede">You picked the <b>${esc(d.name)}</b> design, built for ${esc((AREAS[d.area] || '').toLowerCase())} at ${esc((TYPES[d.type] || '').toLowerCase())} scale. There are just ${count} questions, and they should take about ten minutes. They cover the things only you can tell us. We write the rest of the page from your answers and send you a draft to approve. Please keep patient information out of it, including anonymised stories.</p>
+  <h1>Content for your ${esc(d.name)} site</h1>
+  <p class="lede">${esc(d.name)} is built for ${esc((AREAS[d.area] || '').toLowerCase())} at ${esc((TYPES[d.type] || '').toLowerCase())} scale. ${count} questions below. They are the parts of the page we can't invent for you: your name on it, your words, your numbers. We draft the rest and send it back for you to mark up. Please keep patient information out of it, de-identified vignettes included.</p>
 </div></header>
 
 <main class="in">
   <form id="f" autocomplete="off">${body}</form>
 
-  <section class="grp">
-    <h2>Send it back</h2>
-    <p class="note">Nothing you type is sent anywhere until you press a button below. Your answers stay in this browser.</p>
+  <section class="grp grp--plain">
+    <h2>Sending it back</h2>
+    <p class="note">Nothing leaves your browser until you press one of these.</p>
     <div class="acts">
-      <button type="button" id="dl" class="btn btn--p">Download my answers</button>
+      <button type="button" id="dl" class="btn btn--p">Download answers</button>
       <button type="button" id="cp" class="btn">Copy as text</button>
     </div>
-    <p class="note">Email the downloaded file to us and we will load it straight into your site. Copying as text is fine too if that is easier.</p>
+    <p class="note">Reply to the email we sent you and attach the file. Pasted text is fine too.</p>
   </section>
 </main>
 
@@ -225,7 +270,7 @@ document.getElementById('cp').addEventListener('click',function(){
   });
   var text=lines.join('\\n');
   if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){ alert('Copied. Paste it into an email to us.'); },
+    navigator.clipboard.writeText(text).then(function(){ alert('Copied. Paste it into your reply.'); },
       function(){ window.prompt('Copy this:', text); });
   } else { window.prompt('Copy this:', text); }
 });
@@ -250,10 +295,10 @@ const rows = built.map(b => '<tr><td><b>' + esc(b.name) + '</b><br><span class="
 fs.writeFileSync(path.join(outDir, 'index.html'), `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex"><title>Content forms, all designs | FrontDoor</title>
-<link rel="stylesheet" href="form.css?v=1"></head><body>
-<header class="hd"><div class="in"><p class="kicker">Internal</p><h1>Content Forms</h1>
-<p class="lede">One form per design, ${built.length} in all. Send a client the link for the design they chose. Their answers download as a file you load straight into the Studio with Import.</p></div></header>
-<main class="in"><table class="tbl"><tr><th>Design</th><th>Practice area</th><th>Size</th><th></th></tr>${rows}</table></main>
+<link rel="stylesheet" href="form.css?v=2"></head><body>
+<header class="hd"><div class="in in--wide"><p class="kicker">Internal</p><h1>Content forms</h1>
+<p class="lede">One per design, ${built.length} in all. Send a client the link for the design they picked. They fill it in and send back a file, which goes straight into the Studio with Import.</p></div></header>
+<main class="in in--wide"><table class="tbl"><tr><th>Design</th><th>Practice area</th><th>Size</th><th></th></tr>${rows}</table></main>
 <script>document.addEventListener('click',function(e){var a=e.target.closest('.copy');if(!a)return;e.preventDefault();
 var u=new URL(a.getAttribute('href'),location.href).href;navigator.clipboard.writeText(u).then(function(){a.textContent='Copied';setTimeout(function(){a.textContent='Copy link';},1400);});});</script>
 </body></html>`);

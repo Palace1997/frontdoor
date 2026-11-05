@@ -1,77 +1,90 @@
-/* Client content forms. Plain, readable, and legible on a phone, because most
-   people will fill this in between appointments. */
+/* Client content forms. Set like a document rather than a landing page: one
+   measured column, numbered sections, hairline rules between questions. People
+   filling this in deal with real intake paperwork all day, and a page of
+   rounded white cards on a tint reads as a template to them. */
 @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap");
 
 :root{
   --forest:#0B362A; --green:#00A583; --ink:#1B1812; --muted:#6B6358;
-  --cream:#FBF6EF; --line:#E5E2DC; --warn:#B4502E;
+  --cream:#F7F4EE; --line:#E2DED6; --field:#CBC6BC;
   --disp:"Fraunces",Georgia,serif; --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box}
-body{margin:0;background:#EFEAE2;color:var(--ink);font:400 16px/1.6 var(--sans)}
-.in{max-width:760px;margin:0 auto;padding:0 22px}
+body{margin:0;background:#fff;color:var(--ink);font:400 16.5px/1.62 var(--sans);-webkit-font-smoothing:antialiased}
+.in{max-width:680px;margin:0 auto;padding:0 26px}
+.in--wide{max-width:920px}  /* the index is a table, not a reading column */
 
-.hd{background:var(--forest);color:#F0EBE1;padding:40px 0 34px}
-.kicker{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.72;margin:0 0 10px}
-.hd h1{font:500 36px/1.12 var(--disp);margin:0 0 12px}
-.lede{margin:0;opacity:.9;font-size:16px;max-width:60ch}
+.hd{background:var(--forest);color:#F0EBE1;padding:48px 0 42px}
+.kicker{font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;opacity:.6;margin:0 0 14px}
+.hd h1{font:500 34px/1.16 var(--disp);margin:0 0 14px;letter-spacing:-.01em}
+.lede{margin:0;color:rgba(240,235,225,.84);font-size:16px;line-height:1.6;max-width:58ch}
 
-main{padding:26px 0 60px}
+main{padding:4px 0 76px;counter-reset:grp}
 
-.warn{background:#FFF8F5;border:1px solid var(--warn);border-radius:14px;padding:20px 22px;margin:0 0 24px}
-.warn h3{font:600 17px/1.2 var(--disp);margin:0 0 10px;color:var(--warn)}
-.warn ul{margin:0;padding-left:20px}
-.warn li{margin-bottom:8px;font-size:15px}
+/* A numbered section, the way a real form is numbered. */
+.grp{padding:38px 0 2px}
+.grp h2{font:500 20px/1.3 var(--disp);margin:0;counter-increment:grp}
+/* the two instruction sections are not questions, so they take no number */
+.grp--plain h2{counter-increment:none}
+.grp--plain h2::before{content:none}
+.grp h2::before{
+  content:counter(grp,decimal-leading-zero);
+  font:600 11.5px/1 var(--sans);letter-spacing:.09em;color:var(--green);
+  margin-right:11px;vertical-align:3px}
+.grp > .note{color:var(--muted);font-size:15px;margin:6px 0 0;max-width:56ch}
 
-.grp{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:16px}
-.grp h2{font:500 21px/1.2 var(--disp);margin:0 0 4px}
-.grp > .note{color:var(--muted);font-size:14.5px;margin:6px 0 14px}
-
-.q{padding:16px 0;border-top:1px solid var(--line)}
-.grp h2 + .q{border-top:0;padding-top:10px}
-.q label{display:block;font-weight:600;font-size:15px;margin-bottom:3px}
-.hint{margin:0 0 8px;color:var(--muted);font-size:14px}
-.len{color:var(--green);font-weight:600;white-space:nowrap}
+.q{padding:19px 0 20px;border-top:1px solid var(--line)}
+.grp h2 + .q,.grp > .note + .q{margin-top:18px}
+.q label{display:block;font-weight:600;font-size:15.5px;margin-bottom:1px}
+.hint{margin:0 0 9px;color:var(--muted);font-size:14.5px;line-height:1.5}
+.q label + input,.q label + textarea{margin-top:9px}
 .q input[type=text],.q textarea{
-  width:100%;font:400 15.5px/1.5 var(--sans);color:var(--ink);
-  background:#FCFBF8;border:1px solid var(--line);border-radius:9px;padding:10px 12px}
-.q input[type=text]:focus,.q textarea:focus{outline:2px solid var(--green);outline-offset:1px;border-color:transparent}
-.q textarea{resize:vertical;min-height:74px}
-.eg{margin:7px 0 0;font-size:13px;color:var(--muted)}
-.eg span{font-style:italic}
+  width:100%;font:400 16px/1.55 var(--sans);color:var(--ink);
+  background:#fff;border:1px solid var(--field);border-radius:3px;padding:10px 12px}
+.q input[type=text]::placeholder,.q textarea::placeholder{color:#A49D91}
+.q input[type=text]:focus,.q textarea:focus{outline:2px solid var(--green);outline-offset:-1px;border-color:var(--green)}
+.q textarea{resize:vertical;min-height:82px}
+
+/* A number and the thing it counts belong on one line, not two questions. */
+.pair{display:grid;grid-template-columns:152px 1fr;column-gap:20px;border-top:1px solid var(--line)}
+.pair .q{border-top:0}
+.pair + .pair{border-top:1px solid var(--line)}
 
 /* the rest of the fields, folded away so the form reads as twenty questions */
-.more{background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px 24px;margin-bottom:16px}
-.more > summary{font:600 15px/1 var(--sans);padding:18px 0;cursor:pointer;list-style:none;color:var(--muted)}
+.more{border-top:1px solid var(--line);margin-top:34px}
+.more > summary{font:600 15px/1 var(--sans);padding:22px 0;cursor:pointer;list-style:none;color:var(--muted)}
 .more > summary::-webkit-details-marker{display:none}
-.more > summary::before{content:"+ ";font-weight:700;color:var(--green)}
-.more[open] > summary::before{content:"\2212 "}
+.more > summary::before{content:"+";font-weight:600;color:var(--green);margin-right:9px}
+.more[open] > summary::before{content:"\2212"}
 .more > summary:hover{color:var(--ink)}
-.more[open] > summary{border-bottom:1px solid var(--line);margin-bottom:6px}
-.sub{font:600 13px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin:20px 0 2px}
+.more > .note{color:var(--muted);font-size:15px;margin:0 0 6px}
+.sub{font:600 11.5px/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin:30px 0 -4px}
 
-.acts{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 10px}
-.btn{font:600 15px/1 var(--sans);padding:13px 20px;border-radius:999px;border:1px solid var(--line);
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 14px}
+.btn{font:600 15px/1 var(--sans);padding:13px 19px;border-radius:4px;border:1px solid var(--field);
   background:#fff;color:var(--ink);cursor:pointer}
 .btn:hover{background:var(--cream)}
-.btn--p{background:var(--green);border-color:var(--green);color:#fff}
-.btn--p:hover{background:#00846a;border-color:#00846a}
+.btn--p{background:var(--forest);border-color:var(--forest);color:#F0EBE1}
+.btn--p:hover{background:#072820;border-color:#072820}
 
-.tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:14.5px}
-.tbl th,.tbl td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
-.tbl th{background:#F3EFE7;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.tbl tr:last-child td{border-bottom:0}
-.tbl a{color:var(--green);font-weight:600;text-decoration:none}
-.tbl a:hover{text-decoration:underline}
-.sm{color:var(--muted);font-size:13px}
+.tbl{width:100%;border-collapse:collapse;font-size:15px;margin-top:30px}
+.tbl th,.tbl td{text-align:left;padding:12px 14px 12px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl th{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600;
+  border-bottom-color:var(--ink)}
+.tbl td:last-child{white-space:nowrap;text-align:right;padding-right:0}
+.tbl a{color:var(--forest);font-weight:600;text-decoration:none;border-bottom:1px solid rgba(11,54,42,.3)}
+.tbl a:hover{color:var(--green);border-bottom-color:var(--green)}
+.sm{color:var(--muted);font-size:13.5px}
 
-.ft{background:var(--forest);color:rgba(240,235,225,.82);padding:26px 0;font-size:14px}
+.ft{background:var(--forest);color:rgba(240,235,225,.8);padding:28px 0;font-size:14.5px}
 .ft p{margin:0 0 6px}
 .ft b{color:#fff}
-.ft .sm{color:rgba(240,235,225,.55)}
+.ft .sm{color:rgba(240,235,225,.52)}
 
 @media (max-width:620px){
-  .hd h1{font-size:29px}
-  .grp{padding:18px 16px}
-  .in{padding:0 16px}
+  .hd{padding:38px 0 34px}
+  .hd h1{font-size:28px}
+  .in{padding:0 20px}
+  .pair{grid-template-columns:1fr;column-gap:0}
+  .pair .q + .q{border-top:1px solid var(--line)}
 }
