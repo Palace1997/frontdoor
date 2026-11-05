@@ -14,7 +14,15 @@ body{margin:0;background:#fff;color:var(--ink);font:400 16.5px/1.62 var(--sans);
 .in{max-width:680px;margin:0 auto;padding:0 26px}
 .in--wide{max-width:920px}  /* the index is a table, not a reading column */
 
-.hd{background:var(--forest);color:#F0EBE1;padding:48px 0 42px}
+.hd{background:var(--forest);color:#F0EBE1;padding:34px 0 42px}
+/* The padding is a thumb-sized hit area; the negative margin cancels it so the
+   link still sits where it looks like it sits. */
+.back{display:inline-flex;align-items:center;gap:9px;padding:10px 16px 10px 0;margin:-10px 0 12px;
+  color:rgba(240,235,225,.62);text-decoration:none;font:600 13px/1 var(--sans);letter-spacing:.03em}
+.back svg{width:15px;height:15px;flex:none;transition:transform .18s ease}
+.back:hover{color:#F0EBE1}
+.back:hover svg{transform:translateX(-3px)}
+.back:focus-visible{outline:2px solid var(--green);outline-offset:4px;border-radius:2px}
 .kicker{font-size:11px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;opacity:.6;margin:0 0 14px}
 .hd h1{font:500 34px/1.16 var(--disp);margin:0 0 14px;letter-spacing:-.01em}
 .lede{margin:0;color:rgba(240,235,225,.84);font-size:16px;line-height:1.6;max-width:58ch}
