@@ -33,7 +33,7 @@ const HINT = {
   servicesSub:'One line under that heading.',
   aboutTitle:'Heading for the section about you or the practice.',
   aboutText:'A short paragraph in your own voice. Who you are and how you work.',
-  quoteText:'A note in YOUR words about how you work. Not a patient testimonial.',
+  quoteText:'A note in YOUR words about how you work. Not a client testimonial, and nothing about a specific person.',
   quoteAuthor:'Who is speaking. Your name and credentials.',
   quoteRole:'Their role, for example Clinical Director.',
   contactTitle:'Heading above the contact form.',
@@ -49,7 +49,7 @@ for (let n = 1; n <= 6; n++) {
 }
 for (let n = 1; n <= 4; n++) HINT['check' + n] = 'Short point ' + n + '. Leave blank to drop it.';
 for (let n = 1; n <= 3; n++) {
-  HINT['stat' + n + 'Num'] = 'Figure ' + n + '. Only something you can evidence.';
+  HINT['stat' + n + 'Num'] = 'Figure ' + n + '. Only something you can evidence, no outcome or success rates.';
   HINT['stat' + n + 'Label'] = 'What figure ' + n + ' counts.';
 }
 for (let n = 1; n <= 5; n++) {
@@ -168,20 +168,10 @@ function page(d, body, count) {
 <header class="hd"><div class="in">
   <p class="kicker">FrontDoor, a service of iTrust Insights</p>
   <h1>Your Website Content</h1>
-  <p class="lede">You picked the <b>${esc(d.name)}</b> design, built for ${esc((AREAS[d.area] || '').toLowerCase())} at ${esc((TYPES[d.type] || '').toLowerCase())} scale. There are just ${count} questions, and they should take about ten minutes. They cover the things only you can tell us. We write the rest of the page from your answers and send you a draft to approve.</p>
+  <p class="lede">You picked the <b>${esc(d.name)}</b> design, built for ${esc((AREAS[d.area] || '').toLowerCase())} at ${esc((TYPES[d.type] || '').toLowerCase())} scale. There are just ${count} questions, and they should take about ten minutes. They cover the things only you can tell us. We write the rest of the page from your answers and send you a draft to approve. Please keep patient information out of it, including anonymised stories.</p>
 </div></header>
 
 <main class="in">
-  <div class="warn">
-    <h3>Before you start</h3>
-    <ul>
-      <li><b>Do not put patient information here.</b> No names, no stories, no health details, not even anonymised. This form is only about your practice.</li>
-      <li><b>Testimonials from clients are not used</b> on these sites. The quote section is for a note in your own words about how you work.</li>
-      <li><b>Only give figures you can evidence.</b> Years in practice, number of clinicians, languages spoken. We do not publish outcome claims or success rates.</li>
-      <li>The crisis line in the footer, <b>988</b>, stays on every page and is not editable.</li>
-    </ul>
-  </div>
-
   <form id="f" autocomplete="off">${body}</form>
 
   <section class="grp">
