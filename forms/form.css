@@ -40,6 +40,16 @@ main{padding:26px 0 60px}
 .eg{margin:7px 0 0;font-size:13px;color:var(--muted)}
 .eg span{font-style:italic}
 
+/* the rest of the fields, folded away so the form reads as twenty questions */
+.more{background:#fff;border:1px solid var(--line);border-radius:14px;padding:4px 24px;margin-bottom:16px}
+.more > summary{font:600 15px/1 var(--sans);padding:18px 0;cursor:pointer;list-style:none;color:var(--muted)}
+.more > summary::-webkit-details-marker{display:none}
+.more > summary::before{content:"+ ";font-weight:700;color:var(--green)}
+.more[open] > summary::before{content:"\2212 "}
+.more > summary:hover{color:var(--ink)}
+.more[open] > summary{border-bottom:1px solid var(--line);margin-bottom:6px}
+.sub{font:600 13px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--green);margin:20px 0 2px}
+
 .acts{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 10px}
 .btn{font:600 15px/1 var(--sans);padding:13px 20px;border-radius:999px;border:1px solid var(--line);
   background:#fff;color:var(--ink);cursor:pointer}

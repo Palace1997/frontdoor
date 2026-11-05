@@ -57,6 +57,18 @@ for (let n = 1; n <= 5; n++) {
   HINT['faq' + n + 'A'] = 'Your answer to question ' + n + '. Keep it practical.';
 }
 
+
+// The twenty asked up front. Chosen because each one is a FACT or a VOICE that
+// only the practice has, and that would be plainly wrong if the demo wording
+// shipped instead: another practice's phone number, another clinician's name
+// on the quote, invented figures in the stats band. Everything else is prose
+// the team writes, which is what the service promises anyway.
+const CORE = ['brandName','phone','email','address',
+  'heroTitle','heroSub','heroCta1',
+  'svc1Title','svc2Title','svc3Title',
+  'aboutText','quoteText','quoteAuthor','quoteRole',
+  'stat1Num','stat1Label','stat2Num','stat2Label','stat3Num','stat3Label'];
+
 const esc = s => String(s == null ? '' : s)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const txt = h => h.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ')
@@ -96,56 +108,50 @@ function buildForm(d) {
   const html = fs.readFileSync(file, 'utf8');
   const have = fieldsIn(html);
   const imgs = imagesIn(html);
+  const labelOf = {}; GROUPS.forEach(g => g.fields.forEach(f => labelOf[f.id] = f.label));
 
-  let sections = '', count = 0;
+  function row(id, label, sample) {
+    const big = (sample || '').length > 95;
+    const hint = HINT[id] || label;
+    return '<div class="q"><label for="' + id + '">' + esc(label) + '</label>'
+      + '<p class="hint">' + esc(hint) + (guide(sample) ? ' <span class="len">' + esc(guide(sample)) + '</span>' : '') + '</p>'
+      + (big
+        ? '<textarea id="' + id + '" name="' + id + '" rows="3" placeholder="' + esc((sample || '').slice(0, 160)) + '"></textarea>'
+        : '<input type="text" id="' + id + '" name="' + id + '" placeholder="' + esc((sample || '').slice(0, 90)) + '">')
+      + (sample ? '<p class="eg">Currently shows: <span>' + esc(sample.slice(0, 180)) + (sample.length > 180 ? '…' : '') + '</span></p>' : '')
+      + '</div>';
+  }
+
+  // ---- the twenty ----
+  const core = CORE.filter(id => id in have);
+  let main = '<section class="grp"><h2>The Twenty</h2>'
+    + '<p class="note">These are the things only you can tell us. Everything else on the page we write for you from these answers.</p>';
+  core.forEach(id => { main += row(id, labelOf[id] || id, have[id]); });
+  main += '</section>';
+
+  main += '<section class="grp"><h2>Photographs and logo</h2>'
+    + '<p class="note">Email us your photographs and logo and we will place them. No need to list anything here. '
+    + 'Where you have none we use stock photography and swap it later whenever you are ready.</p></section>';
+
+  // ---- everything else, folded away ----
+  let extraRows = '';
   GROUPS.forEach(g => {
-    if (g.title === 'Brand & colour') return;          // handled in its own block below
-    const rows = g.fields.filter(f => f.id in have);
+    const rows = g.fields.filter(f => (f.id in have) && CORE.indexOf(f.id) < 0 && f.type !== 'color' && f.type !== 'logo' && f.type !== 'range' && f.type !== 'image');
     if (!rows.length) return;
-    sections += '<section class="grp"><h2>' + esc(g.title) + '</h2>';
-    rows.forEach(f => {
-      count++;
-      const sample = have[f.id];
-      const big = f.type === 'textarea' || sample.length > 95;
-      const hint = HINT[f.id] || f.label;
-      sections += '<div class="q"><label for="' + f.id + '">' + esc(f.label) + '</label>'
-        + '<p class="hint">' + esc(hint) + (guide(sample) ? ' <span class="len">' + esc(guide(sample)) + '</span>' : '') + '</p>'
-        + (big
-          ? '<textarea id="' + f.id + '" name="' + f.id + '" rows="3" placeholder="' + esc(sample.slice(0, 160)) + '"></textarea>'
-          : '<input type="text" id="' + f.id + '" name="' + f.id + '" placeholder="' + esc(sample.slice(0, 90)) + '">')
-        + '<p class="eg">Currently shows: <span>' + esc(sample.slice(0, 190)) + (sample.length > 190 ? '…' : '') + '</span></p></div>';
-    });
-    sections += '</section>';
+    extraRows += '<h3 class="sub">' + esc(g.title) + '</h3>';
+    rows.forEach(f => { extraRows += row(f.id, f.label, have[f.id]); });
   });
+  extraRows += '<h3 class="sub">Brand</h3>'
+    + row('accent', 'Brand colour', d.accent)
+    + row('logoText', 'Logo wording', '');
+  extraRows += '<h3 class="sub">Photographs</h3>';
+  imgs.forEach((im, i) => { extraRows += row(im.id || ('img' + (i + 1)), im.alt || ('Photograph ' + (i + 1)), ''); });
 
-  // brand bits that are not plain text
-  let brand = '<section class="grp"><h2>Brand</h2>'
-    + '<div class="q"><label for="navCta">' + esc((GROUPS.find(g => g.title === 'Brand & colour').fields.find(f => f.id === 'navCta') || {}).label || 'Button label (nav)') + '</label>'
-    + '<p class="hint">' + esc(HINT.navCta) + '</p>'
-    + '<input type="text" id="navCta" name="navCta" placeholder="' + esc(have.navCta || 'Book a consult') + '"></div>'
-    + '<div class="q"><label for="accent">Brand colour</label>'
-    + '<p class="hint">A hex code if you have one. This design is set to ' + esc(d.accent) + ' today.</p>'
-    + '<input type="text" id="accent" name="accent" placeholder="' + esc(d.accent) + '"></div>'
-    + '<div class="q"><label for="logoText">Logo wording</label>'
-    + '<p class="hint">' + esc(HINT.logoText) + '</p>'
-    + '<input type="text" id="logoText" name="logoText" placeholder="Leave blank to use the business name"></div>'
-    + '</section>';
+  const extra = '<details class="more"><summary>Want more control? Open the rest (optional)</summary>'
+    + '<p class="note">Nothing here is needed. Fill in anything you already have strong wording for, and we will write the rest.</p>'
+    + extraRows + '</details>';
 
-  let pics = '<section class="grp"><h2>Photographs</h2>'
-    + '<p class="note">Send the files by email and we will place them. If you have them online already, paste a link. '
-    + 'We will use stock photography where you leave a gap, and swap it later whenever you are ready.</p>';
-  imgs.forEach((im, i) => {
-    const id = im.id || ('img' + (i + 1));
-    pics += '<div class="q"><label for="' + id + '">' + esc(im.alt || ('Photograph ' + (i + 1))) + '</label>'
-      + '<p class="hint">Link, or write "sending by email".</p>'
-      + '<input type="text" id="' + id + '" name="' + id + '" placeholder="Link, or sending by email"></div>';
-    count++;
-  });
-  pics += '</section>';
-
-  const body = brand + sections + pics;
-  const real = (body.match(/class="q"/g) || []).length;   // the brand block was never tallied
-  return { count: real, html: page(d, body, real) };
+  return { count: core.length, html: page(d, main + extra, core.length) };
 }
 
 function page(d, body, count) {
@@ -162,7 +168,7 @@ function page(d, body, count) {
 <header class="hd"><div class="in">
   <p class="kicker">FrontDoor, a service of iTrust Insights</p>
   <h1>Your Website Content</h1>
-  <p class="lede">You picked the <b>${esc(d.name)}</b> design, built for ${esc((AREAS[d.area] || '').toLowerCase())} at ${esc((TYPES[d.type] || '').toLowerCase())} scale. These ${count} questions cover everything that design shows. Anything you leave blank we will either write for you or remove from the page, so skip what does not apply.</p>
+  <p class="lede">You picked the <b>${esc(d.name)}</b> design, built for ${esc((AREAS[d.area] || '').toLowerCase())} at ${esc((TYPES[d.type] || '').toLowerCase())} scale. There are just ${count} questions, and they should take about ten minutes. They cover the things only you can tell us. We write the rest of the page from your answers and send you a draft to approve.</p>
 </div></header>
 
 <main class="in">
@@ -212,6 +218,10 @@ document.getElementById('dl').addEventListener('click',function(){
   var values=collect();
   if(!Object.keys(values).length){ alert('Fill in at least one answer first.'); return; }
   // exactly the shape the Studio's Import expects
+  // the copyright line follows from the business name, so we never ask for it
+  if(values.brandName && !values.footerLegal){
+    values.footerLegal='\u00a9 '+new Date().getFullYear()+' '+values.brandName+'. All rights reserved.';
+  }
   var payload={ name: values.brandName||DESIGN, template: TEMPLATE, values: values };
   var blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
   var a=document.createElement('a'); a.href=URL.createObjectURL(blob);
