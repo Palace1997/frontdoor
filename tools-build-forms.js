@@ -97,12 +97,15 @@ const CORE_GROUPS = [
 ];
 const CORE = CORE_GROUPS.reduce((a, g) => a.concat(g.ids), []);
 
-// Both the forms and the index sit one level down, so the homepage is ../.
-// The label stays short because the kicker underneath already says FrontDoor.
-const BACK = '<a class="back" href="../index.html">'
+// One step back up the tree, not a jump to the top: a single form goes to the
+// index of all of them, and the index goes to the homepage. Each link is named
+// for where it lands, so neither of them says "Home" while going somewhere else.
+const back = (href, label) => '<a class="back" href="' + href + '">'
   + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" '
   + 'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
-  + '<path d="M19 12H5M11 18l-6-6 6-6"/></svg>Home</a>';
+  + '<path d="M19 12H5M11 18l-6-6 6-6"/></svg>' + label + '</a>';
+const BACK_TO_INDEX = back('index.html', 'All forms');
+const BACK_TO_HOME = back('../index.html', 'Home');
 
 const esc = s => String(s == null ? '' : s)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -218,7 +221,7 @@ function page(d, body, count) {
 </head>
 <body>
 <header class="hd"><div class="in">
-  ${BACK}
+  ${BACK_TO_INDEX}
   <p class="kicker">FrontDoor, a service of iTrust Insights</p>
   <h1>Content for your ${esc(d.name)} site</h1>
   <p class="lede">${esc(d.name)} is built for ${esc((AREAS[d.area] || '').toLowerCase())} at ${esc((TYPES[d.type] || '').toLowerCase())} scale. ${count} questions below. They are the parts of the page we can't invent for you: your name on it, your words, your numbers. We draft the rest and send it back for you to mark up. Please keep patient information out of it, de-identified vignettes included.</p>
@@ -304,7 +307,7 @@ fs.writeFileSync(path.join(outDir, 'index.html'), `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex"><title>Content forms, all designs | FrontDoor</title>
 <link rel="stylesheet" href="form.css?v=4"></head><body>
-<header class="hd"><div class="in in--wide">${BACK}<p class="kicker">Internal</p><h1>Content forms</h1>
+<header class="hd"><div class="in in--wide">${BACK_TO_HOME}<p class="kicker">Internal</p><h1>Content forms</h1>
 <p class="lede">One per design, ${built.length} in all. Send a client the link for the design they picked. They fill it in and send back a file, which goes straight into the Studio with Import.</p></div></header>
 <main class="in in--wide"><table class="tbl"><tr><th>Design</th><th>Practice area</th><th>Size</th><th></th></tr>${rows}</table></main>
 <script>document.addEventListener('click',function(e){var a=e.target.closest('.copy');if(!a)return;e.preventDefault();
