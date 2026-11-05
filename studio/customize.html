@@ -681,7 +681,9 @@ function d7EditorCSS(){ return [
   '#d7-txtbar button{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:6px;padding:7px 9px;cursor:pointer;font:inherit;min-width:30px}',
   '#d7-txtbar button:hover,#d7-txtbar button.on{background:#00A583}',
   '#d7-txtbar button.d7-del:hover{background:#d8513f}',
-  '#d7-txtbar input[type=color]{width:30px;height:28px;padding:0;border:0;background:none;cursor:pointer;border-radius:6px}',
+  '#d7-txtbar input[type=color]{width:26px;height:26px;padding:0;border:0;background:none;cursor:pointer;border-radius:6px}',
+  '#d7-txtbar .d7-cc{display:inline-flex;align-items:center;gap:4px;cursor:pointer}',
+  '#d7-txtbar .d7-cc span{opacity:.72;font-weight:700}',
   '#d7-txtbar select.d7-font{background:rgba(255,255,255,.16);color:#fff;border:0;border-radius:6px;padding:7px 8px;font:inherit;cursor:pointer;max-width:140px}',
   '#d7-txtbar select.d7-font option{color:#1B1812}',
   '#d7-txtbar .d7-sz{min-width:30px;text-align:center;font-variant-numeric:tabular-nums}',
@@ -1153,7 +1155,9 @@ function d7EnsureTextBar(){
   b=doc.createElement('div'); b.id='d7-txtbar'; b.style.display='none';
   b.innerHTML=D7_GRIP+'<select class="d7-font" title="Font">'+D7_FONTS.map((f,i)=>'<option value="'+i+'">'+f.l+'</option>').join('')+'</select>'
     +'<span class="d7-sep"></span><button data-t="dec">A-</button><span class="d7-sz">16</span><button data-t="inc">A+</button>'
-    +'<span class="d7-sep"></span><input type="color" title="Text colour">'
+    +'<span class="d7-sep"></span>'
+    +'<label class="d7-cc" title="Text colour"><span>A</span><input type="color" class="d7-c-text"></label>'
+    +'<label class="d7-cc" title="Fill colour of the box this text sits in"><span>Fill</span><input type="color" class="d7-c-fill"></label>'
     +'<span class="d7-sep"></span><button data-t="bold" style="font-weight:800">B</button><button data-t="italic" style="font-style:italic">I</button>'
     +'<span class="d7-sep"></span><button data-t="left" title="Align left">☷</button><button data-t="center" title="Align centre">≡</button><button data-t="right" title="Align right">☷</button>'
     +'<span class="d7-sep"></span><button data-t="movebox" title="Move or resize the whole block this text sits in">Move / size</button>'
@@ -1162,7 +1166,16 @@ function d7EnsureTextBar(){
   doc.body.appendChild(b);
   b.addEventListener('mousedown',e=>{ if(e.target.tagName!=='INPUT' && e.target.tagName!=='SELECT') e.preventDefault(); }); // keep text focused, but let the font select open
   b.addEventListener('click',e=>{ const t=e.target.getAttribute&&e.target.getAttribute('data-t'); if(t) d7TextAction(t); });
-  b.querySelector('input[type=color]').addEventListener('input',e=>{ if(d7EditEl) d7EditEl.style.color=e.target.value; });
+  b.querySelector('.d7-c-text').addEventListener('input',e=>{ if(d7EditEl) d7EditEl.style.color=e.target.value; });
+  // Fill the box the text sits in. Clicking a button opens THIS bar, not the
+  // box bar, so without a fill swatch here a button's background could not be
+  // changed at all without first going through "Move / size".
+  b.querySelector('.d7-c-fill').addEventListener('mousedown',d7HistPush);
+  b.querySelector('.d7-c-fill').addEventListener('input',e=>{
+    const box=d7EditEl?d7BoxTarget(d7EditEl):null; if(!box) return;
+    if(!box.hasAttribute('data-d7bg0')) box.setAttribute('data-d7bg0', box.style.background||'');
+    box.style.background=e.target.value;
+  });
   d7MakeBarDraggable(b);
   b.querySelector('select.d7-font').addEventListener('change',e=>{ if(!d7EditEl)return; const f=D7_FONTS[+e.target.value]||D7_FONTS[0]; d7LoadFont(f.g); d7EditEl.style.fontFamily=f.v; e.target.selectedIndex=0; d7EditEl.focus(); });
   return b;
@@ -1199,7 +1212,11 @@ function d7ShowTextBar(el){
   const b=d7EnsureTextBar(); b.style.display='flex'; d7ApplyBarPos(b);
   const cs=doc.defaultView.getComputedStyle(el);
   b.querySelector('.d7-sz').textContent=Math.round(parseFloat(cs.fontSize));
-  const col=d7RgbToHex(cs.color); if(col) b.querySelector('input[type=color]').value=col;
+  const col=d7RgbToHex(cs.color); if(col) b.querySelector('.d7-c-text').value=col;
+  // open the fill swatch on whatever the box is painted now
+  const box=d7BoxTarget(el);
+  const bg=box?d7RgbToHex(doc.defaultView.getComputedStyle(box).backgroundColor):null;
+  if(bg) b.querySelector('.d7-c-fill').value=bg;
   b.querySelector('[data-t="bold"]').classList.toggle('on', parseInt(cs.fontWeight)>=600);
   b.querySelector('[data-t="italic"]').classList.toggle('on', cs.fontStyle==='italic');
   // only offer the control when something is actually drawn, and name the mark
