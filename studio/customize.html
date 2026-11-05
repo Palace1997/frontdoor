@@ -332,6 +332,46 @@ function applyLogo(){
   });
 }
 function setImg(id,src){ if(!doc)return; const el=doc.querySelector('[data-img="'+id+'"]'); if(el)el.src=src; }
+// ---- Every image gets a field. The templates only tag a hero and an about
+//      image, so clicking any of the others in the preview had nothing to
+//      reveal on the left and the panel just sat there. Give the untagged ones
+//      an id of their own and list the lot, rebuilt per template. ----
+function d7ImageList(){
+  if(!doc) return [];
+  let auto=0;
+  return [].slice.call(doc.querySelectorAll('img')).filter(im=>{
+    if(im.closest('#d7-imgbox,#d7-imgbar,#d7-ctx,#d7-txtbar,#d7-actbar,#d7-guides,#d7-iconbar')) return false;
+    const r=im.getBoundingClientRect();
+    return r.width>24 && r.height>24;          // skip spacers and icons-as-images
+  }).map(im=>{
+    let id=im.getAttribute('data-img');
+    if(!id){ id='img'+(++auto); im.setAttribute('data-img',id); im.setAttribute('data-d7autoimg','1'); }
+    const label=(im.getAttribute('alt')||'').trim() || 'Image';
+    return {id, label:label.length>52?label.slice(0,52)+'…':label, el:im};
+  });
+}
+function d7BuildImageFields(){
+  let box=document.getElementById('d7-imggroup');
+  if(!box){
+    box=document.createElement('details'); box.className='group'; box.id='d7-imggroup';
+    form.appendChild(box);
+  }
+  const list=d7ImageList();
+  box.innerHTML='<summary>Images</summary>'
+    +'<p class="ghint">Every picture in this design, named by its alt text. Clicking one in the preview jumps to it here.</p>'
+    + list.map(x=>'<div class="field"><label>'+x.label+'</label><div class="imgrow">'
+        +'<input type="text" id="f_'+x.id+'" placeholder="Image URL">'
+        +'<label class="upload">Upload<input type="file" accept="image/*" data-img="'+x.id+'"></label>'
+        +'</div></div>').join('');
+  list.forEach(x=>{
+    const inp=document.getElementById('f_'+x.id);
+    inp.value=x.el.getAttribute('src')||'';
+    inp.addEventListener('input',()=>setImg(x.id,inp.value));
+    const file=box.querySelector('input[type=file][data-img="'+x.id+'"]');
+    if(file) file.addEventListener('change',()=>{ const f=file.files[0]; if(!f)return;
+      const rd=new FileReader(); rd.onload=e=>{ inp.value=e.target.result; setImg(x.id,e.target.result); }; rd.readAsDataURL(f); });
+  });
+}
 function setAccent(hex){ if(!doc)return; const d=darken(hex);
   let st=doc.getElementById('d7-accent'); if(!st){st=doc.createElement('style');st.id='d7-accent';doc.head.appendChild(st);}
   // '*' + !important overrides the template's own scoped --acc/--accent definitions wherever they sit
@@ -427,6 +467,7 @@ function populate(){
       if(el){inp.value=el.textContent.trim(); inp.disabled=false;} else {inp.value=''; inp.disabled=true;}
     }
   }));
+  d7BuildImageFields();   // rebuilt per template: the picture list differs every time
   for(let n=1;n<=6;n++)toggleCard(n); for(let n=1;n<=4;n++)toggleCheck(n);
   applyLogo(); // a chosen logo survives switching template
 }
@@ -517,7 +558,10 @@ document.getElementById('download').addEventListener('click',async ()=>{
     (clone.querySelector('head')||clone).appendChild(ic);
   }
   clone.querySelectorAll('[data-d7icon]').forEach(el=>el.removeAttribute('data-d7icon'));
-  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0','data-d7logo','data-d7logotext','data-d7auto','data-d7imgstyle','data-d7frstyle','data-d7pre','data-d7tr','data-d7cb','data-d7bg0'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
+  // ids the Studio invented so every picture had a field; the template's own
+  // data-img values stay, they are part of the design
+  clone.querySelectorAll('[data-d7autoimg]').forEach(el=>el.removeAttribute('data-img'));
+  ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0','data-d7logo','data-d7logotext','data-d7auto','data-d7imgstyle','data-d7frstyle','data-d7pre','data-d7tr','data-d7cb','data-d7bg0','data-d7autoimg'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   // .d7-frame wrappers + .d7-ph placeholders are KEPT (they hold the crop/size/placement and keep the layout stable)
   // make the file self-contained: inline the shared template.css + template.js (bespoke templates use them)
   await inlineAsset(clone,'link[rel="stylesheet"][href*="template.css"]',css=>{const s=doc.createElement('style');s.textContent=css;return s;});
