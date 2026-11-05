@@ -1,0 +1,67 @@
+/* Client content forms. Plain, readable, and legible on a phone, because most
+   people will fill this in between appointments. */
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap");
+
+:root{
+  --forest:#0B362A; --green:#00A583; --ink:#1B1812; --muted:#6B6358;
+  --cream:#FBF6EF; --line:#E5E2DC; --warn:#B4502E;
+  --disp:"Fraunces",Georgia,serif; --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:#EFEAE2;color:var(--ink);font:400 16px/1.6 var(--sans)}
+.in{max-width:760px;margin:0 auto;padding:0 22px}
+
+.hd{background:var(--forest);color:#F0EBE1;padding:40px 0 34px}
+.kicker{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.72;margin:0 0 10px}
+.hd h1{font:500 36px/1.12 var(--disp);margin:0 0 12px}
+.lede{margin:0;opacity:.9;font-size:16px;max-width:60ch}
+
+main{padding:26px 0 60px}
+
+.warn{background:#FFF8F5;border:1px solid var(--warn);border-radius:14px;padding:20px 22px;margin:0 0 24px}
+.warn h3{font:600 17px/1.2 var(--disp);margin:0 0 10px;color:var(--warn)}
+.warn ul{margin:0;padding-left:20px}
+.warn li{margin-bottom:8px;font-size:15px}
+
+.grp{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:16px}
+.grp h2{font:500 21px/1.2 var(--disp);margin:0 0 4px}
+.grp > .note{color:var(--muted);font-size:14.5px;margin:6px 0 14px}
+
+.q{padding:16px 0;border-top:1px solid var(--line)}
+.grp h2 + .q{border-top:0;padding-top:10px}
+.q label{display:block;font-weight:600;font-size:15px;margin-bottom:3px}
+.hint{margin:0 0 8px;color:var(--muted);font-size:14px}
+.len{color:var(--green);font-weight:600;white-space:nowrap}
+.q input[type=text],.q textarea{
+  width:100%;font:400 15.5px/1.5 var(--sans);color:var(--ink);
+  background:#FCFBF8;border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+.q input[type=text]:focus,.q textarea:focus{outline:2px solid var(--green);outline-offset:1px;border-color:transparent}
+.q textarea{resize:vertical;min-height:74px}
+.eg{margin:7px 0 0;font-size:13px;color:var(--muted)}
+.eg span{font-style:italic}
+
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 10px}
+.btn{font:600 15px/1 var(--sans);padding:13px 20px;border-radius:999px;border:1px solid var(--line);
+  background:#fff;color:var(--ink);cursor:pointer}
+.btn:hover{background:var(--cream)}
+.btn--p{background:var(--green);border-color:var(--green);color:#fff}
+.btn--p:hover{background:#00846a;border-color:#00846a}
+
+.tbl{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;font-size:14.5px}
+.tbl th,.tbl td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl th{background:#F3EFE7;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.tbl tr:last-child td{border-bottom:0}
+.tbl a{color:var(--green);font-weight:600;text-decoration:none}
+.tbl a:hover{text-decoration:underline}
+.sm{color:var(--muted);font-size:13px}
+
+.ft{background:var(--forest);color:rgba(240,235,225,.82);padding:26px 0;font-size:14px}
+.ft p{margin:0 0 6px}
+.ft b{color:#fff}
+.ft .sm{color:rgba(240,235,225,.55)}
+
+@media (max-width:620px){
+  .hd h1{font-size:29px}
+  .grp{padding:18px 16px}
+  .in{padding:0 16px}
+}
