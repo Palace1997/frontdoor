@@ -60,7 +60,7 @@
 .lh-hero{position:relative;min-height:min(94vh,860px);display:flex;align-items:flex-end;overflow:hidden;color:#fff;}
 .lh-hero__bg{position:absolute;inset:0;}
 .lh-hero__bg img{width:100%;height:100%;object-fit:cover;}
-.lh-hero__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,30,22,.28) 0%,rgba(16,30,22,.15) 40%,rgba(16,30,22,.78) 100%);}
+.lh-hero__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,30,22,.42) 0%,rgba(16,30,22,.62) 30%,rgba(16,30,22,.8) 65%,rgba(16,30,22,.88) 100%);}
 .lh-hero__in{position:relative;z-index:2;width:100%;padding-bottom:clamp(56px,8vw,96px);padding-top:120px;}
 .lh-hero .lh-kick{color:#fff;}
 .lh-hero .lh-kick::before{background:rgba(255,255,255,.7);}
@@ -102,7 +102,7 @@
 .lh-gal img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.8,.2,1);}
 .lh-gal figure:hover img{transform:scale(1.06);}
 .lh-gal figcaption{position:absolute;left:16px;bottom:14px;color:#fff;font-family:'Fraunces',serif;font-style:italic;font-size:16px;text-shadow:0 1px 8px rgba(0,0,0,.5);z-index:2;}
-.lh-gal figure::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(16,30,22,.72));}
+.lh-gal figure::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(16,30,22,.88));}
 .lh-gal .lh-g-tall{grid-row:span 2;}
 .lh-gal .lh-g-wide{grid-column:span 2;}
 @media(max-width:860px){.lh-gal{grid-template-columns:repeat(2,1fr);grid-auto-rows:180px;}.lh-gal .lh-g-wide{grid-column:span 2;}.lh-gal .lh-g-tall{grid-row:span 1;}}
@@ -164,7 +164,7 @@
 .lh-foot__top{display:grid;grid-template-columns:1.8fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.14);}
 .lh-foot .lh-logo{color:#fff;}
 .lh-foot__brand p{margin-top:18px;max-width:36ch;font-size:15px;line-height:1.65;color:rgba(255,255,255,.62);}
-.lh-foot h4{font-family:'Inter',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:#fff;margin-bottom:18px;}
+.lh-foot h3,.lh-foot h4{font-family:'Inter',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:#fff;margin-bottom:18px;}
 .lh-foot ul{list-style:none;margin:0;padding:0;}
 .lh-foot li{margin-bottom:12px;}
 .lh-foot a{color:rgba(255,255,255,.62);font-size:15px;}
@@ -363,7 +363,7 @@
 <section class="lh-quote reveal">
   <div class="lh-quote__bg"><img src="https://images.unsplash.com/photo-1469820578517-4086c8a154df?auto=format&fit=crop&w=1800&q=80" alt="Lakehouse Recovery" loading="lazy"></div>
   <div class="lh-wrap"><div class="lh-quote__in">
-    <span style="display:block;text-align:center;margin-bottom:22px;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)">A note from Dr. Lindqvist</span>
+    <span style="display:block;text-align:center;margin-bottom:22px;font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#E6CE9C">A note from Dr. Lindqvist</span>
     <p data-field="quoteText">&ldquo;Coming here is a big step, and it&#x27;s normal to feel unsure about it. Our job is to give you a calm, private place to rest, recover and build a plan for going home. You won&#x27;t be doing it alone.&rdquo;</p>
     <div class="lh-quote__who"><b data-field="quoteAuthor">Dr. Erik Lindqvist, MD</b> &middot; <span data-field="quoteRole">Medical Director, addiction medicine</span></div>
   </div></div>
@@ -398,8 +398,8 @@
 <footer class="lh-foot"><div class="lh-wrap">
   <div class="lh-foot__top">
     <div class="lh-foot__brand"><a href="#" class="lh-logo"><span class="lh-mark" data-field="brandMark">L</span> <span data-field="brandName">Lakehouse Recovery</span></a><p data-field="footerText">Residential treatment.</p></div>
-    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#life">Life at Lakehouse</a></li><li><a href="#approach">Approach</a></li><li><a href="#contact">Contact</a></li><li><a href="residential-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
-    <div><h4>Contact</h4><ul><li><a href="#contact">(555) 010-2400</a></li><li><a href="#contact">hello@residential.example</a></li></ul></div>
+    <div><h3>Explore</h3><ul><li><a href="#services">Services</a></li><li><a href="#life">Life at Lakehouse</a></li><li><a href="#approach">Approach</a></li><li><a href="#contact">Contact</a></li><li><a href="residential-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
+    <div><h3>Contact</h3><ul><li><a href="#contact">(555) 010-2400</a></li><li><a href="#contact">hello@residential.example</a></li></ul></div>
   </div>
   <div class="lh-foot__bot"><span data-field="footerLegal">© 2026 Lakehouse Recovery. All rights reserved.</span><span>A FrontDoor website template.</span></div>
 </div><p class="sw-crisis" style="margin:0;padding:16px 20px 6px;font-size:13px;line-height:1.5;text-align:center;opacity:.85">In crisis? Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency.</p>
