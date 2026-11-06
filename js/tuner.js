@@ -63,7 +63,7 @@
     apply();
     var p = document.createElement('div');
     p.setAttribute('data-tuner', '');
-    p.style.cssText = 'position:fixed;bottom:18px;right:18px;z-index:99999;background:#0B362A;color:#F0EBE1;' +
+    p.style.cssText = 'position:fixed;bottom:18px;right:18px;z-index:99999;background:#112746;color:#F0EBE1;' +
       'border:1px solid #1d5143;border-radius:12px;padding:14px 16px;width:248px;max-height:86vh;overflow:auto;' +
       'font:14px/1.4 Inter,system-ui,sans-serif;box-shadow:0 12px 34px rgba(0,0,0,.4)';
 

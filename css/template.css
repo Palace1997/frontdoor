@@ -242,3 +242,7 @@ a.t-ribbon .logo__mark,a.t-ribbon .t-logo__mark,.t-ribbon .logo__mark,.t-ribbon 
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .reveal.is-in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}html{scroll-behavior:auto}}
+
+/* Inside a carousel/preview iframe: hide the fixed "Built with FrontDoor"
+   ribbon, which at thumbnail size reads as a chat bubble on every sample. */
+.is-preview .t-ribbon{display:none !important}

@@ -5,7 +5,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap");
 
 :root{
-  --forest:#0B362A; --green:#00A583; --ink:#1B1812; --muted:#6B6358;
+  --forest:#112746; --green:#1C6FB0; --sky:#52BEEB; --ink:#1B1812; --muted:#6B6358;
   --cream:#F7F4EE; --line:#E2DED6; --field:#CBC6BC;
   --disp:"Fraunces",Georgia,serif; --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
 }
@@ -74,7 +74,7 @@ main{padding:4px 0 76px;counter-reset:grp}
   background:#fff;color:var(--ink);cursor:pointer}
 .btn:hover{background:var(--cream)}
 .btn--p{background:var(--forest);border-color:var(--forest);color:#F0EBE1}
-.btn--p:hover{background:#072820;border-color:#072820}
+.btn--p:hover{background:#0A1B33;border-color:#0A1B33}
 
 .tbl{width:100%;border-collapse:collapse;font-size:15px;margin-top:30px}
 .tbl th,.tbl td{text-align:left;padding:12px 14px 12px 0;border-bottom:1px solid var(--line);vertical-align:top}

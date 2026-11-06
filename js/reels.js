@@ -12,9 +12,19 @@
   var picks = built.slice(0, 14);
   if (picks.length < 6) picks = built;
 
+  // Each card renders the real template in an iframe at SHOT_W and scales it
+  // down to fit. The bigger the card, the less the downscale, and the sharper
+  // the type: at the old 180px the shot ran at a third size and read as a
+  // blur. SHOT_W is a real phone width, so the templates lay out properly.
+  var SHOT_W = 390;
   var small = window.innerWidth <= 640;
-  var CARD_W = small ? 140 : 180;
-  var GAP = small ? 20 : 26;
+  var CARD_W = small ? 196 : 288;
+  var CARD_H = Math.round(CARD_W * 1.62);
+  var GAP = small ? 22 : 34;
+  // How much the cards at the edges swell. In the old standalone section
+  // they had a 460px band to grow into; in the hero they share the frame
+  // with the masthead, and 0.42 sent them straight over the headline.
+  var GROW = stage.classList.contains('lhero__reels') ? 0.20 : 0.42;
   var pitch = CARD_W + GAP;
   var N = picks.length;
   var total = N * pitch;
@@ -23,18 +33,26 @@
     var el = document.createElement('div');
     el.className = 'rcard';
     el.style.width = CARD_W + 'px';
+    el.style.height = CARD_H + 'px';
+    el.style.setProperty('--shot', String(CARD_W / SHOT_W));
     el.setAttribute('role', 'button');
     el.setAttribute('tabindex', '0');
     el.setAttribute('aria-label', 'Preview the ' + d.name + ' design');
     el.dataset.id = d.id;
     el.innerHTML =
-      '<div class="rcard__shot"><iframe title="' + d.name + ' design preview" loading="lazy" tabindex="-1"></iframe></div>' +
-      '<span class="rcard__play"><svg viewBox="0 0 24 24"><path d="M7 5l12 7-12 7z"/></svg></span>';
+      '<div class="rcard__shot"><iframe title="' + d.name + ' design preview" loading="lazy" tabindex="-1"></iframe></div>';
     stage.appendChild(el);
     var fr = el.querySelector('iframe');
-    fr.addEventListener('load', function () { el.classList.add('ready'); });
+    fr.addEventListener('load', function () {
+      // Same origin, so reach in and mark it as a preview: that hides the
+      // template's own "Built with FrontDoor" ribbon, which at card size
+      // reads as a chat bubble stuck to every sample. The card is still
+      // opacity:0 at this point, so nothing flashes.
+      try { fr.contentDocument.documentElement.classList.add('is-preview'); } catch (x) {}
+      el.classList.add('ready');
+    });
     // stagger the loads a little so they don't all hit at once
-    setTimeout(function () { fr.src = d.file + '?v=20261104'; }, i * 120);
+    setTimeout(function () { fr.src = d.file + '?v=' + (window.SW_TPL_V || '1'); }, i * 120);
     return el;
   });
 
@@ -52,7 +70,7 @@
       var cx = x + CARD_W / 2;
       var d = (cx - center) / center;            // -1..1 across the stage
       var dist = Math.min(Math.abs(d), 1.35);
-      var scale = 1 + 0.42 * dist * dist;        // edges grow
+      var scale = 1 + GROW * dist * dist;        // edges grow
       var rotY = -26 * Math.max(-1.4, Math.min(1.4, d)); // lean like inside a cylinder
       var ty = -10 * dist * dist;
       el.style.left = x + 'px';
