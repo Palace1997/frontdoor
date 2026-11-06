@@ -4,7 +4,9 @@
    numbers and they get baked into css/main.css; this file can then be removed.
      - Nav / footer logo heights  -> --nav-logo-size, --footer-logo-size
      - Hero (homepage .lhero only): logo size, center text down, nav sideways
-       -> --lhero-logo, --lhero-copy-y, --lhero-nav-x */
+       -> --lhero-logo, --lhero-copy-y, --lhero-nav-x
+     - Hero designs reel: up/down, left/right, card size
+       -> --reels-y, --reels-x, and window.SW_REELS.setFill() */
 (function () {
   var root = document.documentElement;
 
@@ -17,9 +19,13 @@
   var foot = get('fd_logo', 120);
   var hLogo = get('fd_lhero_logo', 56);
   var rHead = get('fd_rdeck_head', 80);
+  var reelY = get('fd_reels_y', 0);
+  var reelX = get('fd_reels_x', 0);
+  var reelFill = get('fd_reels_fill', 0);   // 0 = leave reels.js on its default
 
   var hasHero = !!document.querySelector('.lhero');
   var hasShowcase = !!document.querySelector('.rdeck');
+  var hasReels = !!document.querySelector('.lhero__reels');
 
   function apply() {
     root.style.setProperty('--nav-logo-size', nav + 'px');
@@ -30,12 +36,17 @@
     if (hasShowcase) {
       root.style.setProperty('--rdeck-head-y', rHead + 'px');
     }
+    if (hasReels) {
+      root.style.setProperty('--reels-y', reelY + 'px');
+      root.style.setProperty('--reels-x', reelX + 'px');
+    }
   }
 
-  function row(label, id, min, max, val) {
-    return '<label style="display:block;margin-bottom:12px">' +
+  function row(label, id, min, max, val, unit) {
+    unit = unit || 'px';
+    return '<label style="display:block;margin-bottom:12px" data-unit="' + unit + '">' +
       '<span style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:12.5px">' +
-      '<span>' + label + '</span><b id="' + id + '-o">' + val + 'px</b></span>' +
+      '<span>' + label + '</span><b id="' + id + '-o">' + val + unit + '</b></span>' +
       '<input id="' + id + '" type="range" min="' + min + '" max="' + max + '" step="1" value="' + val + '" style="width:100%">' +
       '</label>';
   }
@@ -50,7 +61,7 @@
     if (!el) return;
     el.addEventListener('input', function () {
       var v = Math.round(+el.value);
-      out.textContent = v + 'px';
+      out.textContent = v + (el.closest('label').dataset.unit || 'px');
       onChange(v);
       apply();
     });
@@ -81,6 +92,14 @@
         row('Section down', 'fd-rhead', 0, 400, rHead);
     }
 
+    if (hasReels) {
+      var startFill = reelFill || (window.SW_REELS && window.SW_REELS.defaultFill) || 62;
+      html += head('Hero designs') +
+        row('Up / down', 'fd-reely', -320, 320, reelY) +
+        row('Left / right', 'fd-reelx', -320, 320, reelX) +
+        row('Card size', 'fd-reelf', 20, 110, startFill, '%');
+    }
+
     html += '<div style="font-size:11px;color:#9fc3b7;margin-top:8px">Only shows with #tune in the URL. Tell Claude the values to lock them in.</div>';
     p.innerHTML = html;
     document.body.appendChild(p);
@@ -89,6 +108,21 @@
     bind('fd-logo', function (v) { foot = v; set('fd_logo', v); });
     bind('fd-hlogo', function (v) { hLogo = v; set('fd_lhero_logo', v); });
     bind('fd-rhead', function (v) { rHead = v; set('fd_rdeck_head', v); });
+    bind('fd-reely', function (v) { reelY = v; set('fd_reels_y', v); });
+    bind('fd-reelx', function (v) { reelX = v; set('fd_reels_x', v); });
+    bind('fd-reelf', function (v) {
+      reelFill = v; set('fd_reels_fill', v);
+      if (window.SW_REELS) window.SW_REELS.setFill(v);
+    });
+
+    // reels.js builds after this panel on some loads, so apply a stored card
+    // size once it is there rather than silently doing nothing.
+    if (hasReels && reelFill) {
+      (function waitForReels(tries) {
+        if (window.SW_REELS) { window.SW_REELS.setFill(reelFill); return; }
+        if (tries > 0) setTimeout(function () { waitForReels(tries - 1); }, 120);
+      })(25);
+    }
   }
 
   if (document.readyState === 'loading') {

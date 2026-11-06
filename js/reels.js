@@ -22,18 +22,25 @@
   // frame rather than a fixed band: tall enough to fill it, capped so the
   // shot never has to scale up past its own render width and go soft.
   var hero = stage.classList.contains('lhero__reels');
+  // On a phone a card sized off the frame is nearly as wide as the frame, so
+  // you read one screenshot rather than a wall of them. Smaller there.
+  var DEFAULT_FILL = small ? 0.42 : 0.62;
+  var fill = DEFAULT_FILL;
   var CARD_W, CARD_H;
-  if (hero) {
-    var frameH = stage.clientHeight || 760;
-    // On a phone a card sized off the frame is nearly as wide as the frame,
-    // so you read one screenshot rather than a wall of them. Smaller there.
-    var fill = small ? 0.42 : 0.62;
-    CARD_H = Math.round(Math.min(Math.max(frameH * fill, 290), 640));
-    CARD_W = Math.min(Math.round(CARD_H / 1.62), SHOT_W);
-  } else {
-    CARD_W = small ? 196 : 288;
-    CARD_H = Math.round(CARD_W * 1.62);
+
+  // Sizing lives in one place so the dev tuner can re-run it without
+  // rebuilding the cards, which would reload all fourteen iframes.
+  function measureCards() {
+    if (hero) {
+      var frameH = stage.clientHeight || 760;
+      CARD_H = Math.round(Math.min(Math.max(frameH * fill, 220), 760));
+      CARD_W = Math.min(Math.round(CARD_H / 1.62), SHOT_W);
+    } else {
+      CARD_W = small ? 196 : 288;
+      CARD_H = Math.round(CARD_W * 1.62);
+    }
   }
+  measureCards();
   var GAP = small ? 22 : hero ? 28 : 34;
   // How much the cards at the edges swell. The old standalone section had a
   // whole band to grow into; as a backdrop behind the masthead they should
@@ -74,6 +81,29 @@
   var stageW = stage.clientWidth, center = stageW / 2;
   function measure() { stageW = stage.clientWidth; center = stageW / 2; }
   addEventListener('resize', measure);
+
+  // Re-apply the card size to the cards already on the page. Used by the dev
+  // tuner (#tune) so the size slider is live; the iframes are left alone, so
+  // nothing reloads and the carousel keeps its position.
+  function applySize() {
+    measureCards();
+    pitch = CARD_W + GAP;
+    total = N * pitch;
+    for (var i = 0; i < cards.length; i++) {
+      var el = cards[i];
+      el.style.width = CARD_W + 'px';
+      el.style.height = CARD_H + 'px';
+      el.style.setProperty('--shot', String(CARD_W / SHOT_W));
+      el.style.setProperty('--ch', CARD_H + 'px');
+    }
+    measure();
+    layout();
+  }
+  window.SW_REELS = {
+    setFill: function (pct) { fill = Math.max(0.15, Math.min(1.15, pct / 100)); applySize(); },
+    defaultFill: Math.round(DEFAULT_FILL * 100),
+    isHero: hero
+  };
 
   function layout() {
     if (!stageW) measure();

@@ -580,6 +580,12 @@ ul { margin: 0; padding: 0; list-style: none; }
    that keeps the type readable. The cards centre on their own height (--ch,
    set by reels.js) so they stay centred when the frame resizes. */
 .lhero__reels{position:absolute;inset:0;z-index:2;perspective:1900px;cursor:grab;
+  /* --reels-x/y let the dev tuner (#tune) nudge the whole reel. They go on
+     the container, not the cards, because reels.js rewrites each card's
+     transform every frame and would wipe anything set there. `translate` is
+     the standalone property, not `transform`, so it moves the reel 1:1
+     without resizing the stage the way a margin did. */
+  translate:var(--reels-x,0px) var(--reels-y,0px);
   touch-action:pan-y;-webkit-user-select:none;user-select:none;
   -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,0) 0,#000 9%,#000 91%,rgba(0,0,0,0) 100%);
   mask-image:linear-gradient(to right,rgba(0,0,0,0) 0,#000 9%,#000 91%,rgba(0,0,0,0) 100%)}
