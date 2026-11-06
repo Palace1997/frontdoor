@@ -579,7 +579,7 @@ ul { margin: 0; padding: 0; list-style: none; }
    the masthead sits over it, with .lhero__wash in between carrying the scrim
    that keeps the type readable. The cards centre on their own height (--ch,
    set by reels.js) so they stay centred when the frame resizes. */
-.lhero__reels{position:absolute;inset:0;z-index:1;perspective:1900px;cursor:grab;
+.lhero__reels{position:absolute;inset:0;z-index:2;perspective:1900px;cursor:grab;
   touch-action:pan-y;-webkit-user-select:none;user-select:none;
   -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,0) 0,#000 9%,#000 91%,rgba(0,0,0,0) 100%);
   mask-image:linear-gradient(to right,rgba(0,0,0,0) 0,#000 9%,#000 91%,rgba(0,0,0,0) 100%)}
@@ -632,7 +632,7 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
 /* Sits between the designs and the words. Heaviest through the middle band
    where the masthead runs, and at the very top behind the nav, easing off at
    the edges so the designs behind it stay legible as designs. */
-.lhero__wash{position:absolute;inset:0;z-index:2;pointer-events:none;background:
+.lhero__wash{position:absolute;inset:0;z-index:1;pointer-events:none;background:
   radial-gradient(82% 58% at 50% 47%, rgba(7,19,35,.94) 0%, rgba(7,19,35,.84) 38%, rgba(7,19,35,.44) 74%, rgba(7,19,35,.14) 100%),
   linear-gradient(to bottom, rgba(9,22,40,.86) 0%, rgba(9,22,40,.24) 16%, rgba(9,22,40,.40) 58%, rgba(6,16,30,.97) 97%),
   radial-gradient(60% 40% at 50% 26%, rgba(82,190,235,.10), rgba(0,0,0,0) 70%)}
@@ -656,6 +656,19 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
 .lnav__right svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7}
 /* center stage: eyebrow + giant masthead */
 .lstage{position:relative;z-index:3;flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,1.8vw,20px);text-align:center;padding:clamp(8px,2vh,28px) 18px clamp(14px,2.4vh,30px)}
+/* The scrim used to cover the whole frame and dimmed every design with it.
+   It sits behind the cards now, so this is the only darkening left in front:
+   a soft ellipse under the words themselves. The cards either side of it stay
+   at full brightness. It fades to nothing well before its own edge, so there
+   is no visible boundary. */
+.lstage::before{content:"";position:absolute;z-index:-1;pointer-events:none;
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(1120px,94%);height:min(660px,88%);
+  background:radial-gradient(closest-side,
+    rgba(7,18,33,.94) 0%, rgba(7,18,33,.91) 44%,
+    rgba(7,18,33,.74) 66%, rgba(7,18,33,.34) 85%, rgba(7,18,33,0) 100%)}
+/* small caps over a bright screenshot need more than the ellipse alone */
+.lhero .leyebrow{text-shadow:0 1px 10px rgba(5,14,26,.95),0 0 3px rgba(5,14,26,.8)}
 .leyebrow{font-size:clamp(11px,1.1vw,13px);font-weight:600;letter-spacing:.34em;text-transform:uppercase;color:var(--cream-accent);opacity:.9;padding-left:.34em;margin:0 0 clamp(6px,1.2vw,14px)}
 .lmast-wrap{position:relative;display:inline-block}
 .lhero .lmast{font-family:var(--font-display);font-weight:500;font-size:var(--lmast-size,clamp(38px,7.2vw,96px));line-height:.92;letter-spacing:-.02em;color:#F3ECDD;max-width:15ch;margin:0;text-wrap:balance;text-shadow:0 2px 40px rgba(0,0,0,.25);user-select:none}
