@@ -629,11 +629,17 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
 .lhero{position:relative;margin-top:0;background:var(--navy-2);padding:14px;color:var(--cream-accent);font-family:var(--font-sans)}
 .lhero *{box-sizing:border-box}
 .lhero__frame{position:relative;min-height:calc(100svh - 28px);border-radius:22px;overflow:hidden;isolation:isolate;display:flex;flex-direction:column}
-/* The door photograph, full bleed and untinted. It is a 3:4 portrait in a
-   landscape frame, so cover crops to the middle: the door's panels fill the
-   frame and the ochre wall falls outside it, which is what keeps this on
-   palette. The navy underneath only shows while the image is loading. */
-.lhero__frame{background:url("../assets/img/hero-door.jpg") center/cover no-repeat,#112746}
+/* The door, whole and centred. Measured from the file: the door is only 42%
+   of the image width and the ochre wall takes the rest, so cover-cropping
+   filled the frame with wall. Fitting to the height instead shows the door
+   top to bottom down the middle, and the navy carries the sides.
+   .lhero__photo does the feathering, since a background-image cannot mask
+   itself without taking the colour underneath with it. */
+.lhero__frame{background:linear-gradient(to bottom,#112746 0%,#0A1B33 58%,#081626 100%)}
+.lhero__photo{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:url("../assets/img/hero-door.jpg") center/auto 118% no-repeat;
+  -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,0) 0,#000 16%,#000 84%,rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(to right,rgba(0,0,0,0) 0,#000 16%,#000 84%,rgba(0,0,0,0) 100%)}
 /* Sits between the designs and the words. Heaviest through the middle band
    where the masthead runs, and at the very top behind the nav, easing off at
    the edges so the designs behind it stay legible as designs. */
