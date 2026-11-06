@@ -18,13 +18,27 @@
   // blur. SHOT_W is a real phone width, so the templates lay out properly.
   var SHOT_W = 390;
   var small = window.innerWidth <= 640;
-  var CARD_W = small ? 196 : 288;
-  var CARD_H = Math.round(CARD_W * 1.62);
-  var GAP = small ? 22 : 34;
-  // How much the cards at the edges swell. In the old standalone section
-  // they had a 460px band to grow into; in the hero they share the frame
-  // with the masthead, and 0.42 sent them straight over the headline.
-  var GROW = stage.classList.contains('lhero__reels') ? 0.20 : 0.42;
+  // In the hero the carousel is the backdrop, so the cards are sized off the
+  // frame rather than a fixed band: tall enough to fill it, capped so the
+  // shot never has to scale up past its own render width and go soft.
+  var hero = stage.classList.contains('lhero__reels');
+  var CARD_W, CARD_H;
+  if (hero) {
+    var frameH = stage.clientHeight || 760;
+    // On a phone a card sized off the frame is nearly as wide as the frame,
+    // so you read one screenshot rather than a wall of them. Smaller there.
+    var fill = small ? 0.42 : 0.62;
+    CARD_H = Math.round(Math.min(Math.max(frameH * fill, 290), 640));
+    CARD_W = Math.min(Math.round(CARD_H / 1.62), SHOT_W);
+  } else {
+    CARD_W = small ? 196 : 288;
+    CARD_H = Math.round(CARD_W * 1.62);
+  }
+  var GAP = small ? 22 : hero ? 28 : 34;
+  // How much the cards at the edges swell. The old standalone section had a
+  // whole band to grow into; as a backdrop behind the masthead they should
+  // stay calm, so the perspective reads as depth rather than motion.
+  var GROW = hero ? 0.13 : 0.42;
   var pitch = CARD_W + GAP;
   var N = picks.length;
   var total = N * pitch;
@@ -35,6 +49,7 @@
     el.style.width = CARD_W + 'px';
     el.style.height = CARD_H + 'px';
     el.style.setProperty('--shot', String(CARD_W / SHOT_W));
+    el.style.setProperty('--ch', CARD_H + 'px');   // the CSS centres on this
     el.setAttribute('role', 'button');
     el.setAttribute('tabindex', '0');
     el.setAttribute('aria-label', 'Preview the ' + d.name + ' design');
