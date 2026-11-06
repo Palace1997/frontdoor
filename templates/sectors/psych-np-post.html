@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231F8A99'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>C</text></svg>">
 <style>
 .cl-page{
@@ -45,7 +45,9 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
 .cl-logo{display:inline-flex;align-items:center;gap:11px;font-family:var(--font-d);font-size:19px;font-weight:600;color:var(--ink);}
 .cl-mark{width:34px;height:34px;border-radius:11px;background:var(--acc);color:var(--on);display:grid;place-items:center;font-family:var(--font-s);font-weight:700;font-size:15px;}
 .cl-links{display:flex;gap:6px;}
-.cl-links a{font-size:14.5px;font-weight:500;color:var(--muted);padding:9px 15px;border-radius:100px;transition:all .2s;}
+/* the nav pill is 82% white over the dark hero, so links need to be darker
+   than --muted to clear 4.5:1 against that composite */
+.cl-links a{font-size:14.5px;font-weight:500;color:#516260;padding:9px 15px;border-radius:100px;transition:all .2s;}
 .cl-links a:hover{color:var(--ink);background:var(--tint);}
 @media(max-width:860px){.cl-links{display:none;}}
 /* HERO frosted panel: full-bleed photo that runs up behind the floating nav pill */
@@ -256,7 +258,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
 </head>
 <body class="cl-page">
 
-<a class="t-skip" href="psych-np.html#main">Skip to main content</a>
+<a class="t-skip" href="#main">Skip to main content</a>
 <header class="cl-nav"><div class="cl-wrap"><div class="cl-nav__in">
   <a href="psych-np.html" class="cl-logo"><span class="cl-mark" data-field="brandMark">C</span> <span data-field="brandName">Clarity Psychiatric NPs</span></a>
   <nav class="cl-links"><a href="psych-np.html#services">Services</a><a href="psych-np.html#approach">Approach</a><a href="psych-np.html#plans">Insurance</a><a href="psych-np.html#contact">Contact</a><a href="psych-np-blog.html" data-sw-bloglink>Blog</a></nav>
@@ -302,6 +304,6 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
 </div><p class="sw-crisis" style="margin:0;padding:16px 20px 6px;font-size:13px;line-height:1.5;text-align:center;opacity:.85">In crisis? Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency.</p>
 </footer>
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

@@ -208,7 +208,10 @@ function blogCopy() {
 function rehome(block, mainHref) {
   return block
     .replace(/href="#"/g, 'href="' + mainHref + '"')
-    .replace(/href="#([A-Za-z][\w-]*)"/g, 'href="' + mainHref + '#$1"');
+    // #main is the skip link, and the blog and post pages have a #main of their
+    // own. Sending it to the home page would make the first thing a keyboard
+    // user reaches navigate away from the page they are on.
+    .replace(/href="#([A-Za-z][\w-]*)"/g, (m, id) => id === 'main' ? m : 'href="' + mainHref + '#' + id + '"');
 }
 
 /* One design draws an icon beside every nav link, so a bare Blog link would be
@@ -351,10 +354,10 @@ function buildPages(d, src, base) {
     + '        <span class="sw-post-card__more">Read it ' + ARROW + '</span>\n'
     + '      </a>\n'
     + '    </li>\n'
-    + '    <!-- To add a post: copy ' + postHref + ' to a new file, edit it, then copy the\n'
-    + '         <li> above, point its href at the new file and change data-post to 2.\n'
-    + '         The schema on this page is rebuilt from these cards, so nothing else\n'
-    + '         needs updating. -->\n'
+    + '    <!-- To add a post: copy ' + postHref + ' to a new file and edit it, then\n'
+    + '         duplicate the list item above, point its link at the new file and\n'
+    + '         change its data-post to 2. The schema on this page is rebuilt from\n'
+    + '         these cards, so nothing else needs updating. -->\n'
     + '  </ul>\n'
     + '</main>';
 
