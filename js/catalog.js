@@ -51,7 +51,7 @@
     { id: 'valor', name: 'Valor', practice: 'Valor Veteran Care', area: 'social-work', type: 'program', file: 'templates/sectors/veterans.html', accent: '#35506B', feel: 'Steel blue, steady and respectful', best: 'Services for veterans and military families' },
     { id: 'lifeline', name: 'Lifeline', practice: 'Lifeline Crisis Response', area: 'social-work', type: 'program', file: 'templates/sectors/crisis.html', accent: '#2166A6', feel: 'Clear blue, direct and calm', best: 'Crisis lines and mobile crisis teams' },
     // Marriage & Family Therapy
-    { id: 'brightkids', name: 'Bright Kids', practice: 'Bright Kids', area: 'mft', type: 'group', file: 'templates/sectors/child-adolescent.html', accent: '#CC4C27', feel: 'Warm coral, friendly and upbeat', best: 'Child, teen and family therapy' },
+    { id: 'brightkids', name: 'Bright Kids', practice: 'Bright Kids', area: 'mft', type: 'group', file: 'templates/sectors/child-adolescent.html', accent: '#C34925', feel: 'Warm coral, friendly and upbeat', best: 'Child, teen and family therapy' },
     { id: 'tandem', name: 'Tandem', practice: 'Tandem Couples & Family Therapy', area: 'mft', type: 'group', file: 'templates/practices/mft-tandem.html', accent: '#6E4560', feel: 'Elegant plum, airy and balanced', best: 'Couples and family therapists working as a team', isNew: true },
     // Psychiatric Nursing
     { id: 'clarity', name: 'Clarity', practice: 'Clarity Psychiatric NPs', area: 'psych-nursing', type: 'group', file: 'templates/sectors/psych-np.html', accent: '#1B7986', feel: 'Fresh teal, open and accessible', best: 'Groups of psychiatric nurse practitioners' },
@@ -67,9 +67,9 @@
     // SUD Counseling
     { id: 'newpath', name: 'New Path', practice: 'New Path Counseling', area: 'sud', type: 'solo', file: 'templates/sectors/sud-counselor.html', accent: '#956130', feel: 'Warm amber on cream, encouraging', best: 'Substance use counselors in private practice' },
     // Peer Recovery Support
-    { id: 'openroad', name: 'Open Road', practice: 'Open Road Recovery Community Center', area: 'peer', type: 'program', file: 'templates/practices/peer-open-road.html', accent: '#C4522A', feel: 'Warm and hopeful, community-first', best: 'Peer recovery community centers', isNew: true },
+    { id: 'openroad', name: 'Open Road', practice: 'Open Road Recovery Community Center', area: 'peer', type: 'program', file: 'templates/practices/peer-open-road.html', accent: '#BE4F29', feel: 'Warm and hopeful, community-first', best: 'Peer recovery community centers', isNew: true },
     { id: 'beacon', name: 'Beacon', practice: 'Beacon Neuropsychology', area: 'psychology', type: 'solo', file: 'templates/practices/psychology-beacon.html', accent: '#3A4E8C', feel: 'Precise and clinical, report-led', best: 'Neuropsychologists offering testing and reports', isNew: true },
-    { id: 'common-table', name: 'Common Table', practice: 'Common Table Clubhouse', area: 'psych-rehab', type: 'program', file: 'templates/practices/clubhouse-common-table.html', accent: '#2C8474', feel: 'Warm and communal, belonging first', best: 'Clubhouses and psychosocial rehab programs', isNew: true },
+    { id: 'common-table', name: 'Common Table', practice: 'Common Table Clubhouse', area: 'psych-rehab', type: 'program', file: 'templates/practices/clubhouse-common-table.html', accent: '#297A6B', feel: 'Warm and communal, belonging first', best: 'Clubhouses and psychosocial rehab programs', isNew: true },
     { id: 'hearth', name: 'Hearth', practice: 'Hearth ABA', area: 'aba', type: 'group', file: 'templates/practices/aba-hearth.html', accent: '#2972A1', feel: 'Warm and friendly, in-home', best: 'BCBA-led teams providing in-home ABA', isNew: true },
     { id: 'groundwork', name: 'Groundwork', practice: 'Groundwork Occupational Therapy', area: 'expressive', type: 'group', file: 'templates/practices/ot-groundwork.html', accent: '#9E5330', feel: 'Earthy and practical, hands-on', best: 'Occupational therapy for mental health', isNew: true },
     { id: 'rivergate', name: 'Rivergate', practice: 'Rivergate Recovery Medicine', area: 'addiction-med', type: 'clinic', file: 'templates/practices/mat-rivergate.html', accent: '#2B7789', feel: 'Calm and credible, medical', best: 'Outpatient clinics offering medication for addiction treatment', isNew: true },
@@ -100,7 +100,7 @@
      gallery cards, the preview modal). It used to be hardcoded in four places
      across designs.js and reels.js, so edits to a template or to
      css/template.css kept being served stale. Bump this one line instead. */
-  window.SW_TPL_V = '20261106e';
+  window.SW_TPL_V = '20261106f';
 
   window.SW_CATALOG = { groups: GROUPS, areas: AREAS, types: TYPES, designs: DESIGNS, categories: CATEGORIES, categoryOf: categoryOf };
 })();
