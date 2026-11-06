@@ -157,18 +157,17 @@ points or less; the two larger moves are flagged.
 | Riverbend | `--acc` | `#2E8B8B` | `#277676` | 36% to 31% | 3.45 to 4.54 |
 | Harborlight | `--acc` | `#5A8FA0` | `#466F7D` | 49% to 38% | 2.97 to 4.55 |
 | Common Ground | `--acc` | `#4E8A5A` | `#3F7049` | 43% to 35% | 3.21 to 4.52 |
-| **Bright Kids** | `--acc` | `#DD6E4E` | `#C34925` | 59% to 45% | 2.72 to 3.77 |
+| **Bright Kids** | `--acc` | `#DD6E4E` | `#CC4C27` | 59% to 48% | 2.72 to 3.77 |
 | Bright Kids | `--acc2` | `#C4603F` | `#A75033` | | 3.43 to 4.53 |
 | Clarity | `--acc` | `#1F8A99` | `#1B7986` | 34% to 31% | 3.61 to 4.51 |
 | Meridian | `--acc` | `#2F8F7A` | `#287967` | 37% to 32% | 3.41 to 4.52 |
 | New Path | `--acc` | `#B5763A` | `#956130` | 47% to 38% | 3.24 to 4.51 |
-| Common Table | `--acc` | `#2E8B7A` | `#297A6B` | 36% to 32% | 4.13 to 4.59 |
+| Common Table | `--acc` | `#2E8B7A` | `#2C8474` | 36% to 35% | 4.13 to 4.52 |
 | Hearth | `--acc` | `#2C7AAC` | `#2972A1` | 42% to 40% | 4.14 to 4.60 |
 | Groundwork | `--acc` | `#AB5A34` | `#9E5330` | 44% to 40% | 4.00 to 4.54 |
 | Rivergate | `--acc` | `#2C7A8C` | `#2B7789` | 36% to 35% | 4.34 to 4.52 |
 | Fieldstone | `--acc` | `#A4611F` | `#9A5B1D` | 38% to 36% | 4.08 to 4.53 |
 | Throughline | `--acc` | `#BE5224` | `#B04C21` | 44% to 41% | 4.00 to 4.52 |
-| Open Road | `--acc` | `#C4522A` | `#BE4F29` | 47% to 45% | 4.35 to 4.58 |
 
 The two that moved noticeably are **Bright Kids** (coral, now a deeper
 terracotta coral) and **Harborlight** (sea blue, now a deeper sea blue). Both
@@ -176,8 +175,9 @@ used the accent as a button fill behind white text at 3.27:1 and 3.58:1, which
 no smaller change could fix. The alternative, putting dark text on the lighter
 accent, would have changed those buttons more than darkening the colour did.
 `js/catalog.js` was updated so the catalog's recorded accents match.
-Three of these values were darkened once more after the blog pages were
-audited; section 7 explains why.
+These are final: a further round of darkening was tried after the blog pages
+were audited and then reverted, because it turned out to be unnecessary.
+Section 7 explains why.
 
 Muted text tokens darkened the same way: Riverbend `--muted`, Anchorage
 `--muted` (3.36 to 4.52, the whole page), Harborlight `--muted`, Common Ground
@@ -261,15 +261,24 @@ This is the third instance of one pattern in this codebase: a low-specificity
 button rule losing to a broad link-colour rule. The first two were the Rivergate
 mobile drawer and the `.t-nav` background. It is worth a lint rule.
 
-**Three accents needed one more notch.** The blog pages put accent-coloured text
-on each design's cream surface, a background those accents had never been
-measured against. Bright Kids `#CC4C27` to `#C34925`, Open Road `#C4522A` to
-`#BE4F29`, Common Table `#2C8474` to `#297A6B`. All three moves are 2 to 3
-lightness points. Open Road had not needed a change before this.
+**Three accents looked like they needed one more notch, and did not.** The blog
+pages put accent-coloured text on each design's cream surface, a background
+those accents had never been measured against: Common Table at 4.00, Bright
+Kids at 4.23, Open Road at 4.35. The first fix was to darken all three again.
 
-The lesson for the invariant in "Notes" below: an accent is only safe against
-the backgrounds it has been measured on. Adding a new surface to a design means
-re-measuring its accent.
+That was the wrong layer. The generator now derives its own
+`--sw-acc-text: color-mix(in srgb, var(--sw-acc) 68%, currentColor)`, which
+pulls the accent towards the page's own ink. With that in place the original
+accents clear the bar comfortably on their blog pages, at 4.77, 5.63 and 6.56,
+so the second darkening bought nothing and was reverted. The accents are back
+to the lightest values that pass: Bright Kids `#CC4C27`, Common Table
+`#2C8474`, Open Road `#C4522A` unchanged from before the audit.
+
+Two lessons. An accent is only safe against the backgrounds it has been
+measured on, so adding a new surface to a design means re-measuring. And when a
+new surface needs darker text, derive it at that surface rather than reaching
+back to change the brand colour: the component knows its own background, the
+token does not.
 
 ### 8. Headings, landmarks and form labels, WCAG 1.3.1 (Level A)
 
