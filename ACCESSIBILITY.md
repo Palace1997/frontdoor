@@ -13,15 +13,24 @@ are not in the public catalog.
 
 ## Verdict
 
-**The 30 catalog designs meet WCAG 2.1 Level AA for the criteria listed below,
-as shipped, measured at 1280px and 390px wide.** They have not been tested
-with a screen reader, on a touch device, at 400% zoom, or by anyone who relies
-on assistive technology, so this is a conformance *measurement*, not a
-conformance *claim*. See "What this audit does not cover" before any copy
-asserts AA.
+**Full WCAG 2.1 AA conformance is not claimed.** Four AA criteria were not
+tested at all (1.4.4 Resize Text, 1.4.10 Reflow, 1.4.12 Text Spacing, and
+anything that depends on a screen reader), so no honest statement can cover
+the standard as a whole.
 
-Nothing here has been reviewed by a third party and none of it is a legal
-opinion.
+**What can be stated:** all 30 designs now pass the AA thresholds for the
+criteria that were tested, at 1280px and 390px wide, as they ship. Those are
+1.4.3 Contrast, 1.4.11 Non-text Contrast, 2.1.1 Keyboard, 2.4.1 Bypass Blocks,
+2.4.7 Focus Visible, 1.3.1 Info and Relationships, and 4.1.2 Name, Role, Value.
+Before this audit, 22 of the 30 failed 1.4.3, all 30 failed 2.4.1, and 6 failed
+2.1.1 outright.
+
+This is a measurement, not a certification. Nothing here has been reviewed by a
+third party, nobody who relies on assistive technology has used these designs,
+and none of it is a legal opinion. The homepage copy was written to stay inside
+these limits: it says the designs are tested for contrast, keyboard navigation
+and heading structure against WCAG 2.1 AA, and it does not assert conformance
+or mention the ADA.
 
 ---
 
@@ -34,7 +43,7 @@ Everything was measured in Chrome against the real pages served from
 |---|---|
 | **axe-core 4.10.2** | All 30 pages, rules filtered to `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`. |
 | **Custom contrast scanner** | Every element with its own text: resolved the real background by compositing the ancestor chain, computed the ratio, applied the 4.5:1 / 3:1 thresholds by measured font size and weight. Run at 1280x900 and 390x844, with every `<details>` forced open so accordion panels were measured too. |
-| **Custom photo compositor** | For text over a photograph: re-fetched the image with CORS, redrew it with the same `object-fit` crop, repainted the real scrim gradients with their real angles and stops, then sampled a 7x7 grid under each text box and took the worst pixel. |
+| **Custom photo compositor** | For text over a photograph: re-fetched the image with CORS, redrew it with the same `object-fit` crop, repainted every scrim between the photo and the text with its real angle, stops and paint order, then sampled a 7x7 grid under each text box and took the worst pixel. This is the only one of the four that found the Lakehouse hero. |
 | **Custom keyboard/semantics walker** | Tab order, accessible names, positive `tabindex`, focusable-but-`aria-hidden`, focusable-but-offscreen, heading order, `h1` count, landmarks, skip-link target, and every form control's programmatic label. |
 | **Hand testing in the browser** | Tabbed through pages with real key presses; confirmed the focus ring renders, the skip link appears and moves focus, and the mobile menus open with Enter and Space and close with Escape. |
 
@@ -175,8 +184,10 @@ Six cases a token change could not fix:
   Darkening makes that worse, so the tag is now a light tint, `#9FBEDD`.
 - **Lifeline**: the service numbers were `var(--line)` on white, 1.34:1. They
   now use `--muted`.
-- **Clarity**: the nav pill is 82% white over the dark hero, so its links were
-  reading on a `#D4DADB` composite at 3.55:1. Those links are now `#516260`.
+- **Clarity**: the nav pill was 82% white over the dark hero, so its links were
+  reading on a `#D4DADB` composite at 3.55:1. Those links are now `#516260`, and
+  the pill itself was raised to 96% white, because measuring against the real
+  hero photo showed the links still at 3.54:1 through the translucent pill.
 - **Rivergate, mobile only**: the drawer's own link colour out-specified
   `.rg-btn--pri`, so the filled call-to-action rendered dark ink on the accent at
   3.07:1. Found only because the scan was repeated at 390px.
@@ -194,18 +205,23 @@ mountain photograph behind a scrim that thinned to 15% opacity in the middle of
 the hero, exactly where the text sits. Compositing the actual photo with the
 actual gradient put the headline at **2.23:1** and the kicker at **1.59:1**. A
 screenshot confirms the text is close to invisible against the bright water and
-rock. The scrim now holds 42% to 88% top to bottom.
+rock. The scrim now holds 50% to 90% top to bottom, which is a visibly darker
+hero; the photo is still clearly the subject, and the headline is now readable.
 
 Also fixed:
 
 | Design | What | Was | Now |
 |---|---|---|---|
-| Common Table | hero sub and eyebrow over the photo | 2.88 / 3.89 | scrim 52 to 82%, eyebrow chip 70% |
+| Lakehouse | hero kicker, headline, lede, buttons | 1.59 to 2.23 | scrim 50 to 90% |
 | Lakehouse | gallery captions over photos | 3.90 | scrim ramp starts at 30%, ends 88% |
 | Lakehouse | quote scrim light end | 1.63 | 74% |
+| Lakehouse | quote eyebrow in `--gold` over the photo | 2.22 | light gold `#E6CE9C` |
+| Common Table | hero sub and eyebrow over the photo | 2.88 / 3.89 | scrim 52 to 82%, eyebrow chip 88% |
 | Meridian | day-band labels over the photo | 3.33 | scrim top stop 62% to 80% |
+| Meridian | the transparent "home for the evening" card | 2.59 | card carries a 55% fill |
 | Anywhere | the "You" self-view tile label | 1.08 | sits on its own 72% chip |
 | Valor | nav links over the unscrimmed hero photo | 3.23 | nav carries its own gradient |
+| Clarity | nav links reading through the translucent pill | 3.54 | pill raised from 82% to 96% white |
 
 **A regression found on the way.** Four designs carry the shared `.t-nav` class
 on their header. On Throughline and Hearth, whose navs are meant to be
@@ -248,11 +264,13 @@ inside them.
 5. **2.5.5 Target Size is Level AAA** in WCAG 2.1 and was not assessed. Several
    designs have nav links and icon buttons under 44px.
 6. **Client photographs are the live risk.** Contrast over a photo was measured
-   against the demo photos that ship with each design. These are templates: when
-   a practice swaps in a brighter photo behind the same white hero text, the
-   scrims now carry enough weight for a typical bright image, but no scrim is
-   proof against every photograph. Any build that replaces a hero image should
-   be re-measured.
+   against the demo photos that ship with each design, sampling a 7x7 grid under
+   each text box and taking the worst pixel. These are templates: when a practice
+   swaps in a brighter photo behind the same white hero text, the scrims now
+   carry enough weight for a typical bright image, but no scrim is proof against
+   every photograph. Any build that replaces a hero image should be re-measured.
+   This is the single most likely way for a delivered site to fall out of
+   conformance.
 7. **Content is fictional.** Real practice copy, longer names and real
    credentials will change line counts and could reintroduce layout problems.
 8. **The Studio's brand recolour feature is unguarded.** `studio/customize.html`
