@@ -18,22 +18,13 @@
   // blur. SHOT_W is a real phone width, so the templates lay out properly.
   var SHOT_W = 390;
   var small = window.innerWidth <= 640;
-  // In the hero the carousel is the backdrop, so the cards are sized off the
-  // frame rather than a fixed band: tall enough to fill it, capped so the
-  // shot never has to scale up past its own render width and go soft.
-  // In the hero the cards sit in a band across the bottom of the frame, over
-  // the photograph. They are taller than the band on purpose, so they rise
-  // out of it and crop on the frame's own edge.
-  var hero = stage.classList.contains('lhero__reels');
   var CARD_W = small ? 196 : 288;
   var CARD_H = Math.round(CARD_W * 1.62);
-  var GAP = small ? 22 : hero ? 30 : 34;
-  // How much the cards at the edges swell. The old standalone section had a
-  // whole band to grow into; as a backdrop behind the masthead they should
-  // stay calm, so the perspective reads as depth rather than motion.
-  // 0.42 was tuned for the old 180px cards. At 288 the edge cards swell to
-  // over 800px tall and climb straight over the section heading.
-  var GROW = hero ? 0.20 : 0.16;
+  var GAP = small ? 22 : 34;
+  // How much the cards at the edges swell. In the old standalone section
+  // they had a 460px band to grow into; in the hero they share the frame
+  // with the masthead, and 0.42 sent them straight over the headline.
+  var GROW = stage.classList.contains('lhero__reels') ? 0.20 : 0.42;
   var pitch = CARD_W + GAP;
   var N = picks.length;
   var total = N * pitch;
