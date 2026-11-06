@@ -1,0 +1,307 @@
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="blog" data-site-url="" data-sw-href="blog.html">
+<head>
+<title>Notes And Updates, Northshore Psychology</title>
+<meta name="description" content="Practical writing from Northshore Psychology on getting started, what to expect and how we work.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%233E6EA0'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>N</text></svg>">
+<style>
+.ns-page{
+  --acc:#3E6EA0; --acc2:#305884; --on:#ffffff;
+  --dark:#16283D; --dark2:#0F1B2A;
+  --paper:#F6F5F1; --panel:#ffffff; --line:#D9D6CD; --hair:#E7E4DB;
+  --ink:#1A1D22; --muted:#6E6E66; --sans:'Inter',sans-serif; --disp:'Fraunces',serif;
+  background:var(--paper);color:var(--ink);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;line-height:1.5;
+}
+.ns-page *{box-sizing:border-box;}
+.ns-wrap{max-width:1160px;margin:0 auto;padding:0 clamp(18px,4vw,44px);}
+h1,h2,h3,h4{margin:0;font-family:var(--disp);font-weight:400;letter-spacing:-.015em;line-height:1.04;}
+.ns-em{font-style:italic;}
+/* labels / meta */
+.ns-lbl{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);}
+.ns-lbl-acc{color:var(--acc);}
+.ns-num-tag{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.2em;color:var(--acc);}
+/* buttons */
+.ns-btn{display:inline-flex;align-items:center;gap:9px;padding:13px 24px;font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--acc);transition:all .2s ease;cursor:pointer;}
+.ns-btn svg{width:15px;height:15px;}
+.ns-btn--fill{background:var(--acc);color:var(--on);}
+.ns-btn--fill:hover{background:var(--acc2);border-color:var(--acc2);}
+.ns-btn--line{background:transparent;color:var(--ink);border-color:var(--ink);}
+.ns-btn--line:hover{background:var(--ink);color:var(--paper);}
+/* NAV */
+.ns-nav{position:sticky;top:0;z-index:50;background:rgba(246,245,241,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--ink);}
+.ns-nav__in{display:flex;align-items:center;justify-content:space-between;height:64px;}
+.ns-logo{display:inline-flex;align-items:center;gap:11px;font-family:var(--disp);font-size:19px;font-weight:500;color:var(--ink);}
+.ns-mark{width:32px;height:32px;background:var(--acc);color:var(--on);display:grid;place-items:center;font-family:var(--sans);font-weight:700;font-size:14px;}
+.ns-links{display:flex;gap:28px;}
+.ns-links a{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);transition:color .2s;}
+.ns-links a:hover{color:var(--ink);}
+@media(max-width:860px){.ns-links{display:none;}}
+/* HERO, Swiss editorial: 12-column hairline grid, oversized headline, indexed row, small portrait inset */
+.ns-hero{border-bottom:1px solid var(--ink);}
+.ns-sw{position:relative;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));padding-bottom:clamp(40px,5vw,64px);}
+.ns-sw::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;border-right:1px solid var(--hair);
+  background-image:repeating-linear-gradient(to right,var(--hair) 0 1px,transparent 1px calc(100%/12));}
+.ns-sw>*{position:relative;z-index:1;min-width:0;}
+.ns-sw__c{padding-left:14px;padding-right:14px;}
+/* top meta bar */
+.ns-sw__meta{grid-column:1/-1;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));padding:18px 0 16px;border-bottom:1px solid var(--line);}
+.ns-sw__meta>*{padding:0 14px;font-size:10.5px;}
+.ns-sw__meta .m1{grid-column:1/7;}
+.ns-sw__meta .m2{grid-column:7/10;}
+.ns-sw__meta .m3{grid-column:10/13;text-align:right;}
+/* headline */
+.ns-h1{grid-column:1/12;font-size:clamp(46px,9.4vw,138px);line-height:.9;letter-spacing:-.045em;padding-top:clamp(34px,5vw,64px);padding-bottom:clamp(30px,4vw,52px);}
+.ns-h1 .ns-em{color:var(--acc);}
+/* index row */
+.ns-sw__rule{grid-column:1/-1;height:0;border-top:1px solid var(--ink);}
+.ns-sw__idx{grid-column:span 3;padding:16px 14px 22px;border-bottom:1px solid var(--line);}
+.ns-sw__idx b{display:block;font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);}
+.ns-sw__idx b i{font-style:normal;color:var(--acc);margin-right:10px;}
+.ns-sw__idx small{display:block;font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4;}
+/* portrait inset, far right, spans index row and copy row */
+.ns-sw__fig{grid-column:10/13;grid-row:4/span 2;padding:16px 14px 0;}
+.ns-sw__fig .ns-sw__ph{aspect-ratio:3/4;overflow:hidden;background:var(--hair);}
+.ns-sw__fig img{width:100%;height:100%;object-fit:cover;display:block;}
+.ns-sw__fig figcaption{display:flex;justify-content:space-between;gap:8px;margin-top:10px;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
+/* copy row */
+.ns-sw__aside{grid-column:1/4;padding-top:26px;}
+.ns-sw__copy{grid-column:4/10;padding-top:26px;}
+.ns-lede{font-size:clamp(16px,1.5vw,18.5px);line-height:1.55;color:var(--ink);max-width:40ch;}
+.ns-hero__cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;}
+@media(max-width:980px){
+  .ns-h1{grid-column:1/-1;}
+  .ns-sw__idx{grid-column:span 4;}
+  .ns-sw__fig{grid-column:9/13;grid-row:5;}
+  .ns-sw__aside{display:none;}
+  .ns-sw__copy{grid-column:1/9;}
+  .ns-sw__meta .m1{grid-column:1/9;}
+  .ns-sw__meta .m2{display:none;}
+  .ns-sw__meta .m3{grid-column:9/13;}
+}
+@media(max-width:640px){
+  .ns-sw,.ns-sw__meta{grid-template-columns:repeat(4,minmax(0,1fr));}
+  .ns-sw::before{background-image:repeating-linear-gradient(to right,var(--hair) 0 1px,transparent 1px 25%);}
+  .ns-sw__meta .m1{grid-column:1/4;}
+  .ns-sw__meta .m3{grid-column:3/5;grid-row:1;white-space:nowrap;}
+  .ns-sw__meta .m1{grid-column:1/3;}
+  .ns-h1{font-size:clamp(44px,13.4vw,64px);}
+  .ns-sw__idx{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:baseline;padding:13px 14px;}
+  .ns-sw__idx small{margin-top:0;}
+  .ns-sw__copy{grid-column:1/-1;grid-row:auto;order:1;}
+  .ns-sw__fig{grid-column:1/-1;grid-row:auto;order:2;padding-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:0 28px;align-items:end;}
+  .ns-sw__fig figcaption{order:-1;flex-direction:column;margin:0;}
+  .ns-hero__cta .ns-btn{flex:1 1 100%;justify-content:center;}
+}
+/* TRUST strip */
+.ns-trust{border-bottom:1px solid var(--ink);background:var(--dark);color:var(--on);}
+.ns-trust__in{display:flex;flex-wrap:wrap;align-items:center;gap:0;}
+.ns-trust span{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;padding:16px clamp(18px,3vw,34px);border-right:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.85);}
+.ns-trust span:last-child{border-right:none;}
+/* section frame */
+.ns-sec{padding:clamp(52px,7vw,96px) 0;border-bottom:1px solid var(--ink);}
+.ns-sec-head{display:grid;grid-template-columns:auto 1fr;gap:clamp(24px,5vw,60px);align-items:end;margin-bottom:clamp(36px,5vw,56px);}
+.ns-sec-head__n{font-family:var(--disp);font-size:clamp(30px,4vw,44px);color:var(--acc);line-height:1;}
+.ns-sec-head h2{font-size:clamp(28px,4vw,46px);}
+.ns-sec-head p{font-size:16px;color:var(--muted);max-width:52ch;margin-top:14px;}
+@media(max-width:640px){.ns-sec-head{grid-template-columns:1fr;gap:14px;}}
+/* SERVICES ledger */
+.ns-ledger{border-top:1px solid var(--ink);}
+.ns-svc{display:grid;grid-template-columns:80px 1fr;border-bottom:1px solid var(--line);}
+.ns-svc__idx{border-right:1px solid var(--line);padding:26px 0 26px 4px;font-family:var(--disp);font-size:26px;color:var(--acc);}
+.ns-svc__body{padding:26px clamp(18px,3vw,40px) 26px clamp(18px,3vw,32px);display:grid;grid-template-columns:1fr 1.3fr auto;gap:clamp(16px,3vw,40px);align-items:baseline;}
+.ns-svc__body h3{font-size:23px;}
+.ns-svc__body p{font-size:15px;color:var(--muted);line-height:1.5;}
+.ns-svc__ic{color:var(--acc);justify-self:end;}
+.ns-svc__ic svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.5;}
+.ns-svc:hover{background:var(--panel);}
+@media(max-width:760px){.ns-svc{grid-template-columns:56px 1fr;}.ns-svc__body{grid-template-columns:1fr;gap:8px;}.ns-svc__ic{display:none;}}
+/* APPROACH */
+.ns-appr{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--ink);}
+.ns-appr__media{border-right:1px solid var(--ink);overflow:hidden;min-height:420px;position:relative;}
+.ns-appr__media img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.ns-appr__body{padding:clamp(32px,4vw,54px);}
+.ns-appr__body h2{font-size:clamp(26px,3.4vw,40px);margin:12px 0 16px;}
+.ns-appr__body p{font-size:16px;color:var(--muted);line-height:1.55;max-width:46ch;}
+.ns-checks{margin-top:30px;border-top:1px solid var(--line);}
+.ns-checks li{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);font-size:15.5px;}
+.ns-checks .ns-cn{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--acc);}
+@media(max-width:820px){.ns-appr{grid-template-columns:1fr;}.ns-appr__media{border-right:none;border-bottom:1px solid var(--ink);min-height:300px;}}
+/* STATS */
+.ns-stats{background:var(--dark);color:var(--on);}
+.ns-stats-in{display:grid;grid-template-columns:repeat(4,1fr);}
+.ns-stat{padding:clamp(38px,5vw,64px) clamp(18px,2.5vw,32px);border-right:1px solid rgba(255,255,255,.14);}
+.ns-stat:last-child{border-right:none;}
+.ns-stat__n{font-family:var(--disp);font-size:clamp(38px,5vw,60px);line-height:.95;color:#fff;}
+.ns-stat__l{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-top:12px;}
+.ns-stat__tag{font-size:10px;letter-spacing:.2em;color:var(--acc);margin-bottom:16px;font-weight:600;}
+@media(max-width:640px){.ns-stats-in{grid-template-columns:repeat(2,1fr);}.ns-stat:nth-child(2){border-right:none;}.ns-stat:nth-child(1),.ns-stat:nth-child(2){border-bottom:1px solid rgba(255,255,255,.14);}}
+/* QUOTE */
+.ns-quote{display:grid;grid-template-columns:200px 1fr;gap:clamp(24px,4vw,56px);align-items:start;}
+.ns-quote__meta .ns-lbl{display:block;margin-bottom:10px;}
+.ns-quote__meta b{font-size:15px;}
+.ns-quote__meta span{display:block;font-size:13px;color:var(--muted);margin-top:2px;}
+.ns-quote p{font-family:var(--disp);font-size:clamp(24px,3.2vw,38px);line-height:1.28;letter-spacing:-.01em;}
+@media(max-width:640px){.ns-quote{grid-template-columns:1fr;gap:22px;}}
+/* CONTACT */
+.ns-contact{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--ink);}
+.ns-contact__L{padding:clamp(30px,4vw,52px);border-right:1px solid var(--ink);}
+.ns-contact__L h2{font-size:clamp(26px,3.4vw,42px);margin:14px 0 16px;}
+.ns-contact__L p{font-size:16px;color:var(--muted);max-width:42ch;margin-bottom:28px;}
+.ns-info{border-top:1px solid var(--line);}
+.ns-info li{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);}
+.ns-info svg{width:19px;height:19px;color:var(--acc);}
+.ns-info span{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:block;}
+.ns-info b{font-weight:500;font-size:16px;}
+.ns-form{padding:clamp(30px,4vw,52px);display:grid;gap:16px;align-content:start;}
+.ns-field{display:grid;gap:6px;}
+.ns-field label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+.ns-field input,.ns-field select,.ns-field textarea{font-family:inherit;font-size:15px;padding:12px 14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:0;}
+.ns-field textarea{min-height:104px;resize:vertical;}
+.ns-field input:focus,.ns-field select:focus,.ns-field textarea:focus{outline:none;border-color:var(--acc);}
+@media(max-width:820px){.ns-contact{grid-template-columns:1fr;}.ns-contact__L{border-right:none;border-bottom:1px solid var(--ink);}}
+/* FOOTER */
+.ns-foot{background:var(--dark2);color:rgba(255,255,255,.7);padding:60px 0 30px;}
+.ns-foot__top{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:34px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.14);}
+.ns-foot .ns-logo{color:#fff;}
+.ns-foot__brand p{margin-top:14px;max-width:34ch;font-size:14px;color:rgba(255,255,255,.55);}
+.ns-foot h4{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#fff;margin-bottom:14px;font-weight:600;}
+.ns-foot li{margin-bottom:9px;}
+.ns-foot a{color:rgba(255,255,255,.6);font-size:14px;}
+.ns-foot a:hover{color:#fff;}
+.ns-foot__bot{padding-top:22px;font-size:12px;color:rgba(255,255,255,.5);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;letter-spacing:.04em;}
+@media(max-width:720px){.ns-foot__top{grid-template-columns:1fr 1fr;}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.is-in{opacity:1;transform:none;}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;}}
+</style>
+<style>
+/* --acc is what the thirty catalog designs call their accent; the Starter calls
+   it --accent. One alias, inherited by everything inside, covers both. */
+.sw-blog{--sw-acc:var(--acc,var(--accent,currentColor));max-width:748px;margin:0 auto;padding:clamp(52px,8vw,104px) clamp(18px,5vw,44px);}
+.sw-blog--wide{max-width:980px;}
+.sw-blog__eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--sw-acc);}
+.sw-blog__h1{font-size:clamp(33px,5.2vw,54px);line-height:1.07;margin:16px 0 0;}
+.sw-blog__lede{font-size:clamp(17px,1.7vw,20px);line-height:1.6;margin:18px 0 0;opacity:.78;max-width:60ch;}
+.sw-blog__rule{height:1px;background:currentColor;opacity:.14;margin:clamp(34px,5vw,54px) 0;border:0;}
+.sw-blog__meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:26px;font-size:14.5px;opacity:.72;}
+.sw-blog__meta b{font-weight:600;opacity:1;}
+.sw-blog__dot{opacity:.5;}
+
+.sw-blog__list{display:grid;gap:18px;margin:0;padding:0;list-style:none;}
+.sw-post-card{display:block;padding:clamp(22px,3vw,32px);border:1px solid;border-color:color-mix(in srgb,currentColor 16%,transparent);border-radius:18px;color:inherit;text-decoration:none;transition:border-color .25s ease,transform .25s ease,background-color .25s ease;}
+.sw-post-card:hover{border-color:var(--sw-acc);transform:translateY(-2px);background-color:color-mix(in srgb,var(--sw-acc) 6%,transparent);}
+.sw-post-card__kicker{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--sw-acc);}
+.sw-post-card__title{font-size:clamp(22px,2.7vw,30px);line-height:1.18;margin:12px 0 0;}
+.sw-post-card__dek{margin:12px 0 0;font-size:16px;line-height:1.62;opacity:.76;}
+.sw-post-card__more{display:inline-flex;align-items:center;gap:8px;margin-top:18px;font-size:14.5px;font-weight:600;color:var(--sw-acc);}
+.sw-post-card__more svg{width:15px;height:15px;}
+
+.sw-prose{font-size:17px;line-height:1.72;}
+.sw-prose > p{margin:0 0 1.15em;}
+.sw-prose h2{font-size:clamp(23px,2.8vw,31px);line-height:1.2;margin:2em 0 .6em;}
+.sw-prose h2:first-child{margin-top:0;}
+.sw-prose strong{font-weight:600;}
+
+.sw-blog__back{display:inline-flex;align-items:center;gap:9px;margin-bottom:clamp(26px,3vw,38px);font-size:14.5px;font-weight:600;color:var(--sw-acc);text-decoration:none;}
+.sw-blog__back svg{width:16px;height:16px;}
+.sw-blog__back:hover{text-decoration:underline;}
+
+.sw-cta{margin-top:clamp(40px,6vw,64px);padding:clamp(26px,4vw,40px);border-radius:20px;background:color-mix(in srgb,var(--sw-acc) 9%,transparent);border:1px solid;border-color:color-mix(in srgb,var(--sw-acc) 22%,transparent);}
+.sw-cta__title{font-size:clamp(22px,2.6vw,29px);line-height:1.2;margin:0;}
+.sw-cta__text{margin:12px 0 0;font-size:16px;line-height:1.62;opacity:.8;}
+.sw-cta__btn{display:inline-flex;align-items:center;justify-content:center;margin-top:22px;padding:14px 26px;border-radius:100px;background:var(--sw-acc);color:var(--on,#fff);font-size:15px;font-weight:600;line-height:1.2;text-decoration:none;transition:filter .25s ease,transform .25s ease;}
+.sw-cta__btn:hover{filter:brightness(.92);transform:translateY(-2px);}
+</style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Blog",
+      "name": "Notes And Updates",
+      "description": "Short, practical writing for people deciding whether to reach out, and for the ones already working with us.",
+      "publisher": {
+        "@type": "MedicalBusiness",
+        "name": "Northshore Psychology"
+      },
+      "inLanguage": "en-US",
+      "blogPost": [
+        {
+          "@type": "BlogPosting",
+          "headline": "What To Expect At A First Appointment",
+          "description": "Not knowing what happens in the room is one of the reasons people put off calling. Here is the shape of a first appointment, start to finish.",
+          "datePublished": "2026-11-06",
+          "author": {
+            "@type": "MedicalBusiness",
+            "name": "Northshore Psychology"
+          },
+          "publisher": {
+            "@type": "MedicalBusiness",
+            "name": "Northshore Psychology"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "MedicalBusiness",
+      "name": "Northshore Psychology",
+      "description": "Practical writing from Northshore Psychology on getting started, what to expect and how we work.",
+      "telephone": "(555) 010-2400",
+      "email": "hello@psychologist.example",
+      "address": "Northshore Professional Park",
+      "medicalSpecialty": "https://schema.org/Psychiatric"
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
+</head>
+<body class="ns-page">
+
+<a class="t-skip" href="psychologist.html#main">Skip to main content</a>
+<header class="ns-nav"><div class="ns-wrap ns-nav__in">
+  <a href="psychologist.html" class="ns-logo"><span class="ns-mark" data-field="brandMark">N</span> <span data-field="brandName">Northshore Psychology</span></a>
+  <nav class="ns-links"><a href="psychologist.html#services">Services</a><a href="psychologist.html#approach">Approach</a><a href="psychologist.html#plans">Insurance</a><a href="psychologist.html#contact">Contact</a><a href="psychologist-blog.html" data-sw-bloglink>Blog</a></nav>
+  <a href="psychologist.html#contact" class="ns-btn ns-btn--fill" data-field="navCta">Request an assessment</a>
+</div></header>
+
+<main id="main" tabindex="-1" class="sw-blog sw-blog--wide">
+  <span class="sw-blog__eyebrow" data-field="blogEyebrow">From the practice</span>
+  <h1 class="sw-blog__h1" data-field="blogTitle">Notes And Updates</h1>
+  <p class="sw-blog__lede" data-field="blogSub">Short, practical writing for people deciding whether to reach out, and for the ones already working with us.</p>
+  <hr class="sw-blog__rule">
+  <ul class="sw-blog__list">
+    <li>
+      <a class="sw-post-card" href="psychologist-post.html" data-post="1" data-post-date="2026-11-06">
+        <span class="sw-post-card__kicker" data-field="post1Kicker">Getting started</span>
+        <h2 class="sw-post-card__title" data-field="post1Title">What To Expect At A First Appointment</h2>
+        <p class="sw-post-card__dek" data-field="post1Dek">Not knowing what happens in the room is one of the reasons people put off calling. Here is the shape of a first appointment, start to finish.</p>
+        <span class="sw-post-card__more">Read it <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </li>
+    <!-- To add a post: copy psychologist-post.html to a new file, edit it, then copy the
+         <li> above, point its href at the new file and change data-post to 2.
+         The schema on this page is rebuilt from these cards, so nothing else
+         needs updating. -->
+  </ul>
+</main>
+<footer class="ns-foot"><div class="ns-wrap">
+  <div class="ns-foot__top">
+    <div class="ns-foot__brand"><a href="psychologist.html" class="ns-logo"><span class="ns-mark" data-field="brandMark">N</span> <span data-field="brandName">Northshore Psychology</span></a><p data-field="footerText">Psychological assessment &amp; therapy.</p></div>
+    <div><h4>Explore</h4><ul><li><a href="psychologist.html#services">Services</a></li><li><a href="psychologist.html#approach">Approach</a></li><li><a href="psychologist.html#plans">Insurance</a></li><li><a href="psychologist.html#contact">Contact</a></li><li><a href="psychologist-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="psychologist.html#contact">(555) 010-2400</a></li><li><a href="psychologist.html#contact">hello@psychologist.example</a></li></ul></div>
+  </div>
+  <div class="ns-foot__bot"><span data-field="footerLegal">© 2026 Northshore Psychology. All rights reserved.</span><span>A FrontDoor website template.</span></div>
+</div><p class="sw-crisis" style="margin:0;padding:16px 20px 6px;font-size:13px;line-height:1.5;text-align:center;opacity:.85">In crisis? Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency.</p>
+</footer>
+<a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
+<script src="../../js/template.js?v=20261021b"></script>
+</body>
+</html>

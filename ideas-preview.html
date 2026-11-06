@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FrontDoor — Interactive ideas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--forest:#0B362A;--forest2:#072820;--green:#00A583;--green600:#00876c;--canvas:#F7F4EE;--cream:#F0EBE1;--ink:#1B1812;--line:#E5E2DC;--g500:#5b6b57;--disp:'Fraunces',Georgia,serif;--sans:'Inter',system-ui,sans-serif}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--canvas);color:var(--ink);font-family:var(--sans);line-height:1.55}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px}
+  header.top{background:var(--forest);color:var(--cream);padding:48px 0 44px;text-align:center}
+  header.top h1{font-family:var(--disp);font-weight:500;font-size:clamp(30px,4.6vw,52px);margin:0 0 12px;letter-spacing:-.02em}
+  header.top p{margin:0 auto;max-width:60ch;color:#cfe0d8;font-size:16px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;padding:44px 0 80px}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 18px 50px -34px rgba(11,54,42,.4);display:flex;flex-direction:column}
+  .card__h{padding:18px 20px 12px;border-bottom:1px solid var(--line)}
+  .card__n{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:var(--green);color:#fff;font-weight:700;font-size:13px;font-family:var(--disp);margin-right:9px}
+  .card__h h2{display:inline;font-family:var(--disp);font-weight:500;font-size:21px;letter-spacing:-.01em}
+  .card__h p{margin:9px 0 0;font-size:13.5px;color:var(--g500)}
+  .card__h .where{color:var(--green600);font-weight:600}
+  .demo{flex:1;min-height:210px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:var(--canvas)}
+  .replay{position:absolute;top:10px;right:10px;z-index:5;background:rgba(11,54,42,.9);color:var(--cream);border:0;border-radius:999px;padding:6px 13px;font:600 12px var(--sans);cursor:pointer}
+  .replay:hover{background:var(--forest)}
+
+  /* 1 kinetic headline */
+  .kh{font-family:var(--disp);font-weight:500;font-size:34px;letter-spacing:-.02em;text-align:center;color:var(--forest);line-height:1.05}
+  .kh span{display:inline-block;opacity:0;transform:translateY(22px)}
+  .kh.play span{animation:rise .7s cubic-bezier(.16,1,.3,1) forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  /* 2 marquee */
+  .mq{width:100%;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+  .mq__row{display:flex;gap:14px;width:max-content;animation:scrollx 18s linear infinite}
+  .mq__row:hover{animation-play-state:paused}
+  .pill{white-space:nowrap;background:#fff;border:1px solid var(--line);border-radius:999px;padding:10px 18px;font-weight:600;font-size:14px;color:var(--forest)}
+  .pill .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:8px;vertical-align:middle}
+  @keyframes scrollx{to{transform:translateX(-50%)}}
+
+  /* 3 count up */
+  .stats{display:flex;gap:34px;text-align:center}
+  .stats .num{font-family:var(--disp);font-weight:600;font-size:46px;color:var(--forest);line-height:1}
+  .stats .lbl{font-size:12.5px;color:var(--g500);margin-top:6px}
+
+  /* 4 reveal + blur */
+  .rev{display:grid;gap:12px;width:80%}
+  .rev div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-weight:600;color:var(--forest);opacity:0;filter:blur(10px);transform:translateY(26px)}
+  .rev.play div{animation:unblur .8s cubic-bezier(.16,1,.3,1) forwards}
+  .rev.play div:nth-child(2){animation-delay:.14s}
+  .rev.play div:nth-child(3){animation-delay:.28s}
+  @keyframes unblur{to{opacity:1;filter:blur(0);transform:none}}
+
+  /* 5 aurora */
+  .aur{position:absolute;inset:0;background:var(--forest)}
+  .aur b{position:absolute;border-radius:50%;filter:blur(42px);opacity:.75;mix-blend-mode:screen}
+  .aur b:nth-child(1){width:220px;height:220px;background:#1fae8b;left:-40px;top:-40px;animation:float1 9s ease-in-out infinite alternate}
+  .aur b:nth-child(2){width:180px;height:180px;background:#0f6b55;right:-30px;bottom:-30px;animation:float2 11s ease-in-out infinite alternate}
+  .aur b:nth-child(3){width:150px;height:150px;background:#2bd3a7;left:40%;top:40%;animation:float1 7s ease-in-out infinite alternate-reverse}
+  @keyframes float1{to{transform:translate(50px,34px) scale(1.15)}}
+  @keyframes float2{to{transform:translate(-44px,-30px) scale(1.1)}}
+  .aur__txt{position:relative;z-index:2;color:#fff;font-family:var(--disp);font-size:26px;text-align:center}
+
+  /* 6 hover lift */
+  .lifts{display:flex;gap:14px}
+  .lift{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;width:120px;transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s;cursor:pointer}
+  .lift:hover{transform:translateY(-8px);box-shadow:0 20px 40px -20px rgba(11,54,42,.4)}
+  .lift h3{font-family:var(--disp);font-weight:500;font-size:16px;margin:0 0 6px;color:var(--forest)}
+  .lift .arw{display:inline-flex;align-items:center;gap:6px;color:var(--green600);font-weight:600;font-size:13px}
+  .lift .arw svg{width:14px;height:14px;transition:transform .25s}
+  .lift:hover .arw svg{transform:translateX(5px)}
+
+  /* 7 tilt image */
+  .tilt{width:230px;height:150px;border-radius:14px;background:linear-gradient(135deg,#0f6b55,#0B362A);display:flex;align-items:center;justify-content:center;color:var(--cream);font-family:var(--disp);font-size:18px;transition:transform .12s ease-out;transform-style:preserve-3d;cursor:pointer;box-shadow:0 20px 50px -24px rgba(11,54,42,.6)}
+
+  .foot{background:var(--forest);color:#cfe0d8;text-align:center;padding:30px 24px;font-size:14px}
+  .foot b{color:var(--cream)}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <h1>Ways To Make The Homepage Feel Alive</h1>
+    <p>Each card below is a live demo in your FrontDoor brand. They are calm on purpose — motion that adds warmth and life without feeling flashy or clinical. Tell me the numbers you like and I'll build them into the real homepage.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="grid">
+
+  <div class="card">
+    <div class="card__h"><span class="card__n">1</span><h2>Kinetic headline entrance</h2>
+      <p>The hero title rises in word by word on load. <span class="where">Where: hero headline.</span></p></div>
+    <div class="demo">
+      <button class="replay" data-replay="kh">Replay</button>
+      <div class="kh" id="kh"><span>Behavioral</span> <span>Health</span> <span>Websites</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__h"><span class="card__n">2</span><h2>Practice-area marquee</h2>
+      <p>A slow ribbon of the 12 practice areas, always drifting. Shows breadth at a glance. <span class="where">Where: a thin band under the hero.</span></p></div>
+    <div class="demo">
+      <div class="mq"><div class="mq__row" id="mqrow"></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__h"><span class="card__n">3</span><h2>Numbers that count up</h2>
+      <p>True facts animate from 0 when they scroll into view. <span class="where">Where: a small trust strip (30 designs, 12 areas, 988).</span></p></div>
+    <div class="demo">
+      <button class="replay" data-replay="stats">Replay</button>
+      <div class="stats" id="stats">
+        <div><div class="num" data-to="30">0</div><div class="lbl">designs</div></div>
+        <div><div class="num" data-to="12">0</div><div class="lbl">practice areas</div></div>
+        <div><div class="num" data-to="988">0</div><div class="lbl">in every footer</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__h"><span class="card__n">4</span><h2>Soft scroll-reveal</h2>
+      <p>Sections ease up and sharpen from a gentle blur as you reach them — calmer than a plain fade. <span class="where">Where: every section.</span></p></div>
+    <div class="demo">
+      <button class="replay" data-replay="rev">Replay</button>
+      <div class="rev" id="rev"><div>Your time goes to clients</div><div>Look established from day one</div><div>Privacy-minded by default</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__h"><span class="card__n">5</span><h2>Living aurora background</h2>
+      <p>Slow, soft green light drifting behind a forest panel — depth without noise. <span class="where">Where: the tagline band or Get Started.</span></p></div>
+    <div class="demo" style="min-height:230px;padding:0">
+      <div class="aur"><b></b><b></b><b></b></div>
+      <div class="aur__txt">You look after your clients.<br>We look after your website.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__h"><span class="card__n">6</span><h2>Hover-lift cards + arrow slide</h2>
+      <p>Cards rise and the arrow glides on hover — makes the page feel responsive to touch. <span class="where">Where: Why rows, feature tiles, design cards.</span></p></div>
+    <div class="demo">
+      <div class="lifts">
+        <div class="lift"><h3>Counseling</h3><span class="arw">Preview <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+        <div class="lift"><h3>Psychiatry</h3><span class="arw">Preview <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__h"><span class="card__n">7</span><h2>Tilt-on-hover preview</h2>
+      <p>Design previews tip slightly toward the cursor in 3D — subtle, premium feel. <span class="where">Where: the designs carousel / Why image.</span></p></div>
+    <div class="demo">
+      <div class="tilt" id="tilt">Move your cursor over me</div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div class="foot">Live demos in the FrontDoor palette (Fraunces + Inter). Tell me which numbers to build — e.g. <b>"do 1, 2 and 4"</b>.</div>
+
+<script>
+  // 1 kinetic headline
+  var kh=document.getElementById('kh');
+  function playKh(){kh.classList.remove('play');void kh.offsetWidth;kh.querySelectorAll('span').forEach(function(s,i){s.style.animationDelay=(i*0.12)+'s';});kh.classList.add('play');}
+  playKh();
+
+  // 2 marquee content
+  var areas=['Psychiatry','Counseling','Family Therapy','ABA & Autism','Trauma & PTSD','Recovery & Addiction','Child & Adolescent','Eating Disorders','Group Practice','Teletherapy','Crisis Support','Veterans Care'];
+  var row=document.getElementById('mqrow');
+  var set=areas.map(function(a){return '<span class="pill"><span class="dot"></span>'+a+'</span>';}).join('');
+  row.innerHTML=set+set;
+
+  // 3 count up
+  function countUp(){document.querySelectorAll('#stats .num').forEach(function(el){var to=+el.dataset.to,t0=null;function step(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/1100);var e=1-Math.pow(1-p,3);el.textContent=Math.round(to*e);if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);});}
+  var sObs=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){countUp();sObs.unobserve(e.target);}});});
+  sObs.observe(document.getElementById('stats'));
+
+  // 4 reveal
+  var rev=document.getElementById('rev');
+  var rObs=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){rev.classList.add('play');}});});
+  rObs.observe(rev);
+
+  // 7 tilt
+  var tilt=document.getElementById('tilt');
+  tilt.addEventListener('pointermove',function(e){var r=tilt.getBoundingClientRect();var x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;tilt.style.transform='perspective(600px) rotateY('+(x*16)+'deg) rotateX('+(-y*16)+'deg) scale(1.04)';});
+  tilt.addEventListener('pointerleave',function(){tilt.style.transform='perspective(600px) rotateY(0) rotateX(0)';});
+
+  // replay buttons
+  document.querySelectorAll('[data-replay]').forEach(function(b){b.addEventListener('click',function(){var k=b.dataset.replay;if(k==='kh')playKh();if(k==='stats')countUp();if(k==='rev'){rev.classList.remove('play');void rev.offsetWidth;rev.classList.add('play');}});});
+</script>
+</body>
+</html>

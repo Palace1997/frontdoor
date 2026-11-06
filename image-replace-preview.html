@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Row 5 Needs Another Look</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--forest:#0B362A;--green:#00A583;--cream:#F7F4EE;--accent:#F0EBE1;--ink:#1B1812;--line:#E5E2DC;--muted:#6B6358;--warn:#B4502E}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--cream);color:var(--ink);font:400 16px/1.6 Inter,sans-serif;padding:0 0 70px}
+  .top{background:var(--forest);color:var(--accent);padding:36px 32px}
+  .wrap{max-width:1060px;margin:0 auto}
+  h1{font:600 33px/1.15 Fraunces,serif;margin-bottom:10px}
+  .top p{max-width:740px;opacity:.88;font-size:15px;margin-bottom:9px}
+  .done{max-width:1060px;margin:34px auto 0;padding:0 32px}
+  .done h2{font:600 21px/1.2 Fraunces,serif;margin-bottom:12px}
+  table{border-collapse:collapse;width:100%;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+  th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line)}
+  th{background:var(--accent);font-weight:600;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+  tr:last-child td{border-bottom:0}
+  .ok{color:var(--green);font-weight:600}
+  .slot{margin:40px auto 0;max-width:1060px;padding:0 32px}
+  h2{font:600 23px/1.2 Fraunces,serif;margin-bottom:4px}
+  .meta{color:var(--muted);font-size:13.5px;margin-bottom:18px}
+  .meta code{background:var(--accent);padding:2px 6px;border-radius:4px;font-size:12.5px}
+  .row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  figure{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  figure.bad{border:2px solid var(--warn)}
+  .ph{aspect-ratio:1;overflow:hidden;background:var(--accent)}
+  .ph img{width:100%;height:100%;object-fit:cover;display:block}
+  figcaption{padding:11px 13px 13px;font-size:12.5px;line-height:1.45}
+  .tag{display:inline-block;font:700 10.5px/1 Inter,sans-serif;letter-spacing:.09em;text-transform:uppercase;padding:5px 8px;border-radius:5px;margin-bottom:7px}
+  .t-bad{background:#F6DED6;color:var(--warn)}
+  .t-opt{background:var(--accent);color:var(--muted)}
+  .src{color:var(--muted);display:block;margin-top:5px;font-size:11.5px}
+  .why{max-width:1060px;margin:26px auto 0;padding:20px 24px;background:#fff;border:1px solid var(--line);border-radius:14px;font-size:14.5px}
+  .why h3{font:600 17px/1.2 Fraunces,serif;margin-bottom:8px}
+  .why ul{margin:8px 0 0 18px}.why li{margin-bottom:7px}
+  @media(max-width:860px){.row{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="top"><div class="wrap">
+  <h1>Four Are Done, Row 5 Needs Another Look</h1>
+  <p>1B, 2A, 3B and 4A are swapped in and checked. 5A has two problems I did not catch when I recommended it, both visible once it is cropped the way that slot actually crops it.</p>
+</div></div>
+
+<div class="done">
+  <h2>Swapped in already</h2>
+  <table>
+    <tr><th>Row</th><th>Template</th><th>Now showing</th><th></th></tr>
+    <tr><td>1B</td><td><code>therapist.html</code></td><td>A counselor seated beside a desk</td><td class="ok">done</td></tr>
+    <tr><td>2A</td><td><code>aba-hearth.html</code></td><td>A clinician smiling in a bright room</td><td class="ok">done</td></tr>
+    <tr><td>3B</td><td><code>psychology-beacon.html</code></td><td>A clinician seated in a bright room with plants</td><td class="ok">done</td></tr>
+    <tr><td>4A</td><td><code>ot-groundwork.html</code></td><td>Dana Whitfield, lead occupational therapist</td><td class="ok">done</td></tr>
+  </table>
+</div>
+
+<section class="slot">
+  <h2>Row 5, Rivergate MAT</h2>
+  <p class="meta"><code>templates/practices/mat-rivergate.html</code> &middot; the portrait beside the quote from <b>Dr. Renee Carver, MD, Medical Director</b> &middot; the slot crops to a square</p>
+  <div class="row">
+    <figure class="bad"><div class="ph"><img src="https://images.unsplash.com/photo-1592947945242-69312358628b?auto=format&fit=crop&w=900&q=80" alt="A man in a yellow armchair with a person lying down in the foreground"></div>
+      <figcaption><span class="tag t-bad">5A, your pick</span>Cropped square, a patient lying on a couch comes into frame along the bottom<span class="src">Unsplash &middot; photo-1592947945242</span></figcaption></figure>
+    <figure><div class="ph"><img src="https://images.unsplash.com/photo-1668271165626-76156f291c4a?auto=format&fit=crop&w=900&q=80" alt="A clinician seated in an armchair in a light room"></div>
+      <figcaption><span class="tag t-opt">Option X</span>Seated in an armchair, calm and plain<span class="src">Unsplash &middot; photo-1668271165626</span></figcaption></figure>
+    <figure><div class="ph"><img src="https://images.unsplash.com/photo-1733685318563-9e503218a101?auto=format&fit=crop&w=900&q=80" alt="A clinician seated in a warm, bright room"></div>
+      <figcaption><span class="tag t-opt">Option Y</span>Warmer room, closest to the rest of the set<span class="src">Unsplash &middot; photo-1733685318563</span></figcaption></figure>
+    <figure><div class="ph"><img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=900&q=80" alt="A clinician in scrubs with arms crossed"></div>
+      <figcaption><span class="tag t-opt">Option Z</span>In scrubs, reads most like a medical director<span class="src">Unsplash &middot; photo-1594824476967</span></figcaption></figure>
+  </div>
+</section>
+
+<div class="why">
+  <h3>Why 5A does not work there</h3>
+  <ul>
+    <li><b>A patient is in the shot.</b> The thumbnail I showed you was a tall crop, which hid it. That slot crops to a square, and the square brings a person lying on a couch into the bottom of the frame. For a clinic treating opioid dependence, a reclining patient beside the medical director's quote is the wrong picture.</li>
+    <li><b>The caption names a woman.</b> The quote right next to the photo is signed "Dr. Renee Carver, MD, Medical Director", so a man's portrait would contradict the text beside it.</li>
+  </ul>
+  <p style="margin-top:10px">The three options above are all women, all crop cleanly to a square, and none is used anywhere else on the site. Say X, Y or Z and I will finish row 5 and push all five live. If you would rather keep 5A, I can rename the medical director instead, but the patient in frame is still a problem.</p>
+</div>
+
+</body>
+</html>

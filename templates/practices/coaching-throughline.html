@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="CommunityHealth" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23BE5224'/><text x='16' y='23' font-family='Arial,sans-serif' font-size='19' font-weight='bold' fill='white' text-anchor='middle'>T</text></svg>">
 <style>
-:root{--acc:#BE5224;--acc2:#99401A;}
+:root{--acc:#B04C21;--acc2:#99401A;}
 .tl{
   --on:#ffffff;
   --bg:#FBF6F1; --cream:#F4EAE0; --sand:#EFE2D3; --line:#E7D9C9;
@@ -216,16 +216,113 @@
   .tl-foot{padding-bottom:140px;}
 }
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalBusiness",
+      "name": "Throughline Recovery Coaching",
+      "description": "Throughline Recovery Coaching: practical, forward-looking peer recovery support with a Certified Peer Recovery Specialist. All pathways to recovery welcome, by phone, video or in person. A FrontDoor website template.",
+      "telephone": "(555) 017-6240",
+      "email": "hello@throughlinecoaching.example",
+      "address": "Phone & video statewide, in person in Portland, OR",
+      "medicalSpecialty": "https://schema.org/CommunityHealth",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Steady, Practical Support for the Road Ahead",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "One-to-One Recovery Coaching",
+              "description": "Regular sessions built around your goals. We set small, doable steps and keep moving forward together, at your pace.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Throughline Recovery Coaching"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Family & Loved-Ones Coaching",
+              "description": "For the people who love someone in recovery. Learn how to set boundaries, support without burning out, and take care of yourself too.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Throughline Recovery Coaching"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Telecoaching by Phone & Video",
+              "description": "Meet from wherever you are. Secure video or a simple phone call, whichever feels easier on a given day.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Throughline Recovery Coaching"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Accountability Check-Ins",
+              "description": "Short, regular touchpoints between sessions. A quick call or message to help you stay on track when it counts most.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Throughline Recovery Coaching"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Resource & Treatment Navigation",
+              "description": "Confused by the options? I help you find treatment, meetings, housing and local supports, and make sense of the next step.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Throughline Recovery Coaching"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Small Group Coaching",
+              "description": "A small, welcoming circle working on recovery together. Shared goals, real talk, and support that does not feel alone.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Throughline Recovery Coaching"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="tl">
 
+<a class="t-skip" href="#main">Skip to main content</a>
 <header class="tl-nav t-nav">
-  <input type="checkbox" id="tl-nav-toggle" class="tl-nav__cb">
+  <input type="checkbox" id="tl-nav-toggle" class="tl-nav__cb t-vh-control" tabindex="-1" aria-hidden="true">
   <div class="tl-shell tl-nav__in">
     <a href="#" class="tl-logo" aria-label="Throughline Recovery Coaching, home"><span class="tl-mark" data-field="brandMark">T</span><span class="tl-logo__name" data-field="brandName">Throughline Recovery Coaching</span></a>
-    <nav class="tl-links" aria-label="Main"><a href="#services">Services</a><a href="#how">How It Works</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+    <nav class="tl-links" aria-label="Main"><a href="#services">Services</a><a href="#how">How It Works</a><a href="#about">About</a><a href="#contact">Contact</a><a href="coaching-throughline-blog.html" data-sw-bloglink>Blog</a></nav>
     <a href="#contact" class="tl-btn tl-btn--pri tl-nav__cta" data-field="navCta">Book a free intro call</a>
-    <label for="tl-nav-toggle" class="tl-burger" aria-label="Open menu" role="button" tabindex="0">
+    <label for="tl-nav-toggle" class="tl-burger" data-menu-toggle aria-label="Menu" aria-expanded="false" role="button" tabindex="0">
       <svg class="tl-burger__m" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       <svg class="tl-burger__x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </label>
@@ -236,10 +333,11 @@
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
     <a href="#contact" class="tl-btn tl-btn--pri">Book a free intro call</a>
+      <a href="coaching-throughline-blog.html" data-sw-bloglink>Blog</a>
   </nav>
 </header>
 
-<main>
+<main id="main" tabindex="-1">
 <section class="tl-hero" aria-labelledby="tl-hero-title">
   <img class="tl-hero__img" data-img="hero" src="https://images.unsplash.com/photo-1557316655-8715fdecd2d1?auto=format&fit=crop&w=1600&q=80" alt="An open road winding toward the horizon under a warm morning sky">
   <div class="tl-hero__scrim" aria-hidden="true"></div>
@@ -401,7 +499,7 @@
       <a href="#" class="tl-logo"><span class="tl-mark" data-field="brandMark">T</span><span class="tl-logo__name" data-field="brandName">Throughline Recovery Coaching</span></a>
       <p data-field="footerText">Practical, forward-looking peer recovery support with a Certified Peer Recovery Specialist. All pathways welcome, by phone, video, or in person.</p>
     </div>
-    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#how">How It Works</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#how">How It Works</a></li><li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li><li><a href="coaching-throughline-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
     <div><h4>Contact</h4><ul><li><a href="#contact">(555) 017-6240</a></li><li><a href="#contact">hello@throughlinecoaching.example</a></li><li><a href="#contact">Book a free intro call</a></li></ul></div>
   </div>
   <div class="tl-crisis">
@@ -414,6 +512,6 @@
 <div class="tl-bookbar"><a href="#contact" class="tl-btn tl-btn--pri">Book a free intro call</a></div>
 
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

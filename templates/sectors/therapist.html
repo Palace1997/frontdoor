@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,11 +8,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%235C8A5E'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>W</text></svg>">
 <style>
 .wl{
-  --acc:#5C8A5E; --acc2:#497049; --on:#ffffff;
+  --acc:#4E7550; --acc2:#497049; --on:#ffffff;
   --dark:#22331F; --dark2:#172415;
   --bg:#FBFAF6; --sand:#F1EEE4; --clay:#EAE4D6; --line:#E4DFD2;
   --ink:#232019; --muted:#6E6A5E; --white:#fff;
@@ -191,13 +191,111 @@
 .reveal.is-in{opacity:1;transform:none;}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;}}
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalBusiness",
+      "name": "Willow Counseling",
+      "description": "Willow Counseling: Therapy & counseling. A FrontDoor website template.",
+      "telephone": "(555) 010-2400",
+      "email": "hello@therapist.example",
+      "address": "18 Willow Court",
+      "medicalSpecialty": "https://schema.org/Psychiatric",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Support for wherever you",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Individual counseling",
+              "description": "One-to-one support tailored to you.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Willow Counseling"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Anxiety & stress",
+              "description": "Practical tools that carry into daily life.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Willow Counseling"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Grief & loss",
+              "description": "Compassionate space to process.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Willow Counseling"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Couples counseling",
+              "description": "Reconnect and communicate better.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Willow Counseling"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Life transitions",
+              "description": "Navigate change with steadier footing.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Willow Counseling"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Online therapy",
+              "description": "Secure sessions from home.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Willow Counseling"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="wl">
+<a class="t-skip" href="#main">Skip to main content</a>
 <header class="wl-nav"><div class="wl-shell wl-nav__in">
   <a href="#" class="wl-logo"><span class="wl-mark" data-field="brandMark">W</span> <span data-field="brandName">Willow Counseling</span></a>
-  <nav class="wl-links"><a href="#services">Services</a><a href="#approach">Approach</a><a href="#plans">Insurance</a><a href="#contact">Contact</a></nav>
+  <nav class="wl-links"><a href="#services">Services</a><a href="#approach">Approach</a><a href="#plans">Insurance</a><a href="#contact">Contact</a><a href="therapist-blog.html" data-sw-bloglink>Blog</a></nav>
   <a href="#contact" class="wl-btn wl-btn--primary" data-field="navCta">Book a free consult</a>
 </div></header>
+<main id="main" tabindex="-1">
 
 <section class="wl-hero"><div class="wl-shell">
   <div class="wl-ed__mast">
@@ -301,16 +399,17 @@
   </form>
 </div></div></section>
 
+</main>
 <footer class="wl-foot"><div class="wl-shell">
   <div class="wl-foot__top">
     <div class="wl-foot__brand"><a href="#" class="wl-logo"><span class="wl-mark" data-field="brandMark">W</span> <span data-field="brandName">Willow Counseling</span></a><p data-field="footerText">Therapy &amp; counseling.</p></div>
-    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#approach">Approach</a></li><li><a href="#plans">Insurance</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#approach">Approach</a></li><li><a href="#plans">Insurance</a></li><li><a href="#contact">Contact</a></li><li><a href="therapist-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
     <div><h4>Contact</h4><ul><li><a href="#contact">(555) 010-2400</a></li><li><a href="#contact">hello@therapist.example</a></li></ul></div>
   </div>
   <div class="wl-foot__bot"><span data-field="footerLegal">© 2026 Willow Counseling. All rights reserved.</span><span>A FrontDoor website template.</span></div>
 </div><p class="sw-crisis" style="margin:0;padding:16px 20px 6px;font-size:13px;line-height:1.5;text-align:center;opacity:.85">In crisis? Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency.</p>
 </footer>
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="CommunityHealth" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,11 +8,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232F8F7A'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>M</text></svg>">
 <style>
 .md-page{
-  --acc:#2F8F7A; --acc2:#247161; --on:#ffffff;
+  --acc:#287967; --acc2:#247161; --on:#ffffff;
   --dark:#123530; --dark2:#0C2621;
   --bg:#F6F8F6; --panel:#ffffff; --line:#E1E7E2; --ink:#152621; --muted:#5F6E68;
   --mint:#E7F1EC; --mint2:#D7E8DF;
@@ -228,16 +228,114 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-display);font-weight:500;letter-spac
 .reveal.is-in{opacity:1;transform:none;}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;}}
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalBusiness",
+      "name": "Meridian Day Program",
+      "description": "Meridian Day Program: Intensive outpatient & partial hospitalization. A FrontDoor website template.",
+      "telephone": "(555) 010-2400",
+      "email": "hello@iopphp.example",
+      "address": "Meridian, 3rd & 4th Floors",
+      "medicalSpecialty": "https://schema.org/CommunityHealth",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Intensive, structured, and flexible",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Partial hospitalization",
+              "description": "Full-day structured care (PHP).",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Meridian Day Program"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Intensive outpatient",
+              "description": "Half-day programming (IOP).",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Meridian Day Program"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Group therapy",
+              "description": "Skills groups led by clinicians.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Meridian Day Program"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Individual sessions",
+              "description": "One-to-one care within the program.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Meridian Day Program"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Medication management",
+              "description": "On-site psychiatric support.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Meridian Day Program"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Step-down planning",
+              "description": "A clear path back to weekly care.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Meridian Day Program"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="md-page">
 
+<a class="t-skip" href="#main">Skip to main content</a>
 <div class="md-bar"><div class="md-wrap md-bar__in">Now enrolling for <strong>day, evening &amp; virtual tracks</strong>, CARF accredited</div></div>
 
 <header class="md-nav"><div class="md-wrap md-nav__in">
   <a href="#" class="md-logo"><span class="md-mark" data-field="brandMark">M</span> <span data-field="brandName">Meridian Day Program</span></a>
-  <nav class="md-navlinks"><a href="#schedule">Schedule</a><a href="#tracks">Tracks</a><a href="#services">Services</a><a href="#contact">Contact</a></nav>
+  <nav class="md-navlinks"><a href="#schedule">Schedule</a><a href="#tracks">Tracks</a><a href="#services">Services</a><a href="#contact">Contact</a><a href="iop-php-blog.html" data-sw-bloglink>Blog</a></nav>
   <a href="#contact" class="md-btn md-btn--primary" data-field="navCta">Check eligibility</a>
 </div></header>
+<main id="main" tabindex="-1">
 
 <section class="md-hero"><div class="md-wrap">
   <div class="md-hero__head">
@@ -447,16 +545,17 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-display);font-weight:500;letter-spac
   </form>
 </div></div></section>
 
+</main>
 <footer class="md-foot"><div class="md-wrap">
   <div class="md-foot__top">
     <div class="md-foot__brand"><a href="#" class="md-logo"><span class="md-mark" data-field="brandMark">M</span> <span data-field="brandName">Meridian Day Program</span></a><p data-field="footerText">Intensive outpatient &amp; partial hospitalization.</p></div>
-    <div><h4>Explore</h4><ul><li><a href="#schedule">Schedule</a></li><li><a href="#tracks">Tracks</a></li><li><a href="#services">Services</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="#schedule">Schedule</a></li><li><a href="#tracks">Tracks</a></li><li><a href="#services">Services</a></li><li><a href="#contact">Contact</a></li><li><a href="iop-php-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
     <div><h4>Contact</h4><ul><li><a href="#contact">(555) 010-2400</a></li><li><a href="#contact">hello@iopphp.example</a></li></ul></div>
   </div>
   <div class="md-foot__bot"><span data-field="footerLegal">© 2026 Meridian Day Program. All rights reserved.</span><span>A FrontDoor website template.</span></div>
 </div></footer>
 
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

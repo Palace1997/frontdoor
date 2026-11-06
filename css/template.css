@@ -232,6 +232,38 @@ ul{margin:0;padding:0;list-style:none}
 .t-footer__bot{padding-top:26px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:13.5px;color:var(--g-500)}
 @media(max-width:760px){.t-footer__top{grid-template-columns:1fr 1fr}}
 
+/* =====================================================================
+   Accessibility layer, shared by all 30 designs
+   ===================================================================== */
+
+/* Skip link (WCAG 2.4.1 Bypass Blocks).
+   Hardcoded colours + !important for the same reason as the ribbon below:
+   several templates reset link colour at a higher specificity. */
+a.t-skip,.t-skip{position:fixed;left:12px;top:-100px;z-index:200;display:inline-block;
+  background:#111413 !important;color:#ffffff !important;
+  padding:13px 20px;border-radius:0 0 8px 8px;
+  font-family:var(--font-sans);font-size:15px;font-weight:600;line-height:1;
+  text-decoration:none;box-shadow:0 10px 30px rgba(0,0,0,.35);transition:top .15s var(--ease)}
+.t-skip:focus{top:0}
+/* The skip target takes focus so the next Tab continues inside main.
+   It is not a tab stop itself, so it needs no visible ring. */
+[tabindex="-1"]:focus{outline:none}
+
+/* Focus indicator (WCAG 2.4.7 Focus Visible, 1.4.11 Non-text Contrast).
+   A white ring hugging the control with a near-black band just outside it,
+   so one of the two always clears 3:1 whatever the control sits on.
+   !important because many templates set :focus{outline:none} on fields. */
+:focus-visible{outline:3px solid #ffffff !important;outline-offset:0 !important;
+  box-shadow:0 0 0 6px #111413 !important}
+
+/* Visually hidden form control, used for the checkbox behind a menu button.
+   Kept in the DOM (the CSS :checked rules depend on it) but out of the
+   tab order and out of the accessibility tree; the label is the real control. */
+.t-vh-control{position:absolute !important;width:1px;height:1px;margin:0;padding:0;border:0;
+  opacity:0;pointer-events:none;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden}
+
+@media(prefers-reduced-motion:reduce){.t-skip{transition:none}}
+
 /* "Built with FrontDoor" ribbon */
 /* Self-contained + bulletproof: hardcoded colors + !important so per-template link/text rules can never make the ribbon invisible. */
 a.t-ribbon,.t-ribbon{position:fixed;right:16px;bottom:16px;z-index:60;display:inline-flex;align-items:center;gap:9px;background:#111413 !important;color:#ffffff !important;padding:10px 16px;border-radius:100px;font-size:13px;font-weight:500;text-decoration:none;box-shadow:var(--shadow-md);transition:transform .25s var(--ease)}

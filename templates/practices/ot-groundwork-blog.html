@@ -1,0 +1,399 @@
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="blog" data-site-url="" data-sw-href="blog.html">
+<head>
+<title>Notes And Updates, Groundwork Occupational Therapy</title>
+<meta name="description" content="Practical writing from Groundwork Occupational Therapy on getting started, what to expect and how we work.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%23AB5A34'/><text x='16' y='23' font-family='Georgia,serif' font-weight='700' font-size='18' fill='white' text-anchor='middle'>G</text></svg>">
+<style>
+:root{--acc:#9E5330;--acc2:#8A4526;}
+.gw{
+  --sage:#6F8C6B; --sage2:#58744F;
+  --sidebar:#2B2420; --sidebar2:#221B17;
+  --bg:#F7F3EC; --panel:#FFFFFF; --cream:#F1E9DC; --sand:#EFE6D7;
+  --ink:#271F18; --muted:#6C6055; --line:#E6DCCE; --on:#FFFFFF;
+  --cream-on:#F3ECE0;
+  --tint:color-mix(in srgb,var(--acc) 12%,#ffffff);
+  --sagetint:color-mix(in srgb,var(--sage) 16%,#ffffff);
+  --disp:'Zilla Slab',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.gw *{box-sizing:border-box;}
+.gw img{max-width:100%;display:block;}
+.gw :where(h1,h2,h3,h4){margin:0;font-family:var(--disp);font-weight:600;letter-spacing:-.01em;line-height:1.08;color:var(--ink);}
+.gw :where(p){margin:0;}
+.gw :where(ul){margin:0;padding:0;list-style:none;}
+.gw a{text-decoration:none;}
+.gw [data-empty="1"]{display:none !important;}
+.gw a:focus-visible,.gw button:focus-visible,.gw summary:focus-visible,.gw label:focus-visible,.gw input:focus-visible,.gw select:focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:10px;}
+
+/* buttons */
+.gw-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 24px;border-radius:12px;font-family:var(--sans);font-size:15px;font-weight:600;line-height:1.2;border:1.5px solid transparent;cursor:pointer;transition:background .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease),transform .25s var(--ease),box-shadow .25s var(--ease);}
+.gw-btn svg{width:16px;height:16px;flex:none;}
+.gw-btn--pri{background:var(--acc);color:var(--on);border-color:var(--acc);}
+.gw-btn--pri:hover{background:var(--acc2);border-color:var(--acc2);color:var(--on);transform:translateY(-2px);box-shadow:0 16px 30px -18px var(--acc);}
+.gw-btn--ghost{background:transparent;color:var(--ink);border-color:color-mix(in srgb,var(--acc) 34%,var(--line));}
+.gw-btn--ghost:hover{border-color:var(--acc);color:var(--acc);}
+
+/* logo */
+.gw-logo{display:inline-flex;align-items:center;gap:12px;color:var(--ink);}
+.gw-mark{flex:none;width:40px;height:40px;border-radius:11px;background:var(--acc);color:var(--on);display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:21px;line-height:1;box-shadow:0 6px 16px -8px var(--acc);}
+.gw-logo__name{font-family:var(--disp);font-size:18px;font-weight:600;line-height:1.14;}
+
+/* ============ SIDEBAR NAV (signature) ============ */
+.gw-menu-cb{position:absolute;opacity:0;pointer-events:none;}
+.gw-nav{position:fixed;top:0;left:0;bottom:0;width:252px;z-index:60;
+  display:flex;flex-direction:column;
+  background:linear-gradient(185deg,var(--sidebar),var(--sidebar2));color:var(--cream-on);
+  padding:30px 22px;border-right:1px solid rgba(255,255,255,.06);}
+.gw-nav .gw-logo{color:var(--cream-on);}
+.gw-nav .gw-logo__name{color:var(--cream-on);}
+.gw-nav__top{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.gw-links{margin-top:46px;display:flex;flex-direction:column;gap:3px;flex:1 1 auto;}
+.gw-links a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;font-size:15px;font-weight:500;color:rgba(243,236,224,.76);transition:background .2s,color .2s;}
+.gw-links a svg{width:17px;height:17px;flex:none;opacity:.7;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.gw-links a:hover{background:rgba(255,255,255,.07);color:#fff;}
+.gw-links a:hover svg{opacity:1;color:color-mix(in srgb,var(--acc) 60%,#fff);}
+.gw-nav__cta{margin-top:18px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1);}
+.gw-nav__cta .gw-btn{width:100%;}
+.gw-nav__ph{margin-top:14px;font-size:13px;color:rgba(243,236,224,.56);display:flex;align-items:center;gap:8px;}
+.gw-nav__ph svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;}
+.gw-burger{display:none;width:44px;height:40px;border:1px solid rgba(255,255,255,.18);border-radius:11px;cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:4px;background:rgba(255,255,255,.04);}
+.gw-burger span{display:block;width:19px;height:2px;border-radius:2px;background:var(--cream-on);transition:.25s;}
+
+/* ============ PAGE SHELL ============ */
+.gw-page{margin-left:252px;}
+.gw-wrap{max-width:1100px;margin:0 auto;padding:0 clamp(20px,4vw,56px);}
+.gw-sec{padding:clamp(60px,8vw,104px) 0;position:relative;}
+.gw-eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--acc);}
+.gw-eyebrow::before{content:"";width:22px;height:2px;border-radius:2px;background:var(--acc);}
+.gw-h2{font-size:clamp(32px,4.4vw,52px);margin:14px 0 16px;}
+.gw-lede{font-size:clamp(16.5px,1.5vw,19px);color:var(--muted);max-width:56ch;}
+
+/* ============ HERO, bento ============ */
+.gw-hero{padding:clamp(24px,3.5vw,44px) clamp(20px,4vw,56px) clamp(10px,2vw,20px);}
+.gw-bento{display:grid;gap:16px;grid-template-columns:1.18fr 1fr 1.02fr;grid-template-rows:auto auto;
+  grid-template-areas:"head head photo" "accent who photo";}
+.gw-tile{border-radius:26px;border:1px solid var(--line);overflow:hidden;}
+.gw-tile--head{grid-area:head;background:var(--panel);padding:clamp(28px,4vw,48px);display:flex;flex-direction:column;justify-content:center;}
+.gw-tile--head h1{font-size:clamp(34px,4.6vw,62px);font-weight:700;line-height:1.02;margin:16px 0 18px;max-width:14ch;}
+.gw-tile--head .gw-lede{max-width:48ch;}
+.gw-hero__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;}
+.gw-hero__trust{display:flex;align-items:center;gap:10px;margin-top:22px;font-size:13.5px;color:var(--muted);}
+.gw-hero__trust svg{width:18px;height:18px;flex:none;color:var(--sage2);fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+.gw-tile--photo{grid-area:photo;position:relative;background:var(--sand);min-height:340px;border-color:transparent;}
+.gw-tile--photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.gw-tile--accent{grid-area:accent;background:linear-gradient(160deg,var(--acc),var(--acc2));color:var(--on);border-color:transparent;padding:clamp(24px,3vw,32px);display:flex;flex-direction:column;justify-content:space-between;gap:18px;min-height:150px;}
+.gw-tile--accent .gw-tile__k{font-family:var(--disp);font-weight:600;font-size:clamp(22px,2.4vw,27px);line-height:1.12;color:var(--on);}
+.gw-tile--accent .gw-tile__s{font-size:14px;color:rgba(255,255,255,.86);}
+.gw-tile--accent svg{width:30px;height:30px;color:rgba(255,255,255,.9);fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+.gw-tile--who{grid-area:who;background:var(--cream);padding:clamp(24px,3vw,32px);display:flex;flex-direction:column;gap:12px;min-height:150px;}
+.gw-tile--who h4{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-family:var(--sans);}
+.gw-who__list{display:flex;flex-wrap:wrap;gap:8px;}
+.gw-who__list li{display:inline-flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:100px;padding:7px 14px;font-size:14px;font-weight:500;color:var(--ink);}
+.gw-who__list li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--sage);flex:none;}
+@media(max-width:900px){
+  .gw-bento{grid-template-columns:1fr 1fr;grid-template-areas:"head head" "photo photo" "accent who";}
+  .gw-tile--photo{min-height:260px;}
+}
+@media(max-width:620px){
+  .gw-bento{grid-template-columns:1fr;grid-template-areas:"head" "photo" "who" "accent";}
+}
+
+/* strip of chips under hero */
+.gw-marks{display:flex;flex-wrap:wrap;gap:10px 26px;padding:clamp(18px,3vw,26px) clamp(20px,4vw,56px) 0;}
+.gw-marks li{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:500;color:var(--muted);}
+.gw-marks svg{width:18px;height:18px;flex:none;color:var(--acc);fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ============ SERVICES ============ */
+.gw-serv__head{max-width:640px;margin-bottom:clamp(34px,5vw,52px);}
+.gw-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,1.8vw,20px);}
+.gw-card{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:clamp(22px,2.6vw,30px);transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease);}
+.gw-card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--acc) 32%,var(--line));box-shadow:0 26px 50px -36px rgba(50,30,15,.5);}
+.gw-card__ic{width:52px;height:52px;border-radius:14px;background:var(--tint);color:var(--acc);display:grid;place-items:center;margin-bottom:18px;}
+.gw-card:nth-child(3n+2) .gw-card__ic{background:var(--sagetint);color:var(--sage2);}
+.gw-card__ic svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.gw-card h3{font-size:21px;margin-bottom:7px;}
+.gw-card p{color:var(--muted);font-size:14.5px;}
+@media(max-width:860px){.gw-cards{grid-template-columns:1fr 1fr;}}
+@media(max-width:560px){.gw-cards{grid-template-columns:1fr;}}
+
+/* ============ ABOUT ============ */
+.gw-about{background:var(--cream);}
+.gw-about__grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,5vw,76px);align-items:center;}
+.gw-about__media{position:relative;}
+.gw-about__media img{width:100%;aspect-ratio:4/4.2;object-fit:cover;border-radius:26px;border:1px solid var(--line);}
+.gw-about__badge{position:absolute;left:-14px;bottom:24px;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px 20px;box-shadow:0 24px 44px -30px rgba(50,30,15,.5);max-width:220px;}
+.gw-about__badge b{display:block;font-family:var(--disp);font-size:18px;color:var(--ink);}
+.gw-about__badge span{font-size:13px;color:var(--muted);}
+.gw-checks{display:grid;gap:12px;margin:26px 0 8px;}
+.gw-checks li{display:flex;gap:14px;align-items:flex-start;font-size:15.5px;color:var(--ink);}
+.gw-checks li i{flex:none;width:26px;height:26px;margin-top:1px;border-radius:9px;background:var(--tint);color:var(--acc);display:grid;place-items:center;}
+.gw-checks li i svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
+@media(max-width:820px){.gw-about__grid{grid-template-columns:1fr;}.gw-about__media{max-width:460px;}.gw-about__badge{left:16px;}}
+
+/* ============ STATS ============ */
+.gw-stats{background:linear-gradient(160deg,var(--sidebar),var(--sidebar2));color:var(--cream-on);}
+.gw-stats__head{max-width:600px;margin-bottom:clamp(30px,4vw,44px);}
+.gw-stats .gw-eyebrow{color:color-mix(in srgb,var(--acc) 55%,#fff);}
+.gw-stats .gw-eyebrow::before{background:color-mix(in srgb,var(--acc) 55%,#fff);}
+.gw-stats .gw-h2{color:#fff;}
+.gw-stats__lede{color:rgba(243,236,224,.78);font-size:16.5px;max-width:52ch;}
+.gw-stats__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);border-radius:22px;overflow:hidden;}
+.gw-stats__grid > div{background:color-mix(in srgb,var(--sidebar) 60%,#000);padding:clamp(26px,3vw,38px);}
+.gw-stats__grid b{display:block;font-family:var(--disp);font-weight:600;font-size:clamp(28px,3.4vw,40px);line-height:1.05;margin-bottom:8px;color:#fff;}
+.gw-stats__grid span{font-size:14.5px;color:rgba(243,236,224,.76);}
+@media(max-width:720px){.gw-stats__grid{grid-template-columns:1fr;}}
+
+/* ============ TEAM ============ */
+.gw-team__head{max-width:620px;margin-bottom:clamp(34px,5vw,52px);}
+.gw-team__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2vw,22px);}
+.gw-person{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:28px 24px;}
+.gw-avatar{width:76px;height:76px;border-radius:18px;background:var(--acc);color:var(--on);display:grid;place-items:center;font-family:var(--disp);font-weight:700;font-size:28px;margin-bottom:18px;}
+.gw-person:nth-child(3n+2) .gw-avatar{background:var(--sage2);}
+.gw-person h3{font-size:21px;}
+.gw-cred{display:inline-block;margin:8px 0 4px;padding:4px 12px;border-radius:100px;background:var(--tint);color:var(--acc2);font-size:12.5px;font-weight:600;}
+.gw-lic{display:block;font-size:12.5px;color:var(--muted);margin-bottom:12px;}
+.gw-person p{font-size:14.5px;color:var(--muted);}
+@media(max-width:860px){.gw-team__grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.gw-team__grid{grid-template-columns:1fr;}}
+
+/* ============ NOTE ============ */
+.gw-note{background:var(--cream);}
+.gw-note__grid{display:grid;grid-template-columns:.75fr 1.25fr;gap:clamp(30px,5vw,70px);align-items:center;}
+.gw-note__media{position:relative;max-width:320px;width:100%;}
+.gw-note__media img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:22px;border:1px solid var(--line);}
+.gw-note__media::before{content:"";position:absolute;inset:0;transform:translate(16px,16px);border-radius:22px;background:var(--sagetint);z-index:-1;}
+.gw-note__text{font-family:var(--disp);font-weight:500;font-size:clamp(23px,3vw,34px);line-height:1.32;color:var(--ink);margin:14px 0 22px;}
+.gw-note__who{font-size:15px;color:var(--muted);}
+.gw-note__who b{color:var(--ink);font-weight:600;}
+@media(max-width:800px){.gw-note__grid{grid-template-columns:1fr;}.gw-note__media{max-width:220px;}}
+
+/* ============ FAQ ============ */
+.gw-faq__grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:clamp(28px,5vw,74px);align-items:start;}
+.gw-faq__side .gw-btn{margin-top:22px;}
+.gw-qa details{border:1px solid var(--line);border-radius:16px;background:var(--panel);margin-bottom:12px;overflow:hidden;}
+.gw-qa summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 20px;font-family:var(--disp);font-size:clamp(18px,2vw,21px);font-weight:600;color:var(--ink);}
+.gw-qa summary::-webkit-details-marker{display:none;}
+.gw-qa summary::after{content:"+";flex:none;width:30px;height:30px;border-radius:9px;background:var(--tint);display:grid;place-items:center;font-family:var(--sans);font-size:19px;font-weight:400;color:var(--acc);transition:transform .3s var(--ease);}
+.gw-qa details[open] summary::after{transform:rotate(45deg);}
+.gw-qa details p{padding:0 20px 20px;color:var(--muted);font-size:15px;}
+@media(max-width:800px){.gw-faq__grid{grid-template-columns:1fr;}}
+
+/* ============ CONTACT ============ */
+.gw-contact{background:var(--sand);}
+.gw-contact__grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:clamp(34px,5vw,66px);align-items:start;}
+.gw-info{margin-top:26px;border-top:1px solid var(--line);}
+.gw-info li{display:flex;gap:15px;align-items:center;padding:15px 0;border-bottom:1px solid var(--line);}
+.gw-info svg{flex:none;width:21px;height:21px;color:var(--acc);fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.gw-info small{display:block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);}
+.gw-info b{font-weight:500;font-size:15.5px;color:var(--ink);}
+.gw-form{display:grid;gap:15px;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:clamp(24px,4vw,38px);box-shadow:0 36px 70px -56px rgba(50,30,15,.5);}
+.gw-form h3{font-size:25px;}
+.gw-form__row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.gw-field{display:grid;gap:7px;}
+.gw-field label{font-size:13.5px;font-weight:600;color:var(--ink);}
+.gw-field label span{font-weight:400;color:var(--muted);}
+.gw-field input,.gw-field select{width:100%;font-family:inherit;font-size:15.5px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);}
+.gw-field input:focus,.gw-field select:focus{outline:2px solid color-mix(in srgb,var(--acc) 45%,transparent);outline-offset:1px;border-color:var(--acc);}
+.gw-form__note{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--muted);background:var(--cream);border-radius:12px;padding:12px 14px;}
+.gw-form__note svg{flex:none;width:18px;height:18px;margin-top:1px;color:var(--acc);fill:none;stroke:currentColor;stroke-width:1.8;}
+.gw-form .gw-btn{width:100%;}
+@media(max-width:820px){.gw-contact__grid{grid-template-columns:1fr;}}
+@media(max-width:460px){.gw-form__row{grid-template-columns:1fr;}}
+
+/* ============ FOOTER ============ */
+.gw-foot{background:linear-gradient(160deg,var(--sidebar),var(--sidebar2));color:rgba(243,236,224,.72);padding:64px 0 90px;}
+.gw-foot__top{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:38px;padding-bottom:36px;border-bottom:1px solid rgba(255,255,255,.12);}
+.gw-foot .gw-logo{color:#fff;}
+.gw-foot .gw-logo__name{color:#fff;}
+.gw-foot__brand p{margin-top:16px;max-width:38ch;font-size:14.5px;color:rgba(243,236,224,.64);}
+.gw-foot h4{margin:0 0 14px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff;}
+.gw-foot li{margin-bottom:10px;font-size:14.5px;}
+.gw-foot a{color:rgba(243,236,224,.68);}
+.gw-foot a:hover{color:#fff;}
+.gw-crisis{margin-top:30px;padding:16px 20px;border:1px solid rgba(255,255,255,.18);border-radius:16px;font-size:14.5px;color:#fff;background:rgba(255,255,255,.04);}
+.gw-crisis b{font-weight:600;}
+.gw-foot__bot{padding-top:22px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-size:13px;color:rgba(243,236,224,.52);}
+@media(max-width:760px){.gw-foot__top{grid-template-columns:1fr 1fr;}.gw-foot__brand{grid-column:1/-1;}}
+@media(max-width:420px){.gw-foot__top{grid-template-columns:1fr;}}
+
+/* ============ MOBILE NAV ============ */
+@media(max-width:980px){
+  .gw-page{margin-left:0;}
+  .gw-nav{position:sticky;top:0;left:0;right:0;bottom:auto;width:100%;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:12px clamp(16px,4vw,24px);gap:10px;}
+  .gw-nav__top{flex:1 1 auto;width:auto;}
+  .gw-burger{display:inline-flex;}
+  .gw-links{display:none;margin-top:6px;flex-basis:100%;gap:2px;}
+  .gw-nav__cta{display:none;margin-top:4px;flex-basis:100%;border-top:none;padding-top:0;}
+  .gw-nav__ph{display:none;}
+  .gw-menu-cb:checked ~ .gw-nav .gw-links{display:flex;}
+  .gw-menu-cb:checked ~ .gw-nav .gw-nav__cta{display:block;}
+  .gw-menu-cb:checked ~ .gw-nav .gw-burger span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+  .gw-menu-cb:checked ~ .gw-nav .gw-burger span:nth-child(2){opacity:0;}
+  .gw-menu-cb:checked ~ .gw-nav .gw-burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+}
+</style>
+<style>
+/* --acc is what the thirty catalog designs call their accent; the Starter calls
+   it --accent. One alias, inherited by everything inside, covers both. */
+.sw-blog{--sw-acc:var(--acc,var(--accent,currentColor));max-width:748px;margin:0 auto;padding:clamp(52px,8vw,104px) clamp(18px,5vw,44px);}
+.sw-blog--wide{max-width:980px;}
+.sw-blog__eyebrow{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--sw-acc);}
+.sw-blog__h1{font-size:clamp(33px,5.2vw,54px);line-height:1.07;margin:16px 0 0;}
+.sw-blog__lede{font-size:clamp(17px,1.7vw,20px);line-height:1.6;margin:18px 0 0;opacity:.78;max-width:60ch;}
+.sw-blog__rule{height:1px;background:currentColor;opacity:.14;margin:clamp(34px,5vw,54px) 0;border:0;}
+.sw-blog__meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:26px;font-size:14.5px;opacity:.72;}
+.sw-blog__meta b{font-weight:600;opacity:1;}
+.sw-blog__dot{opacity:.5;}
+
+.sw-blog__list{display:grid;gap:18px;margin:0;padding:0;list-style:none;}
+.sw-post-card{display:block;padding:clamp(22px,3vw,32px);border:1px solid;border-color:color-mix(in srgb,currentColor 16%,transparent);border-radius:18px;color:inherit;text-decoration:none;transition:border-color .25s ease,transform .25s ease,background-color .25s ease;}
+.sw-post-card:hover{border-color:var(--sw-acc);transform:translateY(-2px);background-color:color-mix(in srgb,var(--sw-acc) 6%,transparent);}
+.sw-post-card__kicker{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--sw-acc);}
+.sw-post-card__title{font-size:clamp(22px,2.7vw,30px);line-height:1.18;margin:12px 0 0;}
+.sw-post-card__dek{margin:12px 0 0;font-size:16px;line-height:1.62;opacity:.76;}
+.sw-post-card__more{display:inline-flex;align-items:center;gap:8px;margin-top:18px;font-size:14.5px;font-weight:600;color:var(--sw-acc);}
+.sw-post-card__more svg{width:15px;height:15px;}
+
+.sw-prose{font-size:17px;line-height:1.72;}
+.sw-prose > p{margin:0 0 1.15em;}
+.sw-prose h2{font-size:clamp(23px,2.8vw,31px);line-height:1.2;margin:2em 0 .6em;}
+.sw-prose h2:first-child{margin-top:0;}
+.sw-prose strong{font-weight:600;}
+
+.sw-blog__back{display:inline-flex;align-items:center;gap:9px;margin-bottom:clamp(26px,3vw,38px);font-size:14.5px;font-weight:600;color:var(--sw-acc);text-decoration:none;}
+.sw-blog__back svg{width:16px;height:16px;}
+.sw-blog__back:hover{text-decoration:underline;}
+
+.sw-cta{margin-top:clamp(40px,6vw,64px);padding:clamp(26px,4vw,40px);border-radius:20px;background:color-mix(in srgb,var(--sw-acc) 9%,transparent);border:1px solid;border-color:color-mix(in srgb,var(--sw-acc) 22%,transparent);}
+.sw-cta__title{font-size:clamp(22px,2.6vw,29px);line-height:1.2;margin:0;}
+.sw-cta__text{margin:12px 0 0;font-size:16px;line-height:1.62;opacity:.8;}
+.sw-cta__btn{display:inline-flex;align-items:center;justify-content:center;margin-top:22px;padding:14px 26px;border-radius:100px;background:var(--sw-acc);color:var(--on,#fff);font-size:15px;font-weight:600;line-height:1.2;text-decoration:none;transition:filter .25s ease,transform .25s ease;}
+.sw-cta__btn:hover{filter:brightness(.92);transform:translateY(-2px);}
+</style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Blog",
+      "name": "Notes And Updates",
+      "description": "Short, practical writing for people deciding whether to reach out, and for the ones already working with us.",
+      "publisher": {
+        "@type": "MedicalBusiness",
+        "name": "Groundwork Occupational Therapy"
+      },
+      "inLanguage": "en-US",
+      "blogPost": [
+        {
+          "@type": "BlogPosting",
+          "headline": "What To Expect At A First Appointment",
+          "description": "Not knowing what happens in the room is one of the reasons people put off calling. Here is the shape of a first appointment, start to finish.",
+          "datePublished": "2026-11-06",
+          "author": {
+            "@type": "MedicalBusiness",
+            "name": "Groundwork Occupational Therapy"
+          },
+          "publisher": {
+            "@type": "MedicalBusiness",
+            "name": "Groundwork Occupational Therapy"
+          }
+        }
+      ]
+    },
+    {
+      "@type": "MedicalBusiness",
+      "name": "Groundwork Occupational Therapy",
+      "description": "Practical writing from Groundwork Occupational Therapy on getting started, what to expect and how we work.",
+      "telephone": "(555) 017-4430",
+      "email": "hello@groundworkot.example",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "215 Marsh Street, Suite 4",
+        "addressLocality": "Durham",
+        "addressRegion": "NC",
+        "addressCountry": "US"
+      },
+      "medicalSpecialty": "https://schema.org/Psychiatric"
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
+</head>
+<body class="gw">
+
+
+<a class="t-skip" href="ot-groundwork.html#main">Skip to main content</a>
+<input type="checkbox" id="gw-menu" class="gw-menu-cb" aria-hidden="true">
+<header class="gw-nav">
+  <div class="gw-nav__top">
+    <a href="ot-groundwork.html" class="gw-logo" aria-label="Groundwork Occupational Therapy, home">
+      <span class="gw-mark" data-field="brandMark">G</span>
+      <span class="gw-logo__name" data-field="brandName">Groundwork Occupational Therapy</span>
+    </a>
+    <label for="gw-menu" class="gw-burger" aria-label="Open menu" role="button" tabindex="0"><span></span><span></span><span></span></label>
+  </div>
+  <nav class="gw-links" aria-label="Main">
+    <a href="ot-groundwork.html#services"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>Services</a>
+    <a href="ot-groundwork.html#about"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21v-2a7 7 0 0114 0v2"/><circle cx="10" cy="8" r="4"/><path d="M17 11l2 2 4-4"/></svg>Our Approach</a>
+    <a href="ot-groundwork.html#how"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>How It Works</a>
+    <a href="ot-groundwork.html#team"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.4"/><circle cx="17" cy="9.5" r="2.6"/><path d="M3 20v-1.5a6 6 0 0112 0V20M15 20v-1a5 5 0 017-4.6"/></svg>Our Team</a>
+    <a href="ot-groundwork.html#faq"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 014.5 1.5c0 1.7-2 2-2 3.5M12 17.5v.5"/></svg>FAQ</a>
+    <a href="ot-groundwork.html#contact"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="2.6"/></svg>Contact</a>
+      <a href="ot-groundwork-blog.html" data-sw-bloglink><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 13h6M10 17h4"/></svg>Blog</a>
+  </nav>
+  <div class="gw-nav__cta">
+    <a href="ot-groundwork.html#contact" class="gw-btn gw-btn--pri" data-field="navCta">Book a first session</a>
+    <p class="gw-nav__ph"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1 1 .4 2 .7 2.9a2 2 0 01-.4 2L8 10a16 16 0 006 6l1.4-1.4a2 2 0 012-.4c.9.3 1.9.6 2.9.7A2 2 0 0122 16.9z"/></svg>(555) 017-4430</p>
+  </div>
+</header>
+
+<div class="gw-page">
+
+<main id="main" tabindex="-1" class="sw-blog sw-blog--wide">
+  <span class="sw-blog__eyebrow" data-field="blogEyebrow">From the practice</span>
+  <h1 class="sw-blog__h1" data-field="blogTitle">Notes And Updates</h1>
+  <p class="sw-blog__lede" data-field="blogSub">Short, practical writing for people deciding whether to reach out, and for the ones already working with us.</p>
+  <hr class="sw-blog__rule">
+  <ul class="sw-blog__list">
+    <li>
+      <a class="sw-post-card" href="ot-groundwork-post.html" data-post="1" data-post-date="2026-11-06">
+        <span class="sw-post-card__kicker" data-field="post1Kicker">Getting started</span>
+        <h2 class="sw-post-card__title" data-field="post1Title">What To Expect At A First Appointment</h2>
+        <p class="sw-post-card__dek" data-field="post1Dek">Not knowing what happens in the room is one of the reasons people put off calling. Here is the shape of a first appointment, start to finish.</p>
+        <span class="sw-post-card__more">Read it <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </a>
+    </li>
+    <!-- To add a post: copy ot-groundwork-post.html to a new file, edit it, then copy the
+         <li> above, point its href at the new file and change data-post to 2.
+         The schema on this page is rebuilt from these cards, so nothing else
+         needs updating. -->
+  </ul>
+</main>
+<footer class="gw-foot"><div class="gw-wrap">
+  <div class="gw-foot__top">
+    <div class="gw-foot__brand">
+      <a href="ot-groundwork.html" class="gw-logo"><span class="gw-mark" data-field="brandMark">G</span><span class="gw-logo__name" data-field="brandName">Groundwork Occupational Therapy</span></a>
+      <p data-field="footerText">A group practice of occupational therapists for sensory regulation, daily living and routines, in clinic, at home and online.</p>
+    </div>
+    <div><h4>Explore</h4><ul><li><a href="ot-groundwork.html#services">Services</a></li><li><a href="ot-groundwork.html#about">Our Approach</a></li><li><a href="ot-groundwork.html#team">Our Team</a></li><li><a href="ot-groundwork.html#faq">FAQ</a></li><li><a href="ot-groundwork-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
+    <div><h4>Contact</h4><ul><li><a href="ot-groundwork.html#contact">(555) 017-4430</a></li><li><a href="ot-groundwork.html#contact">hello@groundworkot.example</a></li><li><a href="ot-groundwork.html#contact">Book a first session</a></li></ul></div>
+  </div>
+  <p class="gw-crisis"><b>In crisis?</b> Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency. This website and contact form are not monitored for emergencies.</p>
+  <div class="gw-foot__bot"><span data-field="footerLegal">© 2026 Groundwork Occupational Therapy. All rights reserved.</span><span>Sample website. The practice, people and details shown are fictional.</span></div>
+</div></footer>
+
+</div>
+<a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
+<script src="../../js/template.js?v=20261021b"></script>
+</body>
+</html>

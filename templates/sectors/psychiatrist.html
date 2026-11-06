@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="Physician" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234B4E8C'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>V</text></svg>">
 <style>
 .vo-page{
@@ -145,13 +145,111 @@ a{text-decoration:none;}
 .reveal.is-in{opacity:1;transform:none;}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;}}
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Physician",
+      "name": "Voss Psychiatry",
+      "description": "Voss Psychiatry: Adult psychiatry & medication management. A FrontDoor website template.",
+      "telephone": "(555) 010-2400",
+      "email": "hello@psychiatrist.example",
+      "address": "Downtown Medical Center, Suite 900",
+      "medicalSpecialty": "https://schema.org/Psychiatric",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Precise, careful medication care.",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Psychiatric evaluation",
+              "description": "A thorough 60-minute diagnostic assessment.",
+              "provider": {
+                "@type": "Physician",
+                "name": "Voss Psychiatry"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Medication management",
+              "description": "Evidence-based prescribing and monitoring.",
+              "provider": {
+                "@type": "Physician",
+                "name": "Voss Psychiatry"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Second opinions",
+              "description": "A fresh review of a complex medication history.",
+              "provider": {
+                "@type": "Physician",
+                "name": "Voss Psychiatry"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Treatment-resistant care",
+              "description": "Options when first-line treatments haven&#x27;t worked.",
+              "provider": {
+                "@type": "Physician",
+                "name": "Voss Psychiatry"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Collaborative care",
+              "description": "Close coordination with your therapist.",
+              "provider": {
+                "@type": "Physician",
+                "name": "Voss Psychiatry"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Telepsychiatry",
+              "description": "Video visits for established patients.",
+              "provider": {
+                "@type": "Physician",
+                "name": "Voss Psychiatry"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="vo-page">
+<a class="t-skip" href="#main">Skip to main content</a>
 <header class="vo-mast"><div class="vo-mast__in">
   <a href="#" class="vo-brand"><span class="vo-brand__m" data-field="brandMark">V</span> <span data-field="brandName">Voss Psychiatry</span></a>
-  <nav class="vo-nav"><a href="#services">Services</a><a href="#approach">Approach</a><a href="#plans">Insurance</a><a href="#contact">Contact</a></nav>
+  <nav class="vo-nav"><a href="#services">Services</a><a href="#approach">Approach</a><a href="#plans">Insurance</a><a href="#contact">Contact</a><a href="psychiatrist-blog.html" data-sw-bloglink>Blog</a></nav>
   <a href="#contact" class="vo-mast__cta" data-field="navCta">Request an appointment</a>
 </div></header>
+<main id="main" tabindex="-1">
 
 <section class="vo-hero reveal"><div class="vo-col">
   <div class="vo-hero__k vo-kicker" data-field="heroEyebrow">Psychiatry · Medication Management</div>
@@ -252,6 +350,7 @@ a{text-decoration:none;}
   </form>
 </div></section>
 
+</main>
 <footer class="vo-foot"><div class="vo-col">
   <div class="vo-foot__brand"><span class="vo-brand__m" data-field="brandMark">V</span> <span data-field="brandName">Voss Psychiatry</span></div>
   <div class="vo-foot__tag" data-field="footerText">Adult psychiatry &amp; medication management.</div>
@@ -261,6 +360,6 @@ a{text-decoration:none;}
 </footer>
 
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

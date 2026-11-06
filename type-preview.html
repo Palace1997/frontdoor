@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Type Direction, Package vs Site</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#F7F4EE; --paper:#FBF8F2; --ink:#1B1812; --line:#E5E2DC;
+    --green-600:#00876c; --pk-ink:#0D0D0C; --pk-cream:#FBF6EF;
+    --g-500:#6B675F;
+    --display:"Bodoni Moda", Didot, Georgia, serif;
+    --sans:"Inter", system-ui, sans-serif;
+    --tight:"Inter Tight", "Inter", system-ui, sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--canvas);color:var(--ink);font-family:var(--sans);
+       -webkit-font-smoothing:antialiased}
+  .bar{position:sticky;top:0;z-index:9;background:rgba(247,244,238,.92);
+       backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+       padding:16px 28px;display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+  .bar h1{font-family:var(--display);font-weight:500;font-size:19px;margin:0;letter-spacing:-.01em}
+  .bar p{margin:0;font-size:13.5px;color:var(--g-500)}
+  .panel{border-bottom:1px solid var(--line);padding:clamp(28px,4vw,56px) clamp(22px,5vw,72px) clamp(40px,5vw,70px)}
+  .tag{display:inline-flex;align-items:center;gap:9px;font-size:11.5px;font-weight:600;
+       letter-spacing:.17em;text-transform:uppercase;color:var(--green-600);margin-bottom:6px}
+  .tag b{display:inline-grid;place-items:center;width:21px;height:21px;border-radius:50%;
+         background:var(--green-600);color:#fff;font-size:11px;font-weight:700;letter-spacing:0}
+  .what{font-size:15px;color:var(--g-500);max-width:62ch;margin:0 0 30px;line-height:1.55}
+  .panel--now{background:var(--paper)}
+
+  /* ---- specimen frames ---- */
+  .spec{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+  .spec + .spec{margin-top:18px}
+  .spec__k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--g-500);
+           padding:11px 20px;border-bottom:1px solid var(--line);background:var(--canvas)}
+  .spec__b{padding:clamp(26px,3.4vw,46px) clamp(22px,3vw,44px)}
+
+  /* Package mast, as it is today */
+  .mast-tight{font-family:var(--tight);font-weight:600;font-size:clamp(44px,8.4vw,112px);
+              line-height:.86;letter-spacing:-.032em;color:var(--pk-ink);margin:0}
+  /* Package mast, in the site's display face */
+  .mast-disp{font-family:var(--display);font-weight:500;font-size:clamp(44px,8.4vw,112px);
+             line-height:.92;letter-spacing:-.02em;color:var(--ink);margin:0}
+  .mast em{font-style:normal;color:var(--green-600)}
+  .cap{max-width:34ch;font-size:16px;line-height:1.5;color:var(--g-500);margin:22px 0 0}
+  .cap-tight{font-family:var(--tight)}
+
+  /* section head, site style */
+  .head-disp h2{font-family:var(--display);font-weight:500;font-size:clamp(30px,4.4vw,56px);
+                line-height:1.05;letter-spacing:-.02em;margin:0}
+  /* section head, package style */
+  .head-tight h2{font-family:var(--tight);font-weight:600;font-size:clamp(30px,4.4vw,56px);
+                 line-height:1.02;letter-spacing:-.03em;margin:0}
+  .eyebrow{display:block;font-size:12.5px;font-weight:600;letter-spacing:.18em;
+           text-transform:uppercase;color:var(--green-600);margin-bottom:16px}
+  .sub{font-size:18px;color:var(--g-500);line-height:1.55;max-width:56ch;margin:16px 0 0}
+
+  .pair{display:grid;gap:40px;grid-template-columns:1fr}
+  @media(min-width:900px){ .pair{grid-template-columns:1fr 1fr;gap:34px} }
+  .note{margin:26px 0 0;padding:15px 18px;border-left:2px solid var(--green-600);
+        background:rgba(0,135,108,.05);font-size:14.5px;line-height:1.55;color:var(--ink);max-width:70ch}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <h1>Which way should the type go?</h1>
+  <p>Same words, three treatments. Scroll and tell me A or B.</p>
+</div>
+
+<!-- ============ NOW ============ -->
+<section class="panel panel--now">
+  <span class="tag"><b>0</b>How it looks right now</span>
+  <p class="what">The Package section is the only part of the site set in Inter Tight, near-black, at
+    150px. Every other section uses Bodoni Moda at 56px. Side by side they read as two different sites.</p>
+
+  <div class="pair">
+    <div class="spec">
+      <div class="spec__k">Package section, today</div>
+      <div class="spec__b">
+        <h2 class="mast-tight mast">Editor<br>built in.</h2>
+        <p class="cap cap-tight">Every FrontDoor website comes with design, copywriting, your domain,
+          business email, hosting and support, all built in.</p>
+      </div>
+    </div>
+    <div class="spec">
+      <div class="spec__k">Every other section, today</div>
+      <div class="spec__b head-disp">
+        <span class="eyebrow">Questions</span>
+        <h2>Good To Know</h2>
+        <p class="sub">Four Steps, Zero Stress. Care Shouldn't Wait On A Website.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OPTION A ============ -->
+<section class="panel">
+  <span class="tag"><b>A</b>Package joins the rest of the site</span>
+  <p class="what">The Package headline moves to Bodoni Moda at the same scale the other section
+    headings use, in the site ink rather than near-black. The cycling word and 3D icon stay exactly
+    as they are. Nothing else on the site changes.</p>
+
+  <div class="spec">
+    <div class="spec__k">Package section, in the site's display face</div>
+    <div class="spec__b">
+      <h2 class="mast-disp mast"><em>Editor</em><br>built in.</h2>
+      <p class="cap">Every FrontDoor website comes with design, copywriting, your domain,
+        business email, hosting and support, all built in.</p>
+    </div>
+  </div>
+
+  <p class="note"><strong>Trade-off:</strong> the whole site reads as one brand, but the Package
+    section loses the bold, modern punch that made you want it in the first place.</p>
+</section>
+
+<!-- ============ OPTION B ============ -->
+<section class="panel">
+  <span class="tag"><b>B</b>The rest of the site joins the Package</span>
+  <p class="what">Every section heading moves to Inter Tight at the Package's weight and tracking.
+    This touches the homepage, Mission, How It Works, FAQ, Get Started and the gallery, so it is the
+    bigger change of the two.</p>
+
+  <div class="pair">
+    <div class="spec">
+      <div class="spec__k">FAQ heading, in Inter Tight</div>
+      <div class="spec__b head-tight">
+        <span class="eyebrow">Questions</span>
+        <h2>Good to know</h2>
+      </div>
+    </div>
+    <div class="spec">
+      <div class="spec__k">Mission heading, in Inter Tight</div>
+      <div class="spec__b head-tight">
+        <span class="eyebrow">Our mission</span>
+        <h2>Care shouldn't wait on a website</h2>
+      </div>
+    </div>
+  </div>
+
+  <p class="note"><strong>Trade-off:</strong> bold and consistent, but the editorial Bodoni look you
+    picked for the whole site goes away, and Title Case stops working at that weight, so headings
+    would move to sentence case.</p>
+</section>
+
+</body>
+</html>

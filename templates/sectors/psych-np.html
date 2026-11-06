@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,11 +8,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231F8A99'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>C</text></svg>">
 <style>
 .cl-page{
-  --acc:#1F8A99; --acc2:#166E7B; --on:#ffffff;
+  --acc:#1B7986; --acc2:#166E7B; --on:#ffffff;
   --dark:#0E3138; --dark2:#082227;
   --bg:#F6F8F8; --panel:#ffffff; --line:#E4EAEA; --ink:#12211F; --muted:#5F7370;
   --tint:#E9F3F4;
@@ -46,7 +46,9 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
 .cl-logo{display:inline-flex;align-items:center;gap:11px;font-family:var(--font-d);font-size:19px;font-weight:600;color:var(--ink);}
 .cl-mark{width:34px;height:34px;border-radius:11px;background:var(--acc);color:var(--on);display:grid;place-items:center;font-family:var(--font-s);font-weight:700;font-size:15px;}
 .cl-links{display:flex;gap:6px;}
-.cl-links a{font-size:14.5px;font-weight:500;color:var(--muted);padding:9px 15px;border-radius:100px;transition:all .2s;}
+/* the nav pill is 82% white over the dark hero, so links need to be darker
+   than --muted to clear 4.5:1 against that composite */
+.cl-links a{font-size:14.5px;font-weight:500;color:#516260;padding:9px 15px;border-radius:100px;transition:all .2s;}
 .cl-links a:hover{color:var(--ink);background:var(--tint);}
 @media(max-width:860px){.cl-links{display:none;}}
 /* HERO frosted panel: full-bleed photo that runs up behind the floating nav pill */
@@ -170,13 +172,111 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
 .reveal.is-in{opacity:1;transform:none;}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;}}
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalBusiness",
+      "name": "Clarity Psychiatric NPs",
+      "description": "Clarity Psychiatric NPs: Psychiatric nurse practitioner care. A FrontDoor website template.",
+      "telephone": "(555) 010-2400",
+      "email": "hello@psychnp.example",
+      "address": "Clarity Health, 3rd Floor",
+      "medicalSpecialty": "https://schema.org/Psychiatric",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Full psychiatric care from PMHNPs.",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Psychiatric evaluation",
+              "description": "Comprehensive diagnostic assessment.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Clarity Psychiatric NPs"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Medication management",
+              "description": "Prescribing, adjustment and monitoring.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Clarity Psychiatric NPs"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Anxiety & depression",
+              "description": "First-line care for common conditions.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Clarity Psychiatric NPs"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "ADHD care",
+              "description": "Evaluation and ongoing treatment.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Clarity Psychiatric NPs"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Supportive therapy",
+              "description": "Brief counseling alongside medication.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Clarity Psychiatric NPs"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Telehealth",
+              "description": "Video visits across the state.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Clarity Psychiatric NPs"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="cl-page">
+<a class="t-skip" href="#main">Skip to main content</a>
 <header class="cl-nav"><div class="cl-wrap"><div class="cl-nav__in">
   <a href="#" class="cl-logo"><span class="cl-mark" data-field="brandMark">C</span> <span data-field="brandName">Clarity Psychiatric NPs</span></a>
-  <nav class="cl-links"><a href="#services">Services</a><a href="#approach">Approach</a><a href="#plans">Insurance</a><a href="#contact">Contact</a></nav>
+  <nav class="cl-links"><a href="#services">Services</a><a href="#approach">Approach</a><a href="#plans">Insurance</a><a href="#contact">Contact</a><a href="psych-np-blog.html" data-sw-bloglink>Blog</a></nav>
   <a href="#contact" class="cl-btn cl-btn--pri" data-field="navCta">Book a visit</a>
 </div></div></header>
+<main id="main" tabindex="-1">
 
 <section class="cl-hero">
   <div class="cl-hero__bg"><img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=2000&q=80" alt="A bright, calm room with a grey sofa, a small table and plants by the window" data-img="hero"></div>
@@ -299,16 +399,17 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
   </form>
 </div></div></section>
 
+</main>
 <footer class="cl-foot"><div class="cl-wrap">
   <div class="cl-foot__top">
     <div class="cl-foot__brand"><a href="#" class="cl-logo"><span class="cl-mark" data-field="brandMark">C</span> <span data-field="brandName">Clarity Psychiatric NPs</span></a><p data-field="footerText">Psychiatric nurse practitioner care.</p></div>
-    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#approach">Approach</a></li><li><a href="#plans">Insurance</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#approach">Approach</a></li><li><a href="#plans">Insurance</a></li><li><a href="#contact">Contact</a></li><li><a href="psych-np-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
     <div><h4>Contact</h4><ul><li><a href="#contact">(555) 010-2400</a></li><li><a href="#contact">hello@psychnp.example</a></li></ul></div>
   </div>
   <div class="cl-foot__bot"><span data-field="footerLegal">© 2026 Clarity Psychiatric NPs. All rights reserved.</span><span>A FrontDoor website template.</span></div>
 </div><p class="sw-crisis" style="margin:0;padding:16px 20px 6px;font-size:13px;line-height:1.5;text-align:center;opacity:.85">In crisis? Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency.</p>
 </footer>
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

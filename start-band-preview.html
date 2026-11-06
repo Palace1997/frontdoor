@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get Started Band, Width Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{ --canvas:#F7F4EE; --paper:#FBF8F2; --paper-2:#F0EBE1; --ink:#1B1812;
+         --line:#E5E2DC; --g-500:#6B675F; --green:#00876c;
+         --display:"Bodoni Moda",Didot,Georgia,serif; --sans:"Inter",system-ui,sans-serif; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--canvas);color:var(--ink);font-family:var(--sans)}
+  .bar{position:sticky;top:0;z-index:9;background:rgba(247,244,238,.94);backdrop-filter:blur(10px);
+       border-bottom:1px solid var(--line);padding:15px 26px}
+  .bar h1{font-family:var(--display);font-weight:500;font-size:19px;margin:0}
+  .bar p{margin:3px 0 0;font-size:13.5px;color:var(--g-500)}
+  .opt{border-bottom:1px solid var(--line);padding-bottom:46px}
+  .opt__k{padding:30px 26px 0}
+  .tag{display:inline-flex;align-items:center;gap:9px;font-size:11.5px;font-weight:600;
+       letter-spacing:.17em;text-transform:uppercase;color:var(--green)}
+  .tag b{display:inline-grid;place-items:center;width:21px;height:21px;border-radius:50%;
+         background:var(--green);color:#fff;font-size:11px;font-weight:700;letter-spacing:0}
+  .opt__k p{font-size:14.5px;color:var(--g-500);max-width:70ch;line-height:1.55;margin:9px 0 22px}
+  .warn{color:#8a5a2b}
+
+  .sec{background:var(--paper-2);position:relative}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(22px,5vw,64px)}
+  .head{max-width:800px;margin:0 auto;text-align:center;position:relative;z-index:2}
+  .eyebrow{display:block;font-size:11px;font-weight:600;letter-spacing:.2em;
+           text-transform:uppercase;color:var(--green);margin-bottom:14px}
+  .h2{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.005em;
+      font-size:clamp(28px,4.6vw,50px);line-height:1.02;margin:0 auto 16px;max-width:18ch;color:var(--ink)}
+  .lede{font-size:clamp(16px,1.6vw,19px);color:var(--g-500);line-height:1.55;margin:0 auto;max-width:60ch}
+
+  .band{position:relative;overflow:hidden;background:var(--paper-2);
+        padding:clamp(70px,9vh,130px) 0 clamp(120px,19vw,280px)}
+  .band::after{content:"";position:absolute;inset:0;z-index:0;
+    background:url(assets/img/start-door.jpg) center 30%/cover no-repeat}
+  .band::before{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg, rgba(240,235,225,.94) 0%, rgba(240,235,225,.92) 48%,
+      rgba(240,235,225,.86) 55%, rgba(240,235,225,.18) 67%, rgba(240,235,225,.14) 86%,
+      rgba(240,235,225,.62) 95%, rgba(240,235,225,.97) 100%)}
+
+  /* B: zoomed */
+  .band--zoom::after{ background-size:124% auto; background-position:center 38% }
+
+  /* C: contained panel */
+  .band--panel{ padding-left:clamp(16px,3vw,48px); padding-right:clamp(16px,3vw,48px) }
+  .band--panel .inner{ position:relative; overflow:hidden; border-radius:16px;
+    max-width:1280px; margin:0 auto; padding:clamp(60px,7vw,100px) 0 clamp(110px,16vw,220px) }
+  .band--panel .inner::after{content:"";position:absolute;inset:0;z-index:0;
+    background:url(assets/img/start-door.jpg) center 32%/cover no-repeat}
+  .band--panel .inner::before{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg, rgba(240,235,225,.94) 0%, rgba(240,235,225,.9) 48%,
+      rgba(240,235,225,.8) 58%, rgba(240,235,225,.16) 72%, rgba(240,235,225,.14) 90%,
+      rgba(240,235,225,.5) 100%)}
+  .band--panel::after,.band--panel::before{content:none}
+
+  .form{background:var(--paper);border:1px solid var(--line);border-radius:6px;
+        padding:30px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:18px 22px}
+  .form label{display:block;font-size:13px;color:var(--g-500);margin-bottom:6px}
+  .form input{width:100%;height:42px;border:1px solid #C9C4BA;border-radius:4px;
+              background:var(--canvas)}
+  .f-narrow{max-width:960px}
+  .f-wide{max-width:1180px}
+  .ruler{max-width:1180px;margin:10px auto 0;font-size:12px;color:var(--g-500);text-align:center}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <h1>Get Started band, how wide can the art go?</h1>
+  <p>Open this at your full screen width. The artwork has empty cream built into its own left and right edges, so "fill the width" has a cost.</p>
+</div>
+
+<!-- A -->
+<section class="opt">
+  <div class="opt__k">
+    <span class="tag"><b>A</b>As it is now</span>
+    <p>The band already shows the whole width of the artwork. The cream at the sides is part of the
+      illustration itself, not a gap the CSS is leaving. The figure stays whole, feet and floor light included.</p>
+  </div>
+  <div class="sec"><div class="band"><div class="wrap"><div class="head">
+    <span class="eyebrow">Get started</span>
+    <h2 class="h2">Tell Us About Your Practice</h2>
+    <p class="lede">A few details so we can suggest the right design and next steps. It takes about a minute, and we never ask for health information.</p>
+  </div></div></div>
+  <div class="wrap"><div class="form f-narrow">
+    <div><label>Your name</label><input></div><div><label>Email</label><input></div>
+  </div><p class="ruler">form 960px</p></div>
+  <div style="height:40px"></div></div>
+</section>
+
+<!-- B -->
+<section class="opt">
+  <div class="opt__k">
+    <span class="tag"><b>B</b>Zoomed to 124%</span>
+    <p>Scales the artwork past the band so the side cream shrinks and the figure reads bigger.
+      <span class="warn">Cost: the band is far wider than the artwork is tall, so zooming crops vertically
+      fast. His feet and the light spilling across the floor get trimmed.</span> Going further to
+      actually reach the edges would need roughly 220%, which leaves only a slice of his torso.</p>
+  </div>
+  <div class="sec"><div class="band band--zoom"><div class="wrap"><div class="head">
+    <span class="eyebrow">Get started</span>
+    <h2 class="h2">Tell Us About Your Practice</h2>
+    <p class="lede">A few details so we can suggest the right design and next steps. It takes about a minute, and we never ask for health information.</p>
+  </div></div></div>
+  <div class="wrap"><div class="form f-wide">
+    <div><label>Your name</label><input></div><div><label>Email</label><input></div>
+  </div><p class="ruler">form 1180px, matched to the content width</p></div>
+  <div style="height:40px"></div></div>
+</section>
+
+<!-- C -->
+<section class="opt">
+  <div class="opt__k">
+    <span class="tag"><b>C</b>Contained panel</span>
+    <p>Stops the band going full bleed. The artwork fills a rounded panel at a sane width, so the cream
+      around it reads as deliberate page margin rather than dead space, and the figure stays whole.
+      The gallery cards already use this framed look.</p>
+  </div>
+  <div class="sec"><div class="band band--panel"><div class="inner"><div class="wrap"><div class="head">
+    <span class="eyebrow">Get started</span>
+    <h2 class="h2">Tell Us About Your Practice</h2>
+    <p class="lede">A few details so we can suggest the right design and next steps. It takes about a minute, and we never ask for health information.</p>
+  </div></div></div>
+  <div class="wrap"><div class="form f-wide">
+    <div><label>Your name</label><input></div><div><label>Email</label><input></div>
+  </div><p class="ruler">form 1180px, matched to the panel width</p></div>
+  <div style="height:40px"></div></div>
+</section>
+
+</body>
+</html>

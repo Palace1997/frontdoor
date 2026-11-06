@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23B5532C'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>C</text></svg>">
 <style>
 :root{--acc:#B5532C;--acc2:#8E3F20}
@@ -287,16 +287,179 @@
 @media(max-width:760px){.cc-foot__top{grid-template-columns:1fr 1fr;}.cc-foot__brand{grid-column:1/-1;}}
 @media(max-width:420px){.cc-foot__top{grid-template-columns:1fr;}}
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalBusiness",
+      "name": "Canvas & Chord Creative Therapies",
+      "description": "Canvas & Chord Creative Therapies: art and music therapy for adults and teens with Maya Okafor, MA, ATR-BC, LCAT. No art or music experience needed. A FrontDoor website template.",
+      "telephone": "(555) 014-2290",
+      "email": "hello@canvasandchord.example",
+      "address": "Studio 3, 48 Linden Row, Kingston, NY",
+      "medicalSpecialty": "https://schema.org/Psychiatric",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday"
+          ],
+          "opens": "10:00",
+          "closes": "20:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Friday"
+          ],
+          "opens": "09:00",
+          "closes": "14:00"
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Creative Therapy, Shaped Around You",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Individual Art Therapy",
+              "description": "One-to-one sessions using paint, drawing, clay or collage to explore what's on your mind. Talking is welcome, never required.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Canvas & Chord Creative Therapies"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Music And Sound Sessions",
+              "description": "Simple rhythm, listening, breath and sound to help you settle and notice how you feel. You don't need to sing or play.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Canvas & Chord Creative Therapies"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Art Therapy For Teens",
+              "description": "A low-pressure space for ages 13 to 18 to make things and work through school stress, friendships and big feelings.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Canvas & Chord Creative Therapies"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Grief And Loss Through Art",
+              "description": "Gentle, unhurried sessions to remember someone, sit with loss, and find a way to carry it.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Canvas & Chord Creative Therapies"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Small Creative Groups",
+              "description": "Groups of up to six people making art side by side. Quiet company, shared materials, no pressure to share.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Canvas & Chord Creative Therapies"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Online Sessions",
+              "description": "Secure video sessions from home for anyone in New York State. I'll suggest simple materials you may already have.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Canvas & Chord Creative Therapies"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do I need to be good at art or music?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not at all. Many people I see haven't drawn since school. We focus on the process, not on making something that looks a certain way."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if I don't feel like talking?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "That's okay. Art and music give you another way to express things. Some sessions are mostly quiet, and that can still be useful."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you take insurance?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "I'm an out-of-network provider. I can give you a monthly statement (a superbill) to send to your insurer for possible reimbursement. A few sliding-scale spots are open each month."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens to the things I make?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "They're yours. You can take them home, or I can keep them safely in the studio until you're ready."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can teens come on their own?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Teens aged 13 to 18 are welcome. A parent or guardian joins the first call, and we agree together how they'll stay involved."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="cc">
 
+<a class="t-skip" href="#main">Skip to main content</a>
 <header class="cc-nav"><div class="cc-shell cc-nav__in">
   <a href="#" class="cc-logo" aria-label="Canvas and Chord Creative Therapies, home"><span class="cc-mark" data-field="brandMark">C</span><span class="cc-logo__name" data-field="brandName">Canvas &amp; Chord Creative Therapies</span></a>
-  <nav class="cc-links" aria-label="Main"><a href="#services">Services</a><a href="#session">Sessions</a><a href="#about">About Maya</a><a href="#faq">FAQ</a><a href="#contact">Contact</a></nav>
+  <nav class="cc-links" aria-label="Main"><a href="#services">Services</a><a href="#session">Sessions</a><a href="#about">About Maya</a><a href="#faq">FAQ</a><a href="#contact">Contact</a><a href="expressive-canvas-chord-blog.html" data-sw-bloglink>Blog</a></nav>
   <a href="#contact" class="cc-btn cc-btn--primary cc-btn--sm" data-field="navCta">Book a free call</a>
 </div></header>
 
-<main>
+<main id="main" tabindex="-1">
 <!-- HERO -->
 <section class="cc-hero">
   <div class="cc-shell cc-hero__head">
@@ -513,7 +676,7 @@
       <a href="#" class="cc-logo"><span class="cc-mark" data-field="brandMark">C</span><span class="cc-logo__name" data-field="brandName">Canvas &amp; Chord Creative Therapies</span></a>
       <p data-field="footerText">Art and music therapy for adults and teens, in a sunlit Kingston studio and online. No experience needed.</p>
     </div>
-    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#session">Sessions</a></li><li><a href="#about">About Maya</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#session">Sessions</a></li><li><a href="#about">About Maya</a></li><li><a href="#faq">FAQ</a></li><li><a href="expressive-canvas-chord-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
     <div><h4>Contact</h4><ul><li><a href="tel:5550142290">(555) 014-2290</a></li><li><a href="mailto:hello@canvasandchord.example">hello@canvasandchord.example</a></li><li><a href="#contact">Book a free call</a></li></ul></div>
   </div>
   <p class="cc-crisis"><b>In crisis?</b> Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency. This practice does not offer crisis services.</p>
@@ -524,6 +687,6 @@
 </div></footer>
 
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

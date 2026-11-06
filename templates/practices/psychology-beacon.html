@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,14 +8,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%233A4E8C'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>B</text></svg>">
 <style>
 :root{--acc:#3A4E8C;--acc2:#2C3C6E;}
 .bn{
   --on:#ffffff;
   --paper:#FBFAF7; --card:#ffffff; --panel:#F3F3EF; --rule:#E2E2DB; --rule2:#D4D6DE;
-  --ink:#1A1D29; --muted:#5B6072; --faint:#8A8F9E; --deep:#141726; --deep2:#0E111C;
+  --ink:#1A1D29; --muted:#5B6072; --faint:#696F7F; --deep:#141726; --deep2:#0E111C;
   --tint:color-mix(in srgb,var(--acc) 9%,#ffffff);
   --tint2:color-mix(in srgb,var(--acc) 14%,#ffffff);
   --disp:'Spectral',Georgia,serif; --sans:'Hanken Grotesk',system-ui,sans-serif;
@@ -244,11 +244,159 @@
 @media(max-width:760px){.bn-foot__top{grid-template-columns:1fr 1fr;}.bn-foot__brand{grid-column:1/-1;}}
 @media(max-width:420px){.bn-foot__top{grid-template-columns:1fr;}}
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalBusiness",
+      "name": "Beacon Neuropsychology",
+      "description": "Beacon Neuropsychology: a solo neuropsychological assessment practice with Dr. Priya Shah, PhD, ABPP-CN, offering ADHD, autism, learning and cognitive evaluations for teens and adults, in person and online. A FrontDoor website template.",
+      "telephone": "(555) 014-7781",
+      "email": "office@beaconneuropsych.example",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "215 Harbor Street, Suite 400",
+        "addressLocality": "Portland",
+        "addressRegion": "ME",
+        "addressCountry": "US"
+      },
+      "medicalSpecialty": "https://schema.org/Psychiatric",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Assessment, Matched to Your Question",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "ADHD Evaluation",
+              "description": "A thorough look at attention, focus and executive function, with input from the people who know you well.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Beacon Neuropsychology"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Autism Evaluation",
+              "description": "For teens and adults seeking clarity about social, sensory and communication differences, and what helps.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Beacon Neuropsychology"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Learning Disability Testing",
+              "description": "Testing for reading, writing and math differences, with documentation for school or workplace accommodations.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Beacon Neuropsychology"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Memory & Cognitive Testing",
+              "description": "For noticeable changes in memory, word finding or clear thinking, to understand what is going on and what helps.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Beacon Neuropsychology"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Pre-Surgical & Capacity Evaluations",
+              "description": "Baseline cognitive testing before procedures, and careful capacity evaluations when decisions need clear support.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Beacon Neuropsychology"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Feedback Sessions",
+              "description": "A dedicated meeting to walk through your results together, answer questions and leave with clear next steps.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Beacon Neuropsychology"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How long does an evaluation take?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "It depends on the questions we are answering. Most evaluations involve an intake, one or more testing sessions and a feedback meeting. We will map out the plan on your first call."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you take insurance?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Beacon is out of network with most plans. We can provide a detailed invoice, often called a superbill, to submit to your insurer for possible reimbursement. Ask us about fees and insurance when we speak."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will I get a diagnosis?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An evaluation can clarify whether a diagnosis fits, but it is not guaranteed. Dr. Shah focuses on understanding how you think and learn, and gives honest findings and recommendations either way."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can teens be seen here?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Beacon sees older teens from age 12 and up, as well as adults. Parents are welcome to take part in the intake and feedback."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can any of this be done online?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Intake and feedback can be done by secure video. Some testing is done in person for accuracy. We will tell you which parts need an office visit when we plan your evaluation."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="bn">
 
+<a class="t-skip" href="#main">Skip to main content</a>
 <header class="bn-head">
-  <input type="checkbox" id="bn-toggle" class="bn-toggle" aria-hidden="true">
+  <input type="checkbox" id="bn-toggle" class="bn-toggle t-vh-control" tabindex="-1" aria-hidden="true">
   <div class="bn-util"><div class="bn-shell bn-util__in">
     <nav class="bn-util__links" aria-label="Utility">
       <a href="#referrals">For referring clinicians</a>
@@ -269,10 +417,11 @@
       <a href="#about">About</a>
       <a href="#faq">FAQ</a>
       <a href="#contact">Contact</a>
+      <a href="psychology-beacon-blog.html" data-sw-bloglink>Blog</a>
     </nav>
     <div class="bn-bar__cta">
       <a href="#contact" class="bn-btn bn-btn--pri" data-field="navCta">Request an evaluation</a>
-      <label class="bn-burger" for="bn-toggle" aria-label="Open menu"><span></span><span></span><span></span></label>
+      <label class="bn-burger" for="bn-toggle" data-menu-toggle role="button" tabindex="0" aria-expanded="false" aria-label="Menu"><span></span><span></span><span></span></label>
     </div>
   </div></div>
   <div class="bn-mobile"><div class="bn-shell bn-mobile__in">
@@ -288,7 +437,7 @@
   </div></div>
 </header>
 
-<main>
+<main id="main" tabindex="-1">
 <section class="bn-hero" aria-labelledby="bn-hero-title"><div class="bn-shell">
   <div class="bn-hero__grid">
     <div>
@@ -514,13 +663,13 @@
       <a href="#" class="bn-logo"><span class="bn-mark" data-field="brandMark">B</span><span class="bn-logo__name" data-field="brandName">Beacon Neuropsychology</span></a>
       <p data-field="footerText">Neuropsychological assessment for teens and adults with Dr. Priya Shah, PhD, ABPP-CN, in Portland and by secure video.</p>
     </div>
-    <div><h4>Evaluations</h4><ul><li><a href="#services">ADHD</a></li><li><a href="#services">Autism</a></li><li><a href="#services">Learning &amp; memory</a></li><li><a href="#referrals">For clinicians</a></li></ul></div>
+    <div><h4>Evaluations</h4><ul><li><a href="#services">ADHD</a></li><li><a href="#services">Autism</a></li><li><a href="#services">Learning &amp; memory</a></li><li><a href="#referrals">For clinicians</a></li><li><a href="psychology-beacon-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
     <div><h4>Contact</h4><ul><li><a href="tel:5550147781">(555) 014-7781</a></li><li><a href="#contact">office@beaconneuropsych.example</a></li><li><a href="#contact">Request an evaluation</a></li></ul></div>
   </div>
   <p class="bn-crisis"><b>In crisis?</b> Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency. This website and contact form are not monitored for emergencies.</p>
   <div class="bn-foot__bot"><span data-field="footerLegal">© 2026 Beacon Neuropsychology. All rights reserved.</span><span>Sample website. The practice, people and details shown are fictional.</span></div>
 </div></footer>
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

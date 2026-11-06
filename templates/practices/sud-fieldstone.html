@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,16 +8,16 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23A4611F'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>F</text></svg>">
 <style>
-:root{--acc:#A4611F;--acc2:#7E4813;}
+:root{--acc:#9A5B1D;--acc2:#7E4813;}
 .fs{
   --on:#ffffff;
   --amber:color-mix(in srgb,var(--acc) 76%,#F6D089);
   --tint:color-mix(in srgb,var(--acc) 12%,#ffffff);
   --bg:#FBF5EA; --cream:#F4EAD7; --sand:#EFE3CC; --line:#E6D8BF;
-  --ink:#2A2016; --muted:#746450; --white:#ffffff;
+  --ink:#2A2016; --muted:#736450; --white:#ffffff;
   --brown:#3A2512; --brown2:#2A1808;
   --disp:'Zilla Slab',Georgia,serif; --sans:'Inter',system-ui,sans-serif;
   --ease:cubic-bezier(.22,.61,.36,1);
@@ -223,9 +223,133 @@
 .reveal.is-in{opacity:1;transform:none;}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;}.fs-menu,.fs-menu__panel{transition:none;}}
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalBusiness",
+      "name": "Fieldstone Counseling",
+      "description": "Fieldstone Counseling: a group practice of licensed LADC and CADC substance use counselors offering individual, group, family and court-ordered support, in person and online. A FrontDoor website template.",
+      "telephone": "(555) 017-3380",
+      "email": "hello@fieldstonecounseling.example",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "210 Mill Road, Suite 4",
+        "addressLocality": "Burlington",
+        "addressRegion": "VT",
+        "addressCountry": "US"
+      },
+      "medicalSpecialty": "https://schema.org/Psychiatric",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday"
+          ],
+          "opens": "08:00",
+          "closes": "20:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Friday"
+          ],
+          "opens": "08:00",
+          "closes": "16:00"
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Ways We Walk Alongside You",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Individual Counseling",
+              "description": "One on one sessions at your pace, focused on what matters to you right now. No judgment, ever.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Fieldstone Counseling"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Group Therapy",
+              "description": "Small, supportive groups where you can be honest and hear from people who truly understand.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Fieldstone Counseling"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Relapse Prevention",
+              "description": "Practical plans and skills for the hard moments. Setbacks are part of the work, not the end of it.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Fieldstone Counseling"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Family Support",
+              "description": "Space for the people who love you to understand, heal, and learn how to support your recovery.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Fieldstone Counseling"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "DUI & Court-Ordered Services",
+              "description": "State-approved assessments and classes, with the paperwork handled clearly and on time for you.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Fieldstone Counseling"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Referral to Higher Levels of Care",
+              "description": "If you need more support, we help you find detox, inpatient or medical care, and stay with you through it.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Fieldstone Counseling"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="fs">
 
+<a class="t-skip" href="#main">Skip to main content</a>
 <header class="fs-nav"><div class="fs-shell fs-nav__in">
   <a href="#" class="fs-logo" aria-label="Fieldstone Counseling, home"><span class="fs-mark" data-field="brandMark">F</span><span class="fs-logo__name" data-field="brandName">Fieldstone Counseling</span></a>
   <div class="fs-nav__actions">
@@ -257,7 +381,7 @@
   </nav>
 </div>
 
-<main>
+<main id="main" tabindex="-1">
 <section class="fs-hero" aria-labelledby="fs-hero-title"><div class="fs-shell"><div class="fs-hero__in">
   <span class="fs-eyebrow" data-field="heroEyebrow">Substance Use Counseling · Group Practice</span>
   <h1 id="fs-hero-title"><span data-field="heroTitle">Recovery Begins With One Honest Conversation</span></h1>
@@ -429,7 +553,7 @@
       <a href="#" class="fs-logo"><span class="fs-mark" data-field="brandMark">F</span><span class="fs-logo__name" data-field="brandName">Fieldstone Counseling</span></a>
       <p data-field="footerText">Confidential substance use counseling from a team of licensed LADC and CADC counselors, in person and online.</p>
     </div>
-    <div><h4>Explore</h4><ul><li><a href="#services">How We Help</a></li><li><a href="#about">About Us</a></li><li><a href="#team">Our Counselors</a></li><li><a href="#insurance">Insurance</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="#services">How We Help</a></li><li><a href="#about">About Us</a></li><li><a href="#team">Our Counselors</a></li><li><a href="#insurance">Insurance</a></li><li><a href="sud-fieldstone-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
     <div><h4>Contact</h4><ul><li><a href="#contact">(555) 017-3380</a></li><li><a href="#contact">hello@fieldstonecounseling.example</a></li><li><a href="#contact">Reach out</a></li></ul></div>
   </div>
   <p class="fs-crisis"><b>In crisis?</b> Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency.
@@ -454,6 +578,6 @@
   document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false);});
 })();
 </script>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

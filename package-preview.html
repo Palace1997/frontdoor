@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FrontDoor | Package (style preview)</title>
+<meta name="description" content="A style trial: the Package section in a cycling-word pastel hero treatment.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0D0D0C; --ink-56:rgba(13,13,12,.56); --ink-42:rgba(13,13,12,.42);
+    --cream:#FBF6EF;
+    --font:'Inter Tight',system-ui,-apple-system,sans-serif;
+    /* active word drives these (set by JS) */
+    --tint:#3FB874;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--cream)}
+  body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased}
+
+  .stage{position:relative;min-height:100vh;display:flex;flex-direction:column}
+
+  /* ---------- Hero panel (cycling gradient) ---------- */
+  .panel{position:relative;flex:1 1 auto;min-height:74vh;overflow:hidden;isolation:isolate;
+    background:url(assets/img/features-handoff.jpg) center 40%/cover no-repeat}
+  /* per-word colour glow over the image (cycles with the word) */
+  .layer{position:absolute;inset:0;opacity:0;transition:opacity .77s ease;will-change:opacity;
+    animation:drift 20s ease-in-out infinite alternate}
+  .layer.on{opacity:1}
+  @keyframes drift{from{transform:scale(1.04) translate(-1.2%,-.8%)}to{transform:scale(1.07) translate(1.2%,.8%)}}
+  .layer--0{background:radial-gradient(64% 62% at 84% 74%, rgba(222,150,200,.55), transparent 62%)}
+  .layer--1{background:radial-gradient(64% 62% at 84% 74%, rgba(150,206,150,.55), transparent 62%)}
+  .layer--2{background:radial-gradient(64% 62% at 84% 74%, rgba(246,222,104,.55), transparent 62%)}
+  /* cream wash so the headline stays readable over the image (like index.html) */
+  .scrim{position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:linear-gradient(90deg, rgba(247,244,238,.93) 0%, rgba(247,244,238,.66) 42%, rgba(247,244,238,.24) 70%, rgba(247,244,238,.05) 100%)}
+  /* grain */
+  .panel::after{content:"";position:absolute;inset:0;z-index:5;pointer-events:none;opacity:.18;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  .panel__in{position:relative;z-index:6;height:100%;display:flex;flex-direction:column;padding:clamp(20px,3vw,40px) clamp(22px,5vw,80px)}
+
+  /* top row: back pill + mini nav */
+  .top{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .back{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid rgba(13,13,12,.1);
+    border-radius:999px;padding:11px 18px 11px 14px;font-weight:600;font-size:14.5px;color:#0B362A;text-decoration:none;
+    box-shadow:0 8px 22px -14px rgba(13,13,12,.4)}
+  .back svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .eyebrow{font-weight:600;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-56)}
+
+  /* headline */
+  .mast{margin-top:auto;margin-bottom:clamp(18px,2.4vw,34px)}
+  .mast h1{font-weight:600;font-size:clamp(52px,11vw,150px);line-height:.86;letter-spacing:-.032em}
+  .slot{display:flex;align-items:center;gap:.14em;min-height:1em}
+  .slot__icon{display:inline-flex;width:1.0em;height:1.0em;flex:none;color:var(--tint);
+    animation:bob 4s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(-0.02em) rotate(-2.4deg)}50%{transform:translateY(0.02em) rotate(2.4deg)}}
+  .slot__icon svg{width:100%;height:100%;display:block}
+  .slot__word{display:inline-block}
+  .slot.anim .slot__word{animation:wordIn .5s cubic-bezier(.2,.7,.2,1) both}
+  .slot.anim .slot__icon{animation:bob 4s ease-in-out infinite, iconIn .5s cubic-bezier(.2,.7,.2,1) .06s both}
+  @keyframes wordIn{from{opacity:0;transform:translateY(.32em);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+  @keyframes iconIn{from{opacity:0;transform:scale(.7) rotate(-14deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+
+  /* row: CTAs + caption */
+  .row{display:flex;align-items:center;gap:clamp(18px,3vw,44px);flex-wrap:wrap}
+  .btns{display:flex;gap:12px;flex-wrap:wrap}
+  .sbtn{display:inline-flex;align-items:center;gap:10px;height:56px;padding:0 22px;border:1.4px solid rgba(13,13,12,.8);
+    border-radius:12px;background:transparent;color:var(--ink);font-weight:600;font-size:15px;text-decoration:none;
+    transition:background .2s,color .2s}
+  .sbtn:hover{background:var(--ink);color:var(--cream)}
+  .sbtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8}
+  .cap{max-width:34ch;font-size:clamp(15px,1.3vw,18.5px);line-height:1.5;color:var(--ink-56)}
+
+  /* ---------- Stats / inclusions strip ---------- */
+  .strip{position:relative;background:var(--cream);padding:0 clamp(22px,5vw,80px) clamp(30px,4vw,56px)}
+  .notch{position:absolute;left:0;right:0;top:-61px;width:100%;height:62px;display:block}
+  .strip__inner{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;align-items:center;text-align:center;
+    gap:clamp(18px,2.6vw,32px);padding-top:clamp(26px,3vw,42px)}
+  .strip__lead{font-size:clamp(22px,2vw,29px);font-weight:500;line-height:1.15}
+  .strip__items{display:flex;justify-content:center;flex-wrap:wrap;gap:clamp(24px,5vw,72px)}
+  .incl{min-width:150px}
+  .incl__t{font-size:clamp(24px,2.4vw,36px);font-weight:600;letter-spacing:-.01em;line-height:1}
+  .incl__l{font-size:16px;color:var(--ink-56);margin-top:8px}
+  .sprout{width:72px;height:72px;color:var(--ink)}
+  .sprout svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+  @media (max-width:760px){
+    .mast h1{font-size:clamp(46px,15.5vw,88px)}
+    .eyebrow{display:none}
+    .strip__items{gap:20px 36px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .layer,.slot__icon,.slot.anim .slot__word,.slot.anim .slot__icon{animation:none!important}
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <!-- ===== Hero panel ===== -->
+  <section class="panel" id="panel">
+    <div class="layer layer--0"></div>
+    <div class="layer layer--1 on"></div>
+    <div class="layer layer--2"></div>
+    <div class="scrim"></div>
+
+    <div class="panel__in">
+      <div class="top">
+        <a class="back" href="index.html#features"><svg viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Back to homepage</a>
+        <span class="eyebrow">Everything Included</span>
+      </div>
+
+      <div class="mast">
+        <h1>
+          <span class="slot" id="slot">
+            <span class="slot__icon" id="slotIcon"></span>
+            <span class="slot__word" id="slotWord">Hosting</span>
+          </span>
+          <span class="slot__fixed">built in.</span>
+        </h1>
+      </div>
+
+      <div class="row">
+        <div class="btns">
+          <a class="sbtn" href="index.html#start" data-book><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>Get Started</a>
+          <a class="sbtn" href="gallery.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Browse Designs</a>
+        </div>
+        <p class="cap">Every FrontDoor website comes with design, copywriting, your domain, business email, hosting and support, all built in.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Inclusions strip ===== -->
+  <section class="strip">
+    <svg class="notch" viewBox="0 0 1440 62" preserveAspectRatio="none" aria-hidden="true"><path d="M0 62 H1062 C1092 62 1098 54 1116 34 C1138 9 1146 1 1178 1 H1440 V62 Z" fill="#FBF6EF"/></svg>
+    <div class="strip__inner">
+      <p class="strip__lead">Nothing you build alone</p>
+      <div class="strip__items">
+        <div class="incl"><div class="incl__t">Domain &amp; email</div><div class="incl__l">Your own, set up for you</div></div>
+        <div class="incl"><div class="incl__t">Secure hosting</div><div class="incl__l">SSL and daily backups</div></div>
+        <div class="incl"><div class="incl__t">Human support</div><div class="incl__l">Real people, no bots</div></div>
+      </div>
+      <div class="sprout" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="18"/><path d="M16 24.5l5.6 5.6L33 18"/></svg></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  // Brand feature-icon glyphs (rounded tile + white line glyph); the tile takes
+  // the word's cycling colour via fill="currentColor".
+  var SVG={
+    design:'<svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="6" fill="currentColor"/><rect x="6.5" y="6.5" width="11" height="11" rx="1.8" stroke="#fff" stroke-width="1.6" fill="none"/><circle cx="10" cy="10" r="1.3" stroke="#fff" stroke-width="1.3" fill="none"/><path d="M7 16l3.2-3.4 2.3 2.2 2.2-2.4 2.3 2.6" stroke="#fff" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    hosting:'<svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="6" fill="currentColor"/><rect x="6.3" y="6.5" width="11.4" height="4.4" rx="1.3" stroke="#fff" stroke-width="1.6" fill="none"/><rect x="6.3" y="13.1" width="11.4" height="4.4" rx="1.3" stroke="#fff" stroke-width="1.6" fill="none"/><path d="M9 8.7h.01M9 15.3h.01" stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg>',
+    support:'<svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="6" fill="currentColor"/><path d="M6.5 8.2a1.7 1.7 0 0 1 1.7-1.7h7.6a1.7 1.7 0 0 1 1.7 1.7v4.6a1.7 1.7 0 0 1-1.7 1.7H10l-3.5 3z" stroke="#fff" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M9.3 10.5h.01M12 10.5h.01M14.7 10.5h.01" stroke="#fff" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>'
+  };
+  var WORDS=[
+    { word:'Design',  svg:SVG.design,  tint:'#3FB874', layer:0 },
+    { word:'Hosting', svg:SVG.hosting, tint:'#3FB874', layer:1 },
+    { word:'Support', svg:SVG.support, tint:'#3FB874', layer:2 }
+  ];
+  var slot=document.getElementById('slot'), word=document.getElementById('slotWord'),
+      icon=document.getElementById('slotIcon'),
+      layers=document.querySelectorAll('.layer'), root=document.documentElement;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var i=1; // start on Hosting (shown by default)
+
+  function paint(n){
+    var w=WORDS[n];
+    word.textContent=w.word;
+    icon.innerHTML=w.svg;
+    root.style.setProperty('--tint',w.tint);
+    layers.forEach(function(l,k){ l.classList.toggle('on', k===w.layer); });
+  }
+  paint(i);
+  if(reduce) return;
+
+  function tick(){
+    i=(i+1)%WORDS.length;
+    paint(i);
+    slot.classList.remove('anim'); void slot.offsetWidth; slot.classList.add('anim');
+  }
+  setInterval(function(){ if(!document.hidden) tick(); }, 1900);
+})();
+</script>
+</body>
+</html>

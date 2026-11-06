@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,13 +8,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%235A8FA0'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>H</text></svg>">
 <style>
 .hl-page{
-  --acc:#5A8FA0; --acc2:#47727F; --on:#ffffff;
+  --acc:#466F7D; --acc2:#47727F; --on:#ffffff;
   --dark:#1E323A; --dark2:#142329;
-  --bg:#F6F3EE; --mist:#EBEEEC; --sand:#EFE9E1; --line:#E1DDD4; --ink:#1B2A30; --muted:#5F6E72; --white:#fff;
+  --bg:#F6F3EE; --mist:#EBEEEC; --sand:#EFE9E1; --line:#E1DDD4; --ink:#1B2A30; --muted:#5D6C70; --white:#fff;
   --font-display:'Fraunces',Georgia,serif; --font-sans:'Inter',system-ui,sans-serif;
   --ease:cubic-bezier(.4,0,.2,1);
   background:var(--bg); color:var(--ink); font-family:var(--font-sans);
@@ -190,13 +190,111 @@ ul{margin:0;padding:0;list-style:none;}
 .reveal.is-in{opacity:1;transform:none;}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;}}
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalBusiness",
+      "name": "Harborlight Center",
+      "description": "Harborlight Center: Eating disorder treatment. A FrontDoor website template.",
+      "telephone": "(555) 010-2400",
+      "email": "hello@eatingdisorder.example",
+      "address": "Harborlight, Suite 300",
+      "medicalSpecialty": "https://schema.org/Psychiatric",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Every kind of support, in one place",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Individual therapy",
+              "description": "Specialist eating-disorder care.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Harborlight Center"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Medical monitoring",
+              "description": "Coordinated physical health support.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Harborlight Center"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Nutrition counseling",
+              "description": "Registered dietitian support.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Harborlight Center"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Day treatment",
+              "description": "Structured IOP and PHP.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Harborlight Center"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Family-based care",
+              "description": "Proven FBT for adolescents.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Harborlight Center"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Group support",
+              "description": "Recovery alongside others.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Harborlight Center"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="hl-page">
+<a class="t-skip" href="#main">Skip to main content</a>
 <header class="hl-nav"><div class="hl-wrap hl-nav__in">
   <a href="#" class="hl-logo"><span class="hl-mark" data-field="brandMark">H</span> <span data-field="brandName">Harborlight Center</span></a>
-  <nav class="hl-navlinks"><a href="#care">Levels of care</a><a href="#services">Services</a><a href="#approach">Approach</a><a href="#contact">Contact</a></nav>
+  <nav class="hl-navlinks"><a href="#care">Levels of care</a><a href="#services">Services</a><a href="#approach">Approach</a><a href="#contact">Contact</a><a href="eating-disorder-blog.html" data-sw-bloglink>Blog</a></nav>
   <a href="#contact" class="hl-btn hl-btn--fill" data-field="navCta">Reach out for care</a>
 </div></header>
+<main id="main" tabindex="-1">
 
 <section class="hl-hero">
   <div class="hl-wrap hl-hero__head">
@@ -339,16 +437,17 @@ ul{margin:0;padding:0;list-style:none;}
   </form>
 </div></div></section>
 
+</main>
 <footer class="hl-foot"><div class="hl-wrap">
   <div class="hl-foot__top">
     <div class="hl-foot__brand"><a href="#" class="hl-logo"><span class="hl-mark" data-field="brandMark">H</span> <span data-field="brandName">Harborlight Center</span></a><p data-field="footerText">Eating disorder treatment.</p></div>
-    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#approach">Approach</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#approach">Approach</a></li><li><a href="#contact">Contact</a></li><li><a href="eating-disorder-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
     <div><h4>Contact</h4><ul><li><a href="#contact">(555) 010-2400</a></li><li><a href="#contact">hello@eatingdisorder.example</a></li></ul></div>
   </div>
   <div class="hl-foot__bot"><span data-field="footerLegal">© 2026 Harborlight Center. All rights reserved.</span><span>A FrontDoor website template.</span></div>
 </div><p class="sw-crisis" style="margin:0;padding:16px 20px 6px;font-size:13px;line-height:1.5;text-align:center;opacity:.85">In crisis? Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency.</p>
 </footer>
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

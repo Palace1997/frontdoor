@@ -1,0 +1,126 @@
+{
+  "voss": {
+    "blog": "templates/sectors/psychiatrist-blog.html",
+    "post": "templates/sectors/psychiatrist-post.html"
+  },
+  "cedarcrest": {
+    "blog": "templates/sectors/inpatient-blog.html",
+    "post": "templates/sectors/inpatient-post.html"
+  },
+  "evenkeel": {
+    "blog": "templates/sectors/mood-anxiety-blog.html",
+    "post": "templates/sectors/mood-anxiety-post.html"
+  },
+  "northshore": {
+    "blog": "templates/sectors/psychologist-blog.html",
+    "post": "templates/sectors/psychologist-post.html"
+  },
+  "spectrum": {
+    "blog": "templates/sectors/adhd-autism-blog.html",
+    "post": "templates/sectors/adhd-autism-post.html"
+  },
+  "willow": {
+    "blog": "templates/sectors/therapist-blog.html",
+    "post": "templates/sectors/therapist-post.html"
+  },
+  "riverbend": {
+    "blog": "templates/sectors/outpatient-blog.html",
+    "post": "templates/sectors/outpatient-post.html"
+  },
+  "anchorage": {
+    "blog": "templates/sectors/trauma-blog.html",
+    "post": "templates/sectors/trauma-post.html"
+  },
+  "harborlight": {
+    "blog": "templates/sectors/eating-disorder-blog.html",
+    "post": "templates/sectors/eating-disorder-post.html"
+  },
+  "anywhere": {
+    "blog": "templates/sectors/teletherapy-blog.html",
+    "post": "templates/sectors/teletherapy-post.html"
+  },
+  "commonground": {
+    "blog": "templates/sectors/community-mhc-blog.html",
+    "post": "templates/sectors/community-mhc-post.html"
+  },
+  "valor": {
+    "blog": "templates/sectors/veterans-blog.html",
+    "post": "templates/sectors/veterans-post.html"
+  },
+  "lifeline": {
+    "blog": "templates/sectors/crisis-blog.html",
+    "post": "templates/sectors/crisis-post.html"
+  },
+  "brightkids": {
+    "blog": "templates/sectors/child-adolescent-blog.html",
+    "post": "templates/sectors/child-adolescent-post.html"
+  },
+  "tandem": {
+    "blog": "templates/practices/mft-tandem-blog.html",
+    "post": "templates/practices/mft-tandem-post.html"
+  },
+  "clarity": {
+    "blog": "templates/sectors/psych-np-blog.html",
+    "post": "templates/sectors/psych-np-post.html"
+  },
+  "juniper": {
+    "blog": "templates/practices/psychnp-juniper-blog.html",
+    "post": "templates/practices/psychnp-juniper-post.html"
+  },
+  "meridian": {
+    "blog": "templates/sectors/iop-php-blog.html",
+    "post": "templates/sectors/iop-php-post.html"
+  },
+  "northstar": {
+    "blog": "templates/practices/aba-northstar-blog.html",
+    "post": "templates/practices/aba-northstar-post.html"
+  },
+  "canvas": {
+    "blog": "templates/practices/expressive-canvas-chord-blog.html",
+    "post": "templates/practices/expressive-canvas-chord-post.html"
+  },
+  "lakehouse": {
+    "blog": "templates/sectors/residential-blog.html",
+    "post": "templates/sectors/residential-post.html"
+  },
+  "newpath": {
+    "blog": "templates/sectors/sud-counselor-blog.html",
+    "post": "templates/sectors/sud-counselor-post.html"
+  },
+  "openroad": {
+    "blog": "templates/practices/peer-open-road-blog.html",
+    "post": "templates/practices/peer-open-road-post.html"
+  },
+  "beacon": {
+    "blog": "templates/practices/psychology-beacon-blog.html",
+    "post": "templates/practices/psychology-beacon-post.html"
+  },
+  "common-table": {
+    "blog": "templates/practices/clubhouse-common-table-blog.html",
+    "post": "templates/practices/clubhouse-common-table-post.html"
+  },
+  "hearth": {
+    "blog": "templates/practices/aba-hearth-blog.html",
+    "post": "templates/practices/aba-hearth-post.html"
+  },
+  "groundwork": {
+    "blog": "templates/practices/ot-groundwork-blog.html",
+    "post": "templates/practices/ot-groundwork-post.html"
+  },
+  "rivergate": {
+    "blog": "templates/practices/mat-rivergate-blog.html",
+    "post": "templates/practices/mat-rivergate-post.html"
+  },
+  "fieldstone": {
+    "blog": "templates/practices/sud-fieldstone-blog.html",
+    "post": "templates/practices/sud-fieldstone-post.html"
+  },
+  "throughline": {
+    "blog": "templates/practices/coaching-throughline-blog.html",
+    "post": "templates/practices/coaching-throughline-post.html"
+  },
+  "starter": {
+    "blog": "studio/editable-practice-blog.html",
+    "post": "studio/editable-practice-post.html"
+  }
+}

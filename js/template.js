@@ -16,6 +16,30 @@
     sbTimer = setTimeout(function () { root.classList.remove('is-scrolling'); }, 650);
   }, { passive: true });
 
+  /* ---- Menu buttons -----------------------------------------------------
+     Six designs open their mobile menu with the CSS checkbox trick. A <label>
+     responds to a click but never to Enter or Space, so those menus could not
+     be opened from the keyboard at all (WCAG 2.1.1). The label carries
+     role="button" and the checkbox is hidden from assistive tech; this wires
+     up the keyboard half and keeps aria-expanded honest. */
+  document.querySelectorAll('label[data-menu-toggle]').forEach(function (label) {
+    var box = document.getElementById(label.getAttribute('for'));
+    if (!box) return;
+    var sync = function () { label.setAttribute('aria-expanded', box.checked ? 'true' : 'false'); };
+    sync();
+    label.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+      e.preventDefault();
+      box.checked = !box.checked;
+      box.dispatchEvent(new Event('change', { bubbles: true }));
+      sync();
+    });
+    label.addEventListener('click', function () { setTimeout(sync, 0); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && box.checked) { box.checked = false; sync(); label.focus(); }
+    });
+  });
+
   var nav = document.querySelector('.t-nav');
   if (nav) {
     var on = function () { nav.classList.toggle('scrolled', window.scrollY > 8); };

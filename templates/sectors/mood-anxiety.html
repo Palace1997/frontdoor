@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="Physician" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,11 +8,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%233D7EA6'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>E</text></svg>">
 <style>
 .ek{
-  --acc:#3D7EA6; --acc2:#2F6486; --on:#ffffff;
+  --acc:#3A789E; --acc2:#2F6486; --on:#ffffff;
   --dark:#142C3B; --dark2:#0E1F2A;
   --bg:#F6F8FA; --panel:#ffffff; --line:#DDE6EC; --line2:#C9D6DF;
   --ink:#132430; --muted:#5C6E79; --grid:#E3EBF0;
@@ -173,13 +173,111 @@
 .reveal.is-in{opacity:1;transform:none;}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;}}
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Physician",
+      "name": "Even Keel Clinic",
+      "description": "Even Keel Clinic: Depression, bipolar & anxiety care. A FrontDoor website template.",
+      "telephone": "(555) 010-2400",
+      "email": "hello@moodanxiety.example",
+      "address": "Even Keel, Suite 220",
+      "medicalSpecialty": "https://schema.org/Psychiatric",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Focused care for mood and anxiety.",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Depression care",
+              "description": "Therapy and medication that lift the fog.",
+              "provider": {
+                "@type": "Physician",
+                "name": "Even Keel Clinic"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Bipolar management",
+              "description": "Stability-focused, long-term care.",
+              "provider": {
+                "@type": "Physician",
+                "name": "Even Keel Clinic"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Anxiety treatment",
+              "description": "CBT and medication for lasting relief.",
+              "provider": {
+                "@type": "Physician",
+                "name": "Even Keel Clinic"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Panic & phobias",
+              "description": "Targeted, effective approaches.",
+              "provider": {
+                "@type": "Physician",
+                "name": "Even Keel Clinic"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Medication management",
+              "description": "Careful prescribing and monitoring.",
+              "provider": {
+                "@type": "Physician",
+                "name": "Even Keel Clinic"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Relapse prevention",
+              "description": "Stay well between episodes.",
+              "provider": {
+                "@type": "Physician",
+                "name": "Even Keel Clinic"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="ek">
+<a class="t-skip" href="#main">Skip to main content</a>
 <header class="ek-nav"><div class="ek-wrap ek-nav__in">
   <a href="#" class="ek-logo"><span class="ek-mark" data-field="brandMark">E</span> <span data-field="brandName">Even Keel Clinic</span></a>
-  <nav class="ek-links"><a href="#services">Services</a><a href="#approach">Approach</a><a href="#plans">Insurance</a><a href="#contact">Contact</a></nav>
+  <nav class="ek-links"><a href="#services">Services</a><a href="#approach">Approach</a><a href="#plans">Insurance</a><a href="#contact">Contact</a><a href="mood-anxiety-blog.html" data-sw-bloglink>Blog</a></nav>
   <a href="#contact" class="ek-btn ek-btn--primary" data-field="navCta">Book an intake</a>
 </div></header>
+<main id="main" tabindex="-1">
 
 <section class="ek-hero">
   <div class="ek-hero__band"><img data-img="hero" src="https://images.unsplash.com/photo-1557316655-8715fdecd2d1?auto=format&fit=crop&w=2200&q=80" alt="Morning mist over a still mountain lake"></div>
@@ -287,16 +385,17 @@
   </form>
 </div></div></section>
 
+</main>
 <footer class="ek-foot"><div class="ek-wrap">
   <div class="ek-foot__top">
     <div class="ek-foot__brand"><a href="#" class="ek-logo"><span class="ek-mark" data-field="brandMark">E</span> <span data-field="brandName">Even Keel Clinic</span></a><p data-field="footerText">Depression, bipolar &amp; anxiety care.</p></div>
-    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#approach">Approach</a></li><li><a href="#plans">Insurance</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#approach">Approach</a></li><li><a href="#plans">Insurance</a></li><li><a href="#contact">Contact</a></li><li><a href="mood-anxiety-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
     <div><h4>Contact</h4><ul><li><a href="#contact">(555) 010-2400</a></li><li><a href="#contact">hello@moodanxiety.example</a></li></ul></div>
   </div>
   <div class="ek-foot__bot"><span data-field="footerLegal">© 2026 Even Keel Clinic. All rights reserved.</span><span>A FrontDoor website template.</span></div>
 </div><p class="sw-crisis" style="margin:0;padding:16px 20px 6px;font-size:13px;line-height:1.5;text-align:center;opacity:.85">In crisis? Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency.</p>
 </footer>
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -96,11 +96,107 @@ p{margin:0}ul{margin:0;padding:0;list-style:none}a{color:inherit;text-decoration
 .foot p{max-width:44ch;margin:0 auto;font-size:14.5px;color:rgba(255,255,255,.6)}
 .foot__bot{margin-top:26px;font-size:13px;color:rgba(255,255,255,.5)}
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalBusiness",
+      "name": "Your Business",
+      "description": "Tell your customers what you do and why they should choose you. This opening line sets the tone for your whole site.",
+      "telephone": "(555) 000-0000",
+      "email": "hello@yourbusiness.com",
+      "address": "123 Main Street, Your City",
+      "medicalSpecialty": "https://schema.org/Psychiatric",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Everything you need, in one place.",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Service one",
+              "description": "Describe this service in a sentence or two.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Your Business"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Service two",
+              "description": "Describe this service in a sentence or two.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Your Business"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Service three",
+              "description": "Describe this service in a sentence or two.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Your Business"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Service four",
+              "description": "Describe this service in a sentence or two.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Your Business"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Service five",
+              "description": "Describe this service in a sentence or two.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Your Business"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Service six",
+              "description": "Describe this service in a sentence or two.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Your Business"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body>
 <header class="nav"><div class="wrap nav__in">
   <a href="#" class="logo"><span class="logo__mark" data-field="brandMark">Y</span> <span data-field="brandName">Your Business</span></a>
-  <nav class="nav__links"><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+  <nav class="nav__links"><a href="#services">Services</a><a href="#about">About</a><a href="#contact">Contact</a><a href="editable-practice-blog.html" data-sw-bloglink>Blog</a></nav>
   <a href="#contact" class="btn btn--primary" data-field="navCta">Get in touch</a>
 </div></header>
 

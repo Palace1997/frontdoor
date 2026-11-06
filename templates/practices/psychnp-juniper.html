@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,13 +8,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%232F6E7A'/><text x='16' y='23' font-family='Georgia,serif' font-size='19' fill='white' text-anchor='middle'>J</text></svg>">
 <style>
 :root{--acc:#2F6E7A;--acc2:#245862}
 .jp{
   --on:#ffffff;
-  --ink:#15262B; --ink2:#2B3D43; --muted:#55666C; --soft:#7C8B90;
+  --ink:#15262B; --ink2:#2B3D43; --muted:#55666C; --soft:#667378;
   --white:#ffffff; --mist:#F3F7F8; --mist2:#E9F0F2; --line:#DAE4E7; --line2:#C9D6DA;
   --serif:'Newsreader',Georgia,'Times New Roman',serif;
   --sans:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
@@ -264,16 +264,150 @@
 @media(max-width:900px){.jp-foot__top{grid-template-columns:1fr 1fr;}}
 @media(max-width:520px){.jp-foot__top{grid-template-columns:1fr;}.jp-foot__bot{padding-bottom:56px;}}
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalBusiness",
+      "name": "Juniper Psychiatric Care",
+      "description": "Juniper Psychiatric Care: psychiatric evaluation and medication management for adults with Elena Ruiz, DNP, PMHNP-BC. In person and telehealth. A FrontDoor website template.",
+      "telephone": "(555) 014-3378",
+      "email": "hello@juniperpsych.example",
+      "address": "220 Alder Street, Suite 4B, Riverton",
+      "medicalSpecialty": "https://schema.org/Psychiatric",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Psychiatric Care, Start to Follow-Up",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Psychiatric Evaluation",
+              "description": "An unhurried 60-minute visit to understand your symptoms, history and goals, and to talk through what may help.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Juniper Psychiatric Care"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Medication Management",
+              "description": "Clear explanations of options, benefits and side effects. We start carefully and adjust together over time.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Juniper Psychiatric Care"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Adult ADHD Evaluation",
+              "description": "A structured assessment for adults who have long wondered about focus, organization or restlessness.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Juniper Psychiatric Care"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Follow-Up Visits",
+              "description": "Shorter check-ins to see what is working, review side effects and fine-tune your plan.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Juniper Psychiatric Care"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Telehealth Visits",
+              "description": "Secure video appointments from home or a quiet room at work, for new and returning patients.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Juniper Psychiatric Care"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Care Coordination",
+              "description": "With your permission, I stay in touch with your therapist or primary care provider so everyone is on the same page.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Juniper Psychiatric Care"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is a psychiatric nurse practitioner?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A psychiatric mental health nurse practitioner (PMHNP) is an advanced practice nurse trained to evaluate, diagnose and treat mental health conditions, including prescribing medication. Elena holds a Doctor of Nursing Practice degree and is board certified."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you offer therapy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "My focus is evaluation and medication management. Many patients also see a therapist, and with your permission I am happy to coordinate with them. If you do not have one, I can suggest some options."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need a referral?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usually not, though some insurance plans ask for one. We will check this for you when we confirm your coverage."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I do every visit by video?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Many patients do. Some situations, such as certain medications or a physical exam, may call for an in-person visit. We will talk about what makes sense for you."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="jp">
 
+<a class="t-skip" href="#main">Skip to main content</a>
 <header class="jp-nav"><div class="jp-shell jp-nav__in">
   <a href="#" class="jp-logo"><span class="jp-mark" data-field="brandMark">J</span> <span data-field="brandName">Juniper Psychiatric Care</span></a>
-  <nav class="jp-links" aria-label="Main"><a href="#services">Services</a><a href="#first-visit">First Visit</a><a href="#conditions">Conditions</a><a href="#about">About</a><a href="#faq">FAQ</a></nav>
+  <nav class="jp-links" aria-label="Main"><a href="#services">Services</a><a href="#first-visit">First Visit</a><a href="#conditions">Conditions</a><a href="#about">About</a><a href="#faq">FAQ</a><a href="psychnp-juniper-blog.html" data-sw-bloglink>Blog</a></nav>
   <a href="#contact" class="jp-btn jp-btn--primary" data-field="navCta">Request an appointment</a>
 </div></header>
 
-<main>
+<main id="main" tabindex="-1">
 <section class="jp-hero">
   <div class="jp-shell">
     <span class="jp-label" data-field="heroEyebrow">Adult psychiatric care · Office &amp; telehealth</span>
@@ -506,13 +640,13 @@
 <footer class="jp-foot"><div class="jp-shell">
   <div class="jp-foot__top">
     <div class="jp-foot__brand"><a href="#" class="jp-logo"><span class="jp-mark" data-field="brandMark">J</span> <span data-field="brandName">Juniper Psychiatric Care</span></a><p data-field="footerText">Psychiatric evaluation and medication management for adults, with Elena Ruiz, DNP, PMHNP-BC.</p></div>
-    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#first-visit">First Visit</a></li><li><a href="#conditions">Conditions</a></li><li><a href="#about">About</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#first-visit">First Visit</a></li><li><a href="#conditions">Conditions</a></li><li><a href="#about">About</a></li><li><a href="#faq">FAQ</a></li><li><a href="psychnp-juniper-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
     <div><h4>Contact</h4><ul><li><a href="#contact">(555) 014-3378</a></li><li><a href="#contact">hello@juniperpsych.example</a></li><li><a href="#contact">Request an appointment</a></li></ul></div>
     <div class="jp-crisis"><b>Need help now?</b>In crisis? Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency.</div>
   </div>
   <div class="jp-foot__bot"><span data-field="footerLegal">© 2026 Juniper Psychiatric Care. All rights reserved.</span><span>Sample website. The practice, people and details shown are fictional.</span></div>
 </div></footer>
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

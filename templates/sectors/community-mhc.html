@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="CommunityHealth" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,13 +8,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234E8A5A'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>C</text></svg>">
 <style>
 .cg{
-  --acc:#4E8A5A; --acc2:#3E6F48; --on:#ffffff;
+  --acc:#3F7049; --acc2:#3E6F48; --on:#ffffff;
   --dark:#1E3324; --dark2:#142418;
-  --paper:#F6F4EC; --card:#ffffff; --line:#DED9CC; --ink:#20241E; --muted:#63685D;
+  --paper:#F6F4EC; --card:#ffffff; --line:#DED9CC; --ink:#20241E; --muted:#62675C;
   --sun:#EAE3CF;
   background:var(--paper); color:var(--ink);
   font-family:var(--font-sans); font-size:16px; line-height:1.6;
@@ -179,9 +179,106 @@
 .reveal.is-in{opacity:1;transform:none;}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;}}
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalBusiness",
+      "name": "Common Ground CMHC",
+      "description": "Common Ground CMHC: Community mental health center. A FrontDoor website template.",
+      "telephone": "(555) 010-2400",
+      "email": "hello@communitymhc.example",
+      "address": "Common Ground, Main St",
+      "medicalSpecialty": "https://schema.org/CommunityHealth",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Full-spectrum community care.",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Therapy & counseling",
+              "description": "Individual and group support.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Common Ground CMHC"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Psychiatric services",
+              "description": "Evaluation and medication.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Common Ground CMHC"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Case management",
+              "description": "Help navigating housing and benefits.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Common Ground CMHC"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Peer support",
+              "description": "Guidance from lived experience.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Common Ground CMHC"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Substance use care",
+              "description": "Integrated treatment.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Common Ground CMHC"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Crisis support",
+              "description": "Same-day help when it&#x27;s urgent.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Common Ground CMHC"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="cg">
 
+<a class="t-skip" href="#main">Skip to main content</a>
 <div class="cg-notice"><div class="cg-wrap">
   <span class="cg-dot"></span><span>Walk-ins welcome, <b>no appointment needed</b></span>
   <span class="cg-dot"></span><span>Sliding-scale &amp; Medicaid accepted</span>
@@ -190,9 +287,10 @@
 
 <header class="cg-nav"><div class="cg-wrap cg-nav__in">
   <a href="#" class="cg-logo"><span class="cg-mark" data-field="brandMark">C</span> <span data-field="brandName">Common Ground CMHC</span></a>
-  <nav class="cg-links"><a href="#services">Services</a><a href="#approach">Approach</a><a href="#contact">Contact</a></nav>
+  <nav class="cg-links"><a href="#services">Services</a><a href="#approach">Approach</a><a href="#contact">Contact</a><a href="community-mhc-blog.html" data-sw-bloglink>Blog</a></nav>
   <a href="#contact" class="cg-btn cg-btn--pri" data-field="navCta">Become a client</a>
 </div></header>
+<main id="main" tabindex="-1">
 
 <section class="cg-hero">
   <div class="cg-mosaic">
@@ -311,10 +409,11 @@
   </div>
 </div></section>
 
+</main>
 <footer class="cg-foot"><div class="cg-wrap">
   <div class="cg-foot__top">
     <div class="cg-foot__brand"><a href="#" class="cg-logo"><span class="cg-mark" data-field="brandMark">C</span> <span data-field="brandName">Common Ground CMHC</span></a><p data-field="footerText">Community mental health center.</p></div>
-    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#approach">Approach</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#approach">Approach</a></li><li><a href="#contact">Contact</a></li><li><a href="community-mhc-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
     <div><h4>Contact</h4><ul><li><a href="#contact">(555) 010-2400</a></li><li><a href="#contact">hello@communitymhc.example</a></li></ul></div>
   </div>
   <div class="cg-foot__bot"><span data-field="footerLegal">© 2026 Common Ground CMHC. All rights reserved.</span><span>A FrontDoor website template.</span></div>
@@ -322,6 +421,6 @@
 </footer>
 
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='9' fill='%23AB5A34'/><text x='16' y='23' font-family='Georgia,serif' font-weight='700' font-size='18' fill='white' text-anchor='middle'>G</text></svg>">
 <style>
-:root{--acc:#AB5A34;--acc2:#8A4526;}
+:root{--acc:#9E5330;--acc2:#8A4526;}
 .gw{
   --sage:#6F8C6B; --sage2:#58744F;
   --sidebar:#2B2420; --sidebar2:#221B17;
@@ -241,17 +241,165 @@
   .gw-menu-cb:checked ~ .gw-nav .gw-burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
 }
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalBusiness",
+      "name": "Groundwork Occupational Therapy",
+      "description": "Groundwork Occupational Therapy: a group practice of occupational therapists for sensory regulation, daily living skills, routines and executive function, in clinic, at home and online. A FrontDoor website template.",
+      "telephone": "(555) 017-4430",
+      "email": "hello@groundworkot.example",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "215 Marsh Street, Suite 4",
+        "addressLocality": "Durham",
+        "addressRegion": "NC",
+        "addressCountry": "US"
+      },
+      "medicalSpecialty": "https://schema.org/Psychiatric",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Support for Sensory, Routines and Daily Life",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Sensory Regulation",
+              "description": "For bodies that feel too much or too little. We find what calms and what wakes up, then build it into your day.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Groundwork Occupational Therapy"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Daily Living & Self-Care",
+              "description": "Dressing, eating, hygiene and the small tasks that add up. We make them doable, step by step.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Groundwork Occupational Therapy"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Routines & Executive Function",
+              "description": "Planning, starting and finishing tasks. We set up routines and tools that take the pressure off your memory.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Groundwork Occupational Therapy"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "School-Based OT",
+              "description": "Handwriting, focus, fidgeting and transitions. We work with students and teachers to help the school day go smoother.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Groundwork Occupational Therapy"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Regulation Groups",
+              "description": "Small, friendly groups where kids and teens practice calming and social skills together, with a therapist guiding.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Groundwork Occupational Therapy"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Parent & Caregiver Coaching",
+              "description": "You are with them every day. We coach you on what to try at home, so progress keeps going between sessions.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Groundwork Occupational Therapy"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do I need a referral or a diagnosis?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not to talk with us. Some insurance plans ask for a referral, so we will check that with you. You do not need a formal diagnosis to start."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where do sessions happen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In our clinic, in your home where many daily tasks actually happen, or online by secure video. We help you pick what makes sense for your goals."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is OT only for children?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. We work with children, teens and adults. Sensory needs, routines and executive function show up at every age, and the tools can help at every age too."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How are you different from talk therapy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "OT is hands-on and practical. We focus on doing the real tasks of daily life and building the skills and routines around them. We are glad to work alongside a talk therapist."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you take insurance?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We are in network with some plans and out of network with others. Ask us about your coverage, and we can provide a superbill to send to your insurer."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="gw">
 
-<input type="checkbox" id="gw-menu" class="gw-menu-cb" aria-hidden="true">
+<a class="t-skip" href="#main">Skip to main content</a>
+<input type="checkbox" id="gw-menu" class="gw-menu-cb t-vh-control" tabindex="-1" aria-hidden="true">
 <header class="gw-nav">
   <div class="gw-nav__top">
     <a href="#" class="gw-logo" aria-label="Groundwork Occupational Therapy, home">
       <span class="gw-mark" data-field="brandMark">G</span>
       <span class="gw-logo__name" data-field="brandName">Groundwork Occupational Therapy</span>
     </a>
-    <label for="gw-menu" class="gw-burger" aria-label="Open menu" role="button" tabindex="0"><span></span><span></span><span></span></label>
+    <label for="gw-menu" class="gw-burger" data-menu-toggle aria-label="Menu" aria-expanded="false" role="button" tabindex="0"><span></span><span></span><span></span></label>
   </div>
   <nav class="gw-links" aria-label="Main">
     <a href="#services"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>Services</a>
@@ -260,6 +408,7 @@
     <a href="#team"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.4"/><circle cx="17" cy="9.5" r="2.6"/><path d="M3 20v-1.5a6 6 0 0112 0V20M15 20v-1a5 5 0 017-4.6"/></svg>Our Team</a>
     <a href="#faq"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 014.5 1.5c0 1.7-2 2-2 3.5M12 17.5v.5"/></svg>FAQ</a>
     <a href="#contact"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="2.6"/></svg>Contact</a>
+      <a href="ot-groundwork-blog.html" data-sw-bloglink><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M10 13h6M10 17h4"/></svg>Blog</a>
   </nav>
   <div class="gw-nav__cta">
     <a href="#contact" class="gw-btn gw-btn--pri" data-field="navCta">Book a first session</a>
@@ -268,7 +417,7 @@
 </header>
 
 <div class="gw-page">
-<main>
+<main id="main" tabindex="-1">
 
 <!-- HERO, bento -->
 <section class="gw-hero" aria-labelledby="gw-hero-title">
@@ -527,7 +676,7 @@
       <a href="#" class="gw-logo"><span class="gw-mark" data-field="brandMark">G</span><span class="gw-logo__name" data-field="brandName">Groundwork Occupational Therapy</span></a>
       <p data-field="footerText">A group practice of occupational therapists for sensory regulation, daily living and routines, in clinic, at home and online.</p>
     </div>
-    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#about">Our Approach</a></li><li><a href="#team">Our Team</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#about">Our Approach</a></li><li><a href="#team">Our Team</a></li><li><a href="#faq">FAQ</a></li><li><a href="ot-groundwork-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
     <div><h4>Contact</h4><ul><li><a href="#contact">(555) 017-4430</a></li><li><a href="#contact">hello@groundworkot.example</a></li><li><a href="#contact">Book a first session</a></li></ul></div>
   </div>
   <p class="gw-crisis"><b>In crisis?</b> Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency. This website and contact form are not monitored for emergencies.</p>
@@ -536,6 +685,6 @@
 
 </div>
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

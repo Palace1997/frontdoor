@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,10 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='10' fill='%232C7AAC'/><text x='16' y='23' font-family='Trebuchet MS,sans-serif' font-weight='bold' font-size='18' fill='white' text-anchor='middle'>H</text></svg>">
 <style>
-:root{--acc:#2C7AAC;--acc2:#215E86;}
+:root{--acc:#2A74A3;--acc2:#215E86;}
 .hb{
   --sun:#F6B53C; --sun2:#E89C1E; --on:#ffffff;
   --bg:#F4F8FB; --soft:#EAF2F8; --card:#ffffff; --sky:#DCEBF4; --line:#DCE6EC;
@@ -217,23 +217,121 @@
 @media(max-width:760px){.hb-foot__top{grid-template-columns:1fr 1fr;}.hb-foot__brand{grid-column:1/-1;}}
 @media(max-width:420px){.hb-foot__top{grid-template-columns:1fr;}}
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalBusiness",
+      "name": "Hearth ABA",
+      "description": "Hearth ABA: a BCBA-led group of clinicians providing in-home, neurodiversity-affirming applied behavior analysis and parent coaching for autistic children. A FrontDoor website template.",
+      "telephone": "(555) 017-3380",
+      "email": "hello@hearthaba.example",
+      "address": "In-home across Greater Rockland County, NY",
+      "medicalSpecialty": "https://schema.org/Psychiatric",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Support Built Around Your Child and Your Family",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "In-Home ABA",
+              "description": "One-to-one therapy in the rooms your child already knows, using the toys and routines they love. Skills learned at home tend to stick.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Hearth ABA"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Parent Coaching & Training",
+              "description": "We show you simple, practical strategies that work in real moments, so progress keeps going long after we leave for the day.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Hearth ABA"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Early Intervention",
+              "description": "Gentle, play-based support for younger children, focused on communication, connection and the everyday skills that open up their world.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Hearth ABA"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Telehealth Parent Sessions",
+              "description": "Secure video check-ins with your BCBA between visits, for coaching, questions and quick problem-solving when you need a hand.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Hearth ABA"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "School & Daycare Collaboration",
+              "description": "With your okay, we partner with teachers and caregivers so your child has the same kind, consistent support everywhere they go.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Hearth ABA"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Sibling & Family Support",
+              "description": "Brothers, sisters and caregivers are part of the picture. We help the whole household understand, play and grow together.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Hearth ABA"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="hb">
 
+<a class="t-skip" href="#main">Skip to main content</a>
 <header class="hb-nav t-nav"><div class="hb-pill">
   <a href="#" class="hb-logo" aria-label="Hearth ABA, home"><span class="hb-mark" data-field="brandMark">H</span><span class="hb-logo__name" data-field="brandName">Hearth ABA</span></a>
-  <input type="checkbox" id="hb-nav-toggle" class="hb-navcheck" aria-hidden="true">
-  <label for="hb-nav-toggle" class="hb-burger" tabindex="0" role="button" aria-label="Open menu"><span></span></label>
+  <input type="checkbox" id="hb-nav-toggle" class="hb-navcheck t-vh-control" tabindex="-1" aria-hidden="true">
+  <label for="hb-nav-toggle" class="hb-burger" data-menu-toggle tabindex="0" role="button" aria-expanded="false" aria-label="Menu"><span></span></label>
   <nav class="hb-links" aria-label="Main">
     <a href="#services">Services</a>
     <a href="#about">About</a>
     <a href="#team">Our Team</a>
     <a href="#contact">Contact</a>
     <a href="#contact" class="hb-btn hb-btn--pri" data-field="navCta">Start with a free family call</a>
+      <a href="aba-hearth-blog.html" data-sw-bloglink>Blog</a>
   </nav>
 </div></header>
 
-<main>
+<main id="main" tabindex="-1">
 <section class="hb-hero" aria-labelledby="hb-hero-title"><div class="hb-shell">
   <div class="hb-hero__in">
     <span class="hb-eyebrow" data-field="heroEyebrow">In-Home ABA for Autistic Kids</span>
@@ -396,13 +494,13 @@
       <a href="#" class="hb-logo"><span class="hb-mark" data-field="brandMark">H</span><span class="hb-logo__name" data-field="brandName">Hearth ABA</span></a>
       <p data-field="footerText">BCBA-led, neurodiversity-affirming in-home ABA and parent coaching for autistic children.</p>
     </div>
-    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#about">About</a></li><li><a href="#team">Our Team</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#about">About</a></li><li><a href="#team">Our Team</a></li><li><a href="#contact">Contact</a></li><li><a href="aba-hearth-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
     <div><h4>Contact</h4><ul><li><a href="#contact">(555) 017-3380</a></li><li><a href="#contact">hello@hearthaba.example</a></li><li><a href="#contact">Start a free family call</a></li></ul></div>
   </div>
   <p class="hb-crisis"><b>In crisis?</b> Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency. This website and contact form are not monitored for emergencies.</p>
   <div class="hb-foot__bot"><span data-field="footerLegal">© 2026 Hearth ABA. All rights reserved.</span><span>Sample website. The practice, people and details shown are fictional.</span></div>
 </div></footer>
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>

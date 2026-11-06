@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="CommunityHealth" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106a">
+<link rel="stylesheet" href="../../css/template.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2335506B'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>V</text></svg>">
 <style>
 .vl{
@@ -202,13 +202,111 @@
 .reveal.is-in{opacity:1;transform:none;}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;}}
 </style>
+<!-- sw:jsonld -->
+<script type="application/ld+json" id="sw-jsonld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "MedicalBusiness",
+      "name": "Valor Veteran Care",
+      "description": "Valor Veteran Care: Mental health care for veterans. A FrontDoor website template.",
+      "telephone": "(555) 010-2400",
+      "email": "hello@veterans.example",
+      "address": "In person & telehealth",
+      "medicalSpecialty": "https://schema.org/CommunityHealth",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Support built around service.",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Combat trauma & PTSD",
+              "description": "Specialist, evidence-based care.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Valor Veteran Care"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Transition support",
+              "description": "Civilian life, without losing yourself.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Valor Veteran Care"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Couples & family",
+              "description": "Reconnect after deployment.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Valor Veteran Care"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Substance use",
+              "description": "Integrated, judgment-free care.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Valor Veteran Care"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Peer support",
+              "description": "Veterans who&#x27;ve walked it too.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Valor Veteran Care"
+              }
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "VA coordination",
+              "description": "We help navigate benefits.",
+              "provider": {
+                "@type": "MedicalBusiness",
+                "name": "Valor Veteran Care"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+</script>
+<!-- /sw:jsonld -->
 </head>
 <body class="vl">
+<a class="t-skip" href="#main">Skip to main content</a>
 <header class="vl-nav t-nav"><div class="vl-wrap vl-nav__in">
   <a href="#" class="vl-brand"><span class="vl-badge" data-field="brandMark">V</span> <span data-field="brandName">Valor Veteran Care</span></a>
-  <nav class="vl-links"><a href="#services">Services</a><a href="#approach">Approach</a><a href="#contact">Contact</a></nav>
+  <nav class="vl-links"><a href="#services">Services</a><a href="#approach">Approach</a><a href="#contact">Contact</a><a href="veterans-blog.html" data-sw-bloglink>Blog</a></nav>
   <a href="#contact" class="vl-btn vl-btn--solid" data-field="navCta">Connect with care</a>
 </div></header>
+<main id="main" tabindex="-1">
 
 <section class="vl-hero">
   <img class="vl-hero__img" src="https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&w=2200&q=80" alt="Two hands reaching toward each other between tall concrete pillars" data-img="hero">
@@ -305,15 +403,16 @@
   </form>
 </div></div></section>
 
+</main>
 <footer class="vl-foot"><div class="vl-wrap">
   <div class="vl-foot__top">
     <div class="vl-foot__brand"><a href="#" class="vl-brand"><span class="vl-badge" data-field="brandMark">V</span> <span data-field="brandName">Valor Veteran Care</span></a><p data-field="footerText">Mental health care for veterans.</p></div>
-    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#approach">Approach</a></li><li><a href="#contact">Contact</a></li></ul></div>
+    <div><h4>Explore</h4><ul><li><a href="#services">Services</a></li><li><a href="#approach">Approach</a></li><li><a href="#contact">Contact</a></li><li><a href="veterans-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
     <div><h4>Contact</h4><ul><li><a href="#contact">(555) 010-2400</a></li><li><a href="#contact">hello@veterans.example</a></li></ul></div>
   </div>
   <div class="vl-foot__bot"><span data-field="footerLegal">© 2026 Valor Veteran Care. All rights reserved.</span><span>A FrontDoor website template.</span></div>
 </div></footer>
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261021b"></script>
+<script src="../../js/template.js?v=20261106b"></script>
 </body>
 </html>
