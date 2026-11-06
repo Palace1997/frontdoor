@@ -210,25 +210,27 @@ real-world failure was.
 **Lakehouse** set its white hero headline, kicker, lede and buttons over a
 mountain photograph behind a scrim that thinned to 15% opacity in the middle of
 the hero, exactly where the text sits. Compositing the actual photo with the
-actual gradient put the headline at **2.23:1** and the kicker at **1.59:1**. A
-screenshot confirms the text is close to invisible against the bright water and
-rock. The scrim now holds 50% to 90% top to bottom, which is a visibly darker
-hero; the photo is still clearly the subject, and the headline is now readable.
+actual gradient put the headline at **2.40:1** against a 3:1 bar, the kicker at
+**1.97:1** and the scroll hint at **1.85:1**. A screenshot confirms the text is
+close to invisible against the bright water and rock. The scrim now holds 50%
+to 90% top to bottom, which is a visibly darker hero; the photo is still
+clearly the subject, and the headline is now readable.
 
 Also fixed:
 
 | Design | What | Was | Now |
 |---|---|---|---|
-| Lakehouse | hero kicker, headline, lede, buttons | 1.59 to 2.23 | scrim 50 to 90% |
-| Lakehouse | gallery captions over photos | 3.90 | scrim ramp starts at 30%, ends 88% |
+| Lakehouse | hero kicker, headline, lede, buttons | 1.85 to 2.40 | scrim 50 to 90% |
+| Lakehouse | gallery captions over photos | 2.57 | scrim ramp starts at 30%, ends 88% |
 | Lakehouse | quote scrim light end | 1.63 | 74% |
 | Lakehouse | quote eyebrow in `--gold` over the photo | 2.22 | light gold `#E6CE9C` |
-| Common Table | hero sub and eyebrow over the photo | 2.88 / 3.89 | scrim 52 to 82%, eyebrow chip 88% |
-| Meridian | day-band labels over the photo | 3.33 | scrim top stop 62% to 80% |
-| Meridian | the transparent "home for the evening" card | 2.59 | card carries a 55% fill |
+| Common Table | hero sub and eyebrow over the photo | 3.89 / 4.27 | scrim 52 to 82%, eyebrow chip 88% |
+| Meridian | day-band labels over the photo | 2.54 to 4.33 | scrim top stop 62% to 80% |
+| Meridian | the transparent "home for the evening" card | 3.13 | card carries a 55% fill |
 | Anywhere | the "You" self-view tile label | 1.08 | sits on its own 72% chip |
-| Valor | nav links over the unscrimmed hero photo | 3.23 | nav carries its own gradient |
-| Clarity | nav links reading through the translucent pill | 3.54 | pill raised from 82% to 96% white |
+| Valor | nav links over the unscrimmed hero photo | 3.23 to 3.83 | nav carries its own gradient |
+| Throughline | nav links over the hero photo | 2.65 to 2.93 | nav carries its own gradient |
+| Clarity | nav links reading through the translucent pill | 3.54 to 3.99 | pill raised from 82% to 96% white |
 
 **A regression found on the way.** Four designs carry the shared `.t-nav` class
 on their header. On Throughline and Hearth, whose navs are meant to be
@@ -327,6 +329,25 @@ inside them.
    warns them. See "What is left".
 9. **No automated regression test.** These fixes can be undone by the next edit
    without anything noticing.
+
+### A note on the tools themselves
+
+Two of the four scanners had the same parsing bug, found separately and at
+different times. `color-mix()`, and anything in a wide-gamut space, computes to
+`color(srgb 0.41 0.24 0.08)` with components in 0 to 1. A parser that expects
+`rgb(104, 61, 20)` and splits on commas reads those floats as 0 to 255, so every
+mixed colour measures as near-black and every check involving one passes by a
+mile. Identical ratios across designs with different accents is the tell.
+
+Both parsers now handle both forms, and `photo.js` records any colour it cannot
+parse at all rather than skipping it silently, so an `oklch()` or `lab()` value
+appearing later will be loud instead of invisible.
+
+Every photo measurement in section 6 was re-run with the fixed parser, with each
+scrim set back to its pre-audit value and then to its current one. All seven
+changes were necessary: the pre-audit values failed from 1.85:1 to 4.33:1, the
+current values pass, and no unparsed colour appeared on any of those pages. The
+figures in section 6 are the re-verified ones.
 
 ---
 
