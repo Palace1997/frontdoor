@@ -137,6 +137,12 @@ function upsert(html, key, block, beforeClose) {
    looks like the design it belongs to without the designs having to agree on
    token names. They do not: every one of the 30 names its colours differently.
    Everything else here is drawn from currentColor, so it adapts on its own. */
+/* A convention for anything added here that paints text on a coloured fill:
+   use a two-class selector and a literal colour for the text, never a token a
+   template is free to redefine. A low-specificity button rule losing to a broad
+   link-colour rule has produced an invisible or unreadable control three times
+   in this codebase: the Rivergate mobile drawer, the shared .t-nav background,
+   and this file's call to action. The emitted CSS below follows it. */
 const BLOG_CSS = `
 /* --acc is what the thirty catalog designs call their accent; the Starter calls
    it --accent. One alias, inherited by everything inside, covers both.
