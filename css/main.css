@@ -26,7 +26,7 @@
   --paper-3:    #efe9e2;
   --navy-tint:  #E7F1FA;   /* pale blue wash */
   --cream-accent:#F0EBE1;  /* cream accent on navy panels */
-  --footer-logo-size: 120px;/* overall footer logo height (logo + baked-in tagline) */
+  --footer-logo-size: 90px;/* overall footer logo height (logo + baked-in tagline) */
   --nav-logo-size: 92px;   /* nav logo height */
 
   --line:       #E5E2DC;
@@ -585,7 +585,7 @@ ul { margin: 0; padding: 0; list-style: none; }
      transform every frame and would wipe anything set there. `translate` is
      the standalone property, not `transform`, so it moves the reel 1:1
      without resizing the stage the way a margin did. */
-  translate:var(--reels-x,0px) var(--reels-y,0px);
+  translate:var(--reels-x,18px) var(--reels-y,48px);
   touch-action:pan-y;-webkit-user-select:none;user-select:none;
   -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,0) 0,#000 9%,#000 91%,rgba(0,0,0,0) 100%);
   mask-image:linear-gradient(to right,rgba(0,0,0,0) 0,#000 9%,#000 91%,rgba(0,0,0,0) 100%)}
@@ -645,7 +645,7 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
 /* nav */
 .lnav{position:relative;z-index:6;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;padding:clamp(16px,2.4vw,30px) clamp(18px,3vw,40px)}
 .lnav__logo{display:block;justify-self:start;line-height:0}
-.lnav__logo img{height:var(--lhero-logo,135px);width:auto;display:block;
+.lnav__logo img{height:var(--lhero-logo,122px);width:auto;display:block;
   /* transform-driven so resizing/moving the logo never reflows the nav
      (baked: 94px of a 135px box = scale .6963, nudged +18px / -12px) */
   transform:translate(var(--lh-x,18px),var(--lh-y,-12px)) scale(var(--lh-scale,.6963));

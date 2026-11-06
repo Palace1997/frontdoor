@@ -24,7 +24,7 @@
   var hero = stage.classList.contains('lhero__reels');
   // On a phone a card sized off the frame is nearly as wide as the frame, so
   // you read one screenshot rather than a wall of them. Smaller there.
-  var DEFAULT_FILL = small ? 0.42 : 0.62;
+  var DEFAULT_FILL = small ? 0.42 : 0.66;
   var fill = DEFAULT_FILL;
   var CARD_W, CARD_H;
 
