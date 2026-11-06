@@ -37,7 +37,10 @@
         if (!Object.prototype.hasOwnProperty.call(o, k)) continue;
         var v = prune(o[k]);
         if (v === undefined) continue;
-        out[k] = v; if (k !== '@type' && k !== '@id') any = true;
+        // An @id on its own is the whole point of a reference: it is how the
+        // post says who published it without repeating the practice. Only a
+        // node that is nothing but a @type is empty.
+        out[k] = v; if (k !== '@type') any = true;
       }
       return any ? out : undefined;
     }
@@ -184,13 +187,25 @@
     return { '@type': 'FAQPage', mainEntity: qs };
   }
 
+  /* schema.org puts medicalSpecialty on MedicalOrganization and its subtypes,
+     not on MedicalBusiness, which is the LocalBusiness side of the family.
+     Physician is a subtype of both, so it carries the property on its own; the
+     rest are declared as both types at once, which is true of all of them and
+     is what makes the specialty legal rather than ignored. Checked against
+     validator.schema.org: one type gives a warning, the pair gives none. */
+  function typeOf(d) {
+    var t = String(d.schemaType || 'MedicalBusiness').split(',')
+      .map(function (x) { return x.trim(); }).filter(Boolean);
+    return t.length > 1 ? t : t[0];
+  }
+
   // The practice itself. Every other node on every other page points back here.
   function practiceNode(d) {
     var site = absUrl(d.siteUrl);
     var id = site ? site + '/#practice' : undefined;
     var ref = id ? { '@id': id } : undefined;
     var node = {
-      '@type': d.schemaType || 'MedicalBusiness',
+      '@type': typeOf(d),
       '@id': id,
       name: clean(d.brandName),
       description: clean(d.description) || clean(d.heroSub),
@@ -201,7 +216,7 @@
       image: absUrl(d.image),
       medicalSpecialty: d.specialty ? SPECIALTY_BASE + d.specialty : undefined,
       openingHoursSpecification: hours(d.hours),
-      hasOfferCatalog: offerCatalog(d, ref || { '@type': (d.schemaType || 'MedicalBusiness'), name: clean(d.brandName) })
+      hasOfferCatalog: offerCatalog(d, ref || { '@type': typeOf(d), name: clean(d.brandName) })
     };
     if (!node.name) return undefined;
     return node;
@@ -279,7 +294,9 @@
     var get = function (id) {
       var el = doc.querySelector('[data-field="' + id + '"]');
       if (!el) return '';
-      if (el.hasAttribute('data-empty')) return '';
+      // data-empty="1" is how a template hides a card the practice left blank,
+      // and "0" is how it says the card is in use. Only the 1 means skip it.
+      if (el.getAttribute('data-empty') === '1' || (el.closest && el.closest('[data-empty="1"]'))) return '';
       return clean(el.textContent);
     };
     var html = doc.documentElement, body = doc.body;

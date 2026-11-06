@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
+<html lang="en" data-sw-type="MedicalBusiness,MedicalOrganization" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106b">
+<link rel="stylesheet" href="../../css/template.css?v=20261106e">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%233A4E8C'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>B</text></svg>">
 <style>
 :root{--acc:#3A4E8C;--acc2:#2C3C6E;}
@@ -250,7 +250,10 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "MedicalBusiness",
+      "@type": [
+        "MedicalBusiness",
+        "MedicalOrganization"
+      ],
       "name": "Beacon Neuropsychology",
       "description": "Beacon Neuropsychology: a solo neuropsychological assessment practice with Dr. Priya Shah, PhD, ABPP-CN, offering ADHD, autism, learning and cognitive evaluations for teens and adults, in person and online. A FrontDoor website template.",
       "telephone": "(555) 014-7781",
@@ -274,7 +277,10 @@
               "name": "ADHD Evaluation",
               "description": "A thorough look at attention, focus and executive function, with input from the people who know you well.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Beacon Neuropsychology"
               }
             }
@@ -286,7 +292,10 @@
               "name": "Autism Evaluation",
               "description": "For teens and adults seeking clarity about social, sensory and communication differences, and what helps.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Beacon Neuropsychology"
               }
             }
@@ -298,7 +307,10 @@
               "name": "Learning Disability Testing",
               "description": "Testing for reading, writing and math differences, with documentation for school or workplace accommodations.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Beacon Neuropsychology"
               }
             }
@@ -310,7 +322,10 @@
               "name": "Memory & Cognitive Testing",
               "description": "For noticeable changes in memory, word finding or clear thinking, to understand what is going on and what helps.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Beacon Neuropsychology"
               }
             }
@@ -322,7 +337,10 @@
               "name": "Pre-Surgical & Capacity Evaluations",
               "description": "Baseline cognitive testing before procedures, and careful capacity evaluations when decisions need clear support.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Beacon Neuropsychology"
               }
             }
@@ -334,7 +352,10 @@
               "name": "Feedback Sessions",
               "description": "A dedicated meeting to walk through your results together, answer questions and leave with clear next steps.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Beacon Neuropsychology"
               }
             }
@@ -670,6 +691,6 @@
   <div class="bn-foot__bot"><span data-field="footerLegal">© 2026 Beacon Neuropsychology. All rights reserved.</span><span>Sample website. The practice, people and details shown are fictional.</span></div>
 </div></footer>
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261106b"></script>
+<script src="../../js/template.js?v=20261106e"></script>
 </body>
 </html>

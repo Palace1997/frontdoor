@@ -1,4 +1,4 @@
-<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="CommunityHealth" data-sw-page="blog" data-site-url="" data-sw-href="blog.html">
+<html lang="en" data-sw-type="MedicalBusiness,MedicalOrganization" data-sw-specialty="CommunityHealth" data-sw-page="blog" data-site-url="" data-sw-href="blog.html">
 <head>
 <title>Notes And Updates, Throughline Recovery Coaching</title>
 <meta name="description" content="Practical writing from Throughline Recovery Coaching on getting started, what to expect and how we work.">
@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106b">
+<link rel="stylesheet" href="../../css/template.css?v=20261106e">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23BE5224'/><text x='16' y='23' font-family='Arial,sans-serif' font-size='19' font-weight='bold' fill='white' text-anchor='middle'>T</text></svg>">
 <style>
 :root{--acc:#B04C21;--acc2:#99401A;}
@@ -55,7 +55,7 @@
 .tl-logo__name{font-family:var(--disp);font-weight:900;font-size:clamp(22px,2.4vw,29px);letter-spacing:-.025em;line-height:.98;}
 
 /* NAV, transparent over hero, solid on scroll, oversized wordmark + accent CTA */
-.tl-nav{position:fixed;top:0;left:0;right:0;z-index:70;transition:background .3s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease);border-bottom:1px solid transparent;}
+.tl-nav{position:fixed;top:0;left:0;right:0;z-index:70;background:linear-gradient(180deg,rgba(26,14,6,.74),rgba(26,14,6,.3));backdrop-filter:none;-webkit-backdrop-filter:none;transition:background .3s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease);border-bottom:1px solid transparent;}
 .tl-nav__in{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:84px;}
 .tl-nav .tl-logo__name,.tl-nav .tl-links a{color:#fff;}
 .tl-nav .tl-mark{background:#fff;color:var(--acc2);box-shadow:0 10px 22px -12px rgba(0,0,0,.5);}
@@ -195,7 +195,7 @@
 .tl-foot .tl-logo__name{color:#fff;}
 .tl-foot .tl-mark{background:var(--acc);color:#fff;}
 .tl-foot__brand p{margin-top:16px;max-width:38ch;font-size:14.5px;color:rgba(255,255,255,.64);}
-.tl-foot h4{margin:0 0 14px;font-family:var(--disp);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff;}
+.tl-foot h3,.tl-foot h4{margin:0 0 14px;font-family:var(--disp);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff;}
 .tl-foot li{margin-bottom:10px;font-size:14.5px;}
 .tl-foot a{color:rgba(255,255,255,.68);}
 .tl-foot a:hover{color:#fff;}
@@ -263,7 +263,10 @@
       "name": "Notes And Updates",
       "description": "Short, practical writing for people deciding whether to reach out, and for the ones already working with us.",
       "publisher": {
-        "@type": "MedicalBusiness",
+        "@type": [
+          "MedicalBusiness",
+          "MedicalOrganization"
+        ],
         "name": "Throughline Recovery Coaching"
       },
       "inLanguage": "en-US",
@@ -274,18 +277,27 @@
           "description": "Not knowing what happens in the room is one of the reasons people put off calling. Here is the shape of a first appointment, start to finish.",
           "datePublished": "2026-11-06",
           "author": {
-            "@type": "MedicalBusiness",
+            "@type": [
+              "MedicalBusiness",
+              "MedicalOrganization"
+            ],
             "name": "Throughline Recovery Coaching"
           },
           "publisher": {
-            "@type": "MedicalBusiness",
+            "@type": [
+              "MedicalBusiness",
+              "MedicalOrganization"
+            ],
             "name": "Throughline Recovery Coaching"
           }
         }
       ]
     },
     {
-      "@type": "MedicalBusiness",
+      "@type": [
+        "MedicalBusiness",
+        "MedicalOrganization"
+      ],
       "name": "Throughline Recovery Coaching",
       "description": "Practical writing from Throughline Recovery Coaching on getting started, what to expect and how we work.",
       "telephone": "(555) 017-6240",
@@ -350,8 +362,8 @@
       <a href="coaching-throughline.html" class="tl-logo"><span class="tl-mark" data-field="brandMark">T</span><span class="tl-logo__name" data-field="brandName">Throughline Recovery Coaching</span></a>
       <p data-field="footerText">Practical, forward-looking peer recovery support with a Certified Peer Recovery Specialist. All pathways welcome, by phone, video, or in person.</p>
     </div>
-    <div><h4>Explore</h4><ul><li><a href="coaching-throughline.html#services">Services</a></li><li><a href="coaching-throughline.html#how">How It Works</a></li><li><a href="coaching-throughline.html#about">About</a></li><li><a href="coaching-throughline.html#contact">Contact</a></li><li><a href="coaching-throughline-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
-    <div><h4>Contact</h4><ul><li><a href="coaching-throughline.html#contact">(555) 017-6240</a></li><li><a href="coaching-throughline.html#contact">hello@throughlinecoaching.example</a></li><li><a href="coaching-throughline.html#contact">Book a free intro call</a></li></ul></div>
+    <div><h3>Explore</h3><ul><li><a href="coaching-throughline.html#services">Services</a></li><li><a href="coaching-throughline.html#how">How It Works</a></li><li><a href="coaching-throughline.html#about">About</a></li><li><a href="coaching-throughline.html#contact">Contact</a></li><li><a href="coaching-throughline-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
+    <div><h3>Contact</h3><ul><li><a href="coaching-throughline.html#contact">(555) 017-6240</a></li><li><a href="coaching-throughline.html#contact">hello@throughlinecoaching.example</a></li><li><a href="coaching-throughline.html#contact">Book a free intro call</a></li></ul></div>
   </div>
   <div class="tl-crisis">
     <p><b>In crisis?</b> Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency. This website and contact form are not monitored for emergencies.</p>
@@ -363,6 +375,6 @@
 <div class="tl-bookbar"><a href="coaching-throughline.html#contact" class="tl-btn tl-btn--pri">Book a free intro call</a></div>
 
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261106b"></script>
+<script src="../../js/template.js?v=20261106e"></script>
 </body>
 </html>

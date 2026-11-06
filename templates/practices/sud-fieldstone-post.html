@@ -1,4 +1,4 @@
-<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="post" data-site-url="" data-sw-href="post.html">
+<html lang="en" data-sw-type="MedicalBusiness,MedicalOrganization" data-sw-specialty="Psychiatric" data-sw-page="post" data-site-url="" data-sw-href="post.html">
 <head>
 <title>What To Expect At A First Appointment, Fieldstone Counseling</title>
 <meta name="description" content="Not knowing what happens in the room is one of the reasons people put off calling. Here is the shape of a first appointment, start to finish.">
@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106b">
+<link rel="stylesheet" href="../../css/template.css?v=20261106e">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23A4611F'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>F</text></svg>">
 <style>
 :root{--acc:#9A5B1D;--acc2:#7E4813;}
@@ -196,7 +196,7 @@
 .fs-foot__top{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.12);}
 .fs-foot .fs-logo,.fs-foot .fs-logo__name{color:#fff;}
 .fs-foot__brand p{margin-top:16px;max-width:38ch;font-size:14.5px;color:rgba(255,255,255,.64);}
-.fs-foot h4{margin:0 0 14px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff;}
+.fs-foot h3,.fs-foot h4{margin:0 0 14px;font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff;}
 .fs-foot li{margin-bottom:10px;font-size:14.5px;}
 .fs-foot a{color:rgba(255,255,255,.68);}
 .fs-foot a:hover{color:#fff;}
@@ -278,7 +278,10 @@
         "jobTitle": "Clinical Director"
       },
       "publisher": {
-        "@type": "MedicalBusiness",
+        "@type": [
+          "MedicalBusiness",
+          "MedicalOrganization"
+        ],
         "name": "Fieldstone Counseling"
       },
       "isPartOf": {
@@ -286,7 +289,10 @@
         "name": "Notes And Updates",
         "description": "Short, practical writing for people deciding whether to reach out, and for the ones already working with us.",
         "publisher": {
-          "@type": "MedicalBusiness",
+          "@type": [
+            "MedicalBusiness",
+            "MedicalOrganization"
+          ],
           "name": "Fieldstone Counseling"
         },
         "inLanguage": "en-US"
@@ -294,7 +300,10 @@
       "inLanguage": "en-US"
     },
     {
-      "@type": "MedicalBusiness",
+      "@type": [
+        "MedicalBusiness",
+        "MedicalOrganization"
+      ],
       "name": "Fieldstone Counseling",
       "description": "Not knowing what happens in the room is one of the reasons people put off calling. Here is the shape of a first appointment, start to finish.",
       "telephone": "(555) 017-3380",
@@ -406,8 +415,8 @@
       <a href="sud-fieldstone.html" class="fs-logo"><span class="fs-mark" data-field="brandMark">F</span><span class="fs-logo__name" data-field="brandName">Fieldstone Counseling</span></a>
       <p data-field="footerText">Confidential substance use counseling from a team of licensed LADC and CADC counselors, in person and online.</p>
     </div>
-    <div><h4>Explore</h4><ul><li><a href="sud-fieldstone.html#services">How We Help</a></li><li><a href="sud-fieldstone.html#about">About Us</a></li><li><a href="sud-fieldstone.html#team">Our Counselors</a></li><li><a href="sud-fieldstone.html#insurance">Insurance</a></li><li><a href="sud-fieldstone-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
-    <div><h4>Contact</h4><ul><li><a href="sud-fieldstone.html#contact">(555) 017-3380</a></li><li><a href="sud-fieldstone.html#contact">hello@fieldstonecounseling.example</a></li><li><a href="sud-fieldstone.html#contact">Reach out</a></li></ul></div>
+    <div><h3>Explore</h3><ul><li><a href="sud-fieldstone.html#services">How We Help</a></li><li><a href="sud-fieldstone.html#about">About Us</a></li><li><a href="sud-fieldstone.html#team">Our Counselors</a></li><li><a href="sud-fieldstone.html#insurance">Insurance</a></li><li><a href="sud-fieldstone-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
+    <div><h3>Contact</h3><ul><li><a href="sud-fieldstone.html#contact">(555) 017-3380</a></li><li><a href="sud-fieldstone.html#contact">hello@fieldstonecounseling.example</a></li><li><a href="sud-fieldstone.html#contact">Reach out</a></li></ul></div>
   </div>
   <p class="fs-crisis"><b>In crisis?</b> Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency.
     <span>SAMHSA National Helpline: 1-800-662-4357 (free, confidential, 24/7). This website and contact form are not monitored for emergencies.</span></p>
@@ -431,6 +440,6 @@
   document.addEventListener('keydown',function(e){if(e.key==='Escape')set(false);});
 })();
 </script>
-<script src="../../js/template.js?v=20261106b"></script>
+<script src="../../js/template.js?v=20261106e"></script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="CommunityHealth" data-sw-page="blog" data-site-url="" data-sw-href="blog.html">
+<html lang="en" data-sw-type="MedicalBusiness,MedicalOrganization" data-sw-specialty="CommunityHealth" data-sw-page="blog" data-site-url="" data-sw-href="blog.html">
 <head>
 <title>Notes And Updates, Meridian Day Program</title>
 <meta name="description" content="Practical writing from Meridian Day Program on getting started, what to expect and how we work.">
@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106b">
+<link rel="stylesheet" href="../../css/template.css?v=20261106e">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232F8F7A'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>M</text></svg>">
 <style>
 .md-page{
@@ -59,7 +59,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-display);font-weight:500;letter-spac
 .md-day{position:relative;isolation:isolate;overflow:hidden;margin-top:clamp(36px,4.4vw,56px);border-radius:24px;color:#fff;padding:clamp(24px,3.2vw,40px);box-shadow:0 40px 80px -50px rgba(18,53,48,.7);}
 .md-day__bg{position:absolute;inset:0;z-index:-2;}
 .md-day__bg img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;}
-.md-day::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(18,53,48,.62) 0%,rgba(14,44,39,.84) 46%,rgba(12,38,33,.94) 100%);}
+.md-day::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(18,53,48,.8) 0%,rgba(14,44,39,.88) 46%,rgba(12,38,33,.95) 100%);}
 .md-day__top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:10px 30px;margin-bottom:clamp(26px,3vw,38px);}
 .md-day__top small{display:block;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#8FD8C6;margin-bottom:8px;}
 .md-day__top h2{font-size:clamp(22px,2.4vw,28px);color:#fff;}
@@ -75,7 +75,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-display);font-weight:500;letter-spac
 .md-day__card h3{font-size:18px;margin:14px 0 6px;line-height:1.15;}
 .md-day__card p{font-size:13.5px;line-height:1.5;color:var(--muted);}
 .md-day__item--home::before{background:transparent;border-style:dashed;}
-.md-day__item--home .md-day__card{background:transparent;color:#fff;border:1.4px dashed rgba(143,216,198,.6);box-shadow:none;}
+.md-day__item--home .md-day__card{background:rgba(10,34,30,.55);color:#fff;border:1.4px dashed rgba(143,216,198,.6);box-shadow:none;}
 .md-day__item--home .md-day__time{color:#8FD8C6;}
 .md-day__item--home .md-day__time small{color:rgba(255,255,255,.7);}
 .md-day__item--home h3{color:#fff;}
@@ -215,7 +215,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-display);font-weight:500;letter-spac
 .md-foot__top{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:34px;padding-bottom:38px;border-bottom:1px solid rgba(255,255,255,.14);}
 .md-foot .md-logo{color:#fff;}
 .md-foot__brand p{margin-top:14px;max-width:34ch;font-size:14px;color:rgba(255,255,255,.62);line-height:1.55;}
-.md-foot h4{font-family:var(--font-sans);font-size:11.5px;text-transform:uppercase;letter-spacing:.14em;color:#fff;margin-bottom:14px;}
+.md-foot h3,.md-foot h4{font-family:var(--font-sans);font-size:11.5px;text-transform:uppercase;letter-spacing:.14em;color:#fff;margin-bottom:14px;}
 .md-foot ul{list-style:none;padding:0;margin:0;}
 .md-foot li{margin-bottom:10px;}
 .md-foot a{color:rgba(255,255,255,.62);font-size:14px;}
@@ -275,7 +275,10 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-display);font-weight:500;letter-spac
       "name": "Notes And Updates",
       "description": "Short, practical writing for people deciding whether to reach out, and for the ones already working with us.",
       "publisher": {
-        "@type": "MedicalBusiness",
+        "@type": [
+          "MedicalBusiness",
+          "MedicalOrganization"
+        ],
         "name": "Meridian Day Program"
       },
       "inLanguage": "en-US",
@@ -286,18 +289,27 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-display);font-weight:500;letter-spac
           "description": "Not knowing what happens in the room is one of the reasons people put off calling. Here is the shape of a first appointment, start to finish.",
           "datePublished": "2026-11-06",
           "author": {
-            "@type": "MedicalBusiness",
+            "@type": [
+              "MedicalBusiness",
+              "MedicalOrganization"
+            ],
             "name": "Meridian Day Program"
           },
           "publisher": {
-            "@type": "MedicalBusiness",
+            "@type": [
+              "MedicalBusiness",
+              "MedicalOrganization"
+            ],
             "name": "Meridian Day Program"
           }
         }
       ]
     },
     {
-      "@type": "MedicalBusiness",
+      "@type": [
+        "MedicalBusiness",
+        "MedicalOrganization"
+      ],
       "name": "Meridian Day Program",
       "description": "Practical writing from Meridian Day Program on getting started, what to expect and how we work.",
       "telephone": "(555) 010-2400",
@@ -345,13 +357,13 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-display);font-weight:500;letter-spac
 <footer class="md-foot"><div class="md-wrap">
   <div class="md-foot__top">
     <div class="md-foot__brand"><a href="iop-php.html" class="md-logo"><span class="md-mark" data-field="brandMark">M</span> <span data-field="brandName">Meridian Day Program</span></a><p data-field="footerText">Intensive outpatient &amp; partial hospitalization.</p></div>
-    <div><h4>Explore</h4><ul><li><a href="iop-php.html#schedule">Schedule</a></li><li><a href="iop-php.html#tracks">Tracks</a></li><li><a href="iop-php.html#services">Services</a></li><li><a href="iop-php.html#contact">Contact</a></li><li><a href="iop-php-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
-    <div><h4>Contact</h4><ul><li><a href="iop-php.html#contact">(555) 010-2400</a></li><li><a href="iop-php.html#contact">hello@iopphp.example</a></li></ul></div>
+    <div><h3>Explore</h3><ul><li><a href="iop-php.html#schedule">Schedule</a></li><li><a href="iop-php.html#tracks">Tracks</a></li><li><a href="iop-php.html#services">Services</a></li><li><a href="iop-php.html#contact">Contact</a></li><li><a href="iop-php-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
+    <div><h3>Contact</h3><ul><li><a href="iop-php.html#contact">(555) 010-2400</a></li><li><a href="iop-php.html#contact">hello@iopphp.example</a></li></ul></div>
   </div>
   <div class="md-foot__bot"><span data-field="footerLegal">© 2026 Meridian Day Program. All rights reserved.</span><span>A FrontDoor website template.</span></div>
 </div></footer>
 
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261106b"></script>
+<script src="../../js/template.js?v=20261106e"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106b">
+<link rel="stylesheet" href="../../css/template.css?v=20261106e">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%233B6B4F'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>L</text></svg>">
 <style>
 .lh{
@@ -59,7 +59,7 @@
 .lh-hero{position:relative;min-height:min(94vh,860px);display:flex;align-items:flex-end;overflow:hidden;color:#fff;}
 .lh-hero__bg{position:absolute;inset:0;}
 .lh-hero__bg img{width:100%;height:100%;object-fit:cover;}
-.lh-hero__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,30,22,.28) 0%,rgba(16,30,22,.15) 40%,rgba(16,30,22,.78) 100%);}
+.lh-hero__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(16,30,22,.5) 0%,rgba(16,30,22,.72) 26%,rgba(16,30,22,.84) 60%,rgba(16,30,22,.9) 100%);}
 .lh-hero__in{position:relative;z-index:2;width:100%;padding-bottom:clamp(56px,8vw,96px);padding-top:120px;}
 .lh-hero .lh-kick{color:#fff;}
 .lh-hero .lh-kick::before{background:rgba(255,255,255,.7);}
@@ -101,7 +101,7 @@
 .lh-gal img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.8,.2,1);}
 .lh-gal figure:hover img{transform:scale(1.06);}
 .lh-gal figcaption{position:absolute;left:16px;bottom:14px;color:#fff;font-family:'Fraunces',serif;font-style:italic;font-size:16px;text-shadow:0 1px 8px rgba(0,0,0,.5);z-index:2;}
-.lh-gal figure::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(16,30,22,.72));}
+.lh-gal figure::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(16,30,22,.88));}
 .lh-gal .lh-g-tall{grid-row:span 2;}
 .lh-gal .lh-g-wide{grid-column:span 2;}
 @media(max-width:860px){.lh-gal{grid-template-columns:repeat(2,1fr);grid-auto-rows:180px;}.lh-gal .lh-g-wide{grid-column:span 2;}.lh-gal .lh-g-tall{grid-row:span 1;}}
@@ -163,7 +163,7 @@
 .lh-foot__top{display:grid;grid-template-columns:1.8fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,.14);}
 .lh-foot .lh-logo{color:#fff;}
 .lh-foot__brand p{margin-top:18px;max-width:36ch;font-size:15px;line-height:1.65;color:rgba(255,255,255,.62);}
-.lh-foot h4{font-family:'Inter',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:#fff;margin-bottom:18px;}
+.lh-foot h3,.lh-foot h4{font-family:'Inter',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:#fff;margin-bottom:18px;}
 .lh-foot ul{list-style:none;margin:0;padding:0;}
 .lh-foot li{margin-bottom:12px;}
 .lh-foot a{color:rgba(255,255,255,.62);font-size:15px;}
@@ -301,13 +301,13 @@
 <footer class="lh-foot"><div class="lh-wrap">
   <div class="lh-foot__top">
     <div class="lh-foot__brand"><a href="residential.html" class="lh-logo"><span class="lh-mark" data-field="brandMark">L</span> <span data-field="brandName">Lakehouse Recovery</span></a><p data-field="footerText">Residential treatment.</p></div>
-    <div><h4>Explore</h4><ul><li><a href="residential.html#services">Services</a></li><li><a href="residential.html#life">Life at Lakehouse</a></li><li><a href="residential.html#approach">Approach</a></li><li><a href="residential.html#contact">Contact</a></li><li><a href="residential-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
-    <div><h4>Contact</h4><ul><li><a href="residential.html#contact">(555) 010-2400</a></li><li><a href="residential.html#contact">hello@residential.example</a></li></ul></div>
+    <div><h3>Explore</h3><ul><li><a href="residential.html#services">Services</a></li><li><a href="residential.html#life">Life at Lakehouse</a></li><li><a href="residential.html#approach">Approach</a></li><li><a href="residential.html#contact">Contact</a></li><li><a href="residential-blog.html" data-sw-bloglink>Blog</a></li></ul></div>
+    <div><h3>Contact</h3><ul><li><a href="residential.html#contact">(555) 010-2400</a></li><li><a href="residential.html#contact">hello@residential.example</a></li></ul></div>
   </div>
   <div class="lh-foot__bot"><span data-field="footerLegal">© 2026 Lakehouse Recovery. All rights reserved.</span><span>A FrontDoor website template.</span></div>
 </div><p class="sw-crisis" style="margin:0;padding:16px 20px 6px;font-size:13px;line-height:1.5;text-align:center;opacity:.85">In crisis? Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency.</p>
 </footer>
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261106b"></script>
+<script src="../../js/template.js?v=20261106e"></script>
 </body>
 </html>

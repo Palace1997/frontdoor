@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="CommunityHealth" data-sw-page="home" data-site-url="">
+<html lang="en" data-sw-type="MedicalBusiness,MedicalOrganization" data-sw-specialty="CommunityHealth" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106b">
+<link rel="stylesheet" href="../../css/template.css?v=20261106e">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2335506B'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>V</text></svg>">
 <style>
 .vl{
@@ -55,7 +55,7 @@
 @media(max-width:860px){.vl-links{display:none;}}
 
 /* ==== NAV over the hero photo (template.js adds .scrolled once the page moves) ==== */
-.vl .vl-nav{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:1px solid rgba(255,255,255,.16);transition:background .3s,border-color .3s,backdrop-filter .3s;}
+.vl .vl-nav{background:linear-gradient(180deg,rgba(15,23,32,.72),rgba(15,23,32,.34));backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom:1px solid rgba(255,255,255,.16);transition:background .3s,border-color .3s,backdrop-filter .3s;}
 .vl .vl-nav .vl-brand{color:#fff;transition:color .3s;}
 .vl .vl-nav .vl-links a{color:rgba(255,255,255,.8);}
 .vl .vl-nav .vl-links a:hover{color:#fff;}
@@ -208,7 +208,10 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "MedicalBusiness",
+      "@type": [
+        "MedicalBusiness",
+        "MedicalOrganization"
+      ],
       "name": "Valor Veteran Care",
       "description": "Valor Veteran Care: Mental health care for veterans. A FrontDoor website template.",
       "telephone": "(555) 010-2400",
@@ -226,7 +229,10 @@
               "name": "Combat trauma & PTSD",
               "description": "Specialist, evidence-based care.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Valor Veteran Care"
               }
             }
@@ -238,7 +244,10 @@
               "name": "Transition support",
               "description": "Civilian life, without losing yourself.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Valor Veteran Care"
               }
             }
@@ -250,7 +259,10 @@
               "name": "Couples & family",
               "description": "Reconnect after deployment.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Valor Veteran Care"
               }
             }
@@ -262,7 +274,10 @@
               "name": "Substance use",
               "description": "Integrated, judgment-free care.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Valor Veteran Care"
               }
             }
@@ -272,9 +287,12 @@
             "itemOffered": {
               "@type": "Service",
               "name": "Peer support",
-              "description": "Veterans who&#x27;ve walked it too.",
+              "description": "Veterans who've walked it too.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Valor Veteran Care"
               }
             }
@@ -286,7 +304,10 @@
               "name": "VA coordination",
               "description": "We help navigate benefits.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Valor Veteran Care"
               }
             }
@@ -413,6 +434,6 @@
   <div class="vl-foot__bot"><span data-field="footerLegal">© 2026 Valor Veteran Care. All rights reserved.</span><span>A FrontDoor website template.</span></div>
 </div></footer>
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261106b"></script>
+<script src="../../js/template.js?v=20261106e"></script>
 </body>
 </html>

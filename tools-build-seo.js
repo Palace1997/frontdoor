@@ -35,7 +35,10 @@ const AREA_NAME = {}; CATALOG.areas.forEach(a => AREA_NAME[a.id] = a.name);
 
    Physician is reserved for the two areas led by physicians. A psychiatric
    nurse practitioner is not a physician and an ABA provider is not one either,
-   so those stay MedicalBusiness, which is the honest parent type.
+   so those are declared as both MedicalBusiness and MedicalOrganization: the
+   first is the local-business type a search engine reads for an address and
+   opening hours, the second is the one that makes medicalSpecialty a property
+   schema.org recognises. Physician is already a subtype of both.
 
    The specialty is a member of schema.org's MedicalSpecialty enumeration, so it
    has to be one of the published values. "Psychiatric" is the one that covers
@@ -46,16 +49,16 @@ const AREA_NAME = {}; CATALOG.areas.forEach(a => AREA_NAME[a.id] = a.name);
 const SCHEMA = {
   psychiatry:      { type: 'Physician',       specialty: 'Psychiatric' },
   'addiction-med': { type: 'Physician',       specialty: 'Psychiatric' },
-  psychology:      { type: 'MedicalBusiness', specialty: 'Psychiatric' },
-  counseling:      { type: 'MedicalBusiness', specialty: 'Psychiatric' },
-  mft:             { type: 'MedicalBusiness', specialty: 'Psychiatric' },
-  'psych-nursing': { type: 'MedicalBusiness', specialty: 'Psychiatric' },
-  aba:             { type: 'MedicalBusiness', specialty: 'Psychiatric' },
-  expressive:      { type: 'MedicalBusiness', specialty: 'Psychiatric' },
-  sud:             { type: 'MedicalBusiness', specialty: 'Psychiatric' },
-  'social-work':   { type: 'MedicalBusiness', specialty: 'CommunityHealth' },
-  'psych-rehab':   { type: 'MedicalBusiness', specialty: 'CommunityHealth' },
-  peer:            { type: 'MedicalBusiness', specialty: 'CommunityHealth' }
+  psychology:      { type: 'MedicalBusiness,MedicalOrganization', specialty: 'Psychiatric' },
+  counseling:      { type: 'MedicalBusiness,MedicalOrganization', specialty: 'Psychiatric' },
+  mft:             { type: 'MedicalBusiness,MedicalOrganization', specialty: 'Psychiatric' },
+  'psych-nursing': { type: 'MedicalBusiness,MedicalOrganization', specialty: 'Psychiatric' },
+  aba:             { type: 'MedicalBusiness,MedicalOrganization', specialty: 'Psychiatric' },
+  expressive:      { type: 'MedicalBusiness,MedicalOrganization', specialty: 'Psychiatric' },
+  sud:             { type: 'MedicalBusiness,MedicalOrganization', specialty: 'Psychiatric' },
+  'social-work':   { type: 'MedicalBusiness,MedicalOrganization', specialty: 'CommunityHealth' },
+  'psych-rehab':   { type: 'MedicalBusiness,MedicalOrganization', specialty: 'CommunityHealth' },
+  peer:            { type: 'MedicalBusiness,MedicalOrganization', specialty: 'CommunityHealth' }
 };
 
 const POST_DATE = '2026-11-06';
@@ -65,10 +68,20 @@ const POST_DATE = '2026-11-06';
 const esc = s => String(s == null ? '' : s)
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-const txt = h => String(h).replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ')
-  .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
-  .replace(/&#39;|&rsquo;/g, "'").replace(/&quot;|&ldquo;|&rdquo;/g, '"')
-  .replace(/&ndash;/g, '–').replace(/\s+/g, ' ').trim();
+/* Markup in, plain text out. JSON-LD holds text, not HTML, so an entity that
+   survives this ends up printed literally in a search result: one template's
+   description really did read "haven&#x27;t worked" until the numeric forms
+   were handled here. Named entities are listed; numeric ones are decoded
+   whatever they are. */
+const NAMED = { nbsp: ' ', amp: '&', lt: '<', gt: '>', quot: '"', apos: "'",
+  rsquo: '’', lsquo: '‘', ldquo: '“', rdquo: '”',
+  ndash: '–', mdash: '—', hellip: '…', middot: '·', times: '×' };
+const txt = h => String(h)
+  .replace(/<[^>]*>/g, '')
+  .replace(/&#x([0-9a-f]+);/gi, (m, n) => String.fromCodePoint(parseInt(n, 16)))
+  .replace(/&#(\d+);/g, (m, n) => String.fromCodePoint(parseInt(n, 10)))
+  .replace(/&([a-z]+);/gi, (m, n) => (n.toLowerCase() in NAMED ? NAMED[n.toLowerCase()] : m))
+  .replace(/\s+/g, ' ').trim();
 
 // Balanced <tag> ... </tag>, matching nesting. `last` walks back from the final
 // closing tag instead, which is how the page footer is told apart from the small

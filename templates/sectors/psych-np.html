@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-sw-type="MedicalBusiness" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
+<html lang="en" data-sw-type="MedicalBusiness,MedicalOrganization" data-sw-specialty="Psychiatric" data-sw-page="home" data-site-url="">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/template.css?v=20261106b">
+<link rel="stylesheet" href="../../css/template.css?v=20261106e">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%231F8A99'/><text x='16' y='23' font-family='Georgia,serif' font-size='18' fill='white' text-anchor='middle'>C</text></svg>">
 <style>
 .cl-page{
@@ -42,7 +42,7 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
 .cl-btn--light:hover{transform:translateY(-2px);}
 /* NAV pill */
 .cl-nav{position:sticky;top:0;z-index:60;padding:16px 0;}
-.cl-nav__in{display:flex;align-items:center;justify-content:space-between;gap:20px;background:rgba(255,255,255,.82);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:100px;padding:9px 10px 9px 20px;box-shadow:var(--shadow-sm);}
+.cl-nav__in{display:flex;align-items:center;justify-content:space-between;gap:20px;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:100px;padding:9px 10px 9px 20px;box-shadow:var(--shadow-sm);}
 .cl-logo{display:inline-flex;align-items:center;gap:11px;font-family:var(--font-d);font-size:19px;font-weight:600;color:var(--ink);}
 .cl-mark{width:34px;height:34px;border-radius:11px;background:var(--acc);color:var(--on);display:grid;place-items:center;font-family:var(--font-s);font-weight:700;font-size:15px;}
 .cl-links{display:flex;gap:6px;}
@@ -178,7 +178,10 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "MedicalBusiness",
+      "@type": [
+        "MedicalBusiness",
+        "MedicalOrganization"
+      ],
       "name": "Clarity Psychiatric NPs",
       "description": "Clarity Psychiatric NPs: Psychiatric nurse practitioner care. A FrontDoor website template.",
       "telephone": "(555) 010-2400",
@@ -196,7 +199,10 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
               "name": "Psychiatric evaluation",
               "description": "Comprehensive diagnostic assessment.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Clarity Psychiatric NPs"
               }
             }
@@ -208,7 +214,10 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
               "name": "Medication management",
               "description": "Prescribing, adjustment and monitoring.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Clarity Psychiatric NPs"
               }
             }
@@ -220,7 +229,10 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
               "name": "Anxiety & depression",
               "description": "First-line care for common conditions.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Clarity Psychiatric NPs"
               }
             }
@@ -232,7 +244,10 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
               "name": "ADHD care",
               "description": "Evaluation and ongoing treatment.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Clarity Psychiatric NPs"
               }
             }
@@ -244,7 +259,10 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
               "name": "Supportive therapy",
               "description": "Brief counseling alongside medication.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Clarity Psychiatric NPs"
               }
             }
@@ -256,7 +274,10 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
               "name": "Telehealth",
               "description": "Video visits across the state.",
               "provider": {
-                "@type": "MedicalBusiness",
+                "@type": [
+                  "MedicalBusiness",
+                  "MedicalOrganization"
+                ],
                 "name": "Clarity Psychiatric NPs"
               }
             }
@@ -410,6 +431,6 @@ h1,h2,h3,h4{margin:0;font-family:var(--font-d);font-weight:500;letter-spacing:-.
 </div><p class="sw-crisis" style="margin:0;padding:16px 20px 6px;font-size:13px;line-height:1.5;text-align:center;opacity:.85">In crisis? Call or text 988 (Suicide &amp; Crisis Lifeline), or call 911 in an emergency.</p>
 </footer>
 <a href="../../index.html" class="t-ribbon"><span class="t-logo__mark">FD</span> Built with FrontDoor</a>
-<script src="../../js/template.js?v=20261106b"></script>
+<script src="../../js/template.js?v=20261106e"></script>
 </body>
 </html>

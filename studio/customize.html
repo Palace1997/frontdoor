@@ -160,10 +160,13 @@ iframe{width:100%;height:100%;border:0;display:block}
                always matches the current 30 designs shown on the public site. -->
         </select>
       </div>
+      <div class="seg" id="pageSeg"><button data-page="site" class="on">Site</button><button data-page="blog">Blog</button><button data-page="post">Post</button></div>
       <div class="seg"><button data-w="desktop" class="on">Desktop</button><button data-w="mobile">Mobile</button></div>
       <a href="../index.html" id="closeStudio" class="close-x" title="Close Studio, back to homepage" aria-label="Close Studio">&times;</a>
     </div>
     <div class="preview__stage"><div class="frameWrap" id="frameWrap"><iframe id="frame" src="editable-practice.html"></iframe></div></div>
+    <!-- The blog and post frames are added here by the page switcher, one per
+         page, kept loaded so moving between them never discards an edit. -->
   </main>
 </div>
 <div class="toast" id="toast"></div>
@@ -171,6 +174,10 @@ iframe{width:100%;height:100%;border:0;display:block}
 <!-- Keep the template picker in sync with the public catalog (single source of truth) -->
 <script src="icon-library.js?v=20261105a"></script>
 <script src="../js/catalog.js?v=20261023a"></script>
+<!-- Same structured-data builder the generator uses, so the schema the Studio
+     writes on export is byte-for-byte what tools-build-seo.js would write. -->
+<script src="../js/seo.js?v=20261106a"></script>
+<script src="../js/zip.js?v=20261106a"></script>
 <script>
 (function () {
   var C = window.SW_CATALOG, sel = document.getElementById('tpl');
@@ -202,6 +209,11 @@ const GROUPS = [
     {id:"phone", label:"Phone", type:"text", half:true},{id:"email", label:"Email", type:"text", half:true},
     {id:"address", label:"Address", type:"text"},
     {id:"hours", label:"Opening hours", type:"text"},
+    // The one field with no visible counterpart on the page. It is what turns
+    // the structured data from a description of a practice into one a search
+    // engine can tie to an address on the web, and it writes the canonical tag
+    // on every exported page. Left blank, both are simply left out.
+    {id:"siteUrl", label:"Website address", type:"text"},
   ]},
   {title:"Brand & colour", open:true, fields:[
     {id:"navCta", label:"Button label (nav)", type:"text"},
@@ -262,11 +274,61 @@ const GROUPS = [
     {id:"footerText", label:"Closing line", type:"text"},
     {id:"footerLegal", label:"Legal / copyright", type:"text"},
   ]},
+  // These live on the two blog pages, not the home page. Switch the preview to
+  // Blog or Post with the buttons above it and they fill in from there; the
+  // values are kept while you are on another page, so nothing is lost by
+  // moving between them.
+  {title:"Blog", note:"Shown on the blog index and the post. Use the Site / Blog / Post buttons above the preview to see them.", fields:[
+    {id:"blogEyebrow", label:"Eyebrow", type:"text"},
+    {id:"blogTitle", label:"Blog heading", type:"text"},
+    {id:"blogSub", label:"Blog sub-line", type:"textarea"},
+    {id:"post1Kicker", label:"Card 1, kicker", type:"text"},
+    {id:"post1Title", label:"Card 1, title", type:"text"},
+    {id:"post1Dek", label:"Card 1, summary", type:"textarea"},
+  ]},
+  {title:"Blog post", fields:[
+    {id:"postSection", label:"Section", type:"text"},
+    {id:"postTitle", label:"Post title", type:"text"},
+    {id:"postDek", label:"Standfirst", type:"textarea"},
+    {id:"postAuthor", label:"Author", type:"text", half:true},
+    {id:"postRole", label:"Author's title", type:"text", half:true},
+    {id:"postDate", label:"Date, as it reads", type:"text"},
+    {id:"postIntro", label:"Opening paragraph", type:"textarea"},
+    {id:"postH1", label:"Heading 1", type:"text"},{id:"postP1", label:"Paragraph 1", type:"textarea"},
+    {id:"postH2", label:"Heading 2", type:"text"},{id:"postP2", label:"Paragraph 2", type:"textarea"},
+    {id:"postH3", label:"Heading 3", type:"text"},{id:"postP3", label:"Paragraph 3", type:"textarea"},
+    {id:"postH4", label:"Heading 4", type:"text"},{id:"postP4", label:"Paragraph 4", type:"textarea"},
+    {id:"postClose", label:"Closing paragraph", type:"textarea"},
+    {id:"postCtaTitle", label:"Call to action, heading", type:"text"},
+    {id:"postCtaText", label:"Call to action, line", type:"textarea"},
+    {id:"postCtaBtn", label:"Call to action, button", type:"text"},
+  ]},
 ];
 
 const frame = document.getElementById('frame');
 const form = document.getElementById('form');
-let doc = null; // iframe document
+let doc = null; // the document of the page currently on screen
+
+/* ---- The site is three pages now -------------------------------------------
+   The home page, the blog index and the post each live in their own iframe,
+   all three loaded at once and only one shown. They have to be kept alive
+   rather than swapped into one frame, because reloading a frame throws away
+   everything the inline editor has done to it: moved images, resized frames,
+   deleted blocks. Someone who clicked to the blog and back would have found
+   their work on the home page gone.
+
+   `doc` stays the page on screen, which is what the inline editor, the image
+   list and the undo stack work on. Business details are typed once and belong
+   on all three, so the handful of functions that write a value out loop over
+   every loaded document instead. ------------------------------------------- */
+const PAGES = ['site', 'blog', 'post'];
+const pageFrames = { site: frame, blog: null, post: null };
+let activePage = 'site';
+function liveDocs(){
+  return PAGES.map(p=>{ const f=pageFrames[p]; try{ return f && f.contentDocument; }catch(e){ return null; } })
+              .filter(d=>d && d.body && d.location.href!=='about:blank');
+}
+function eachDoc(fn){ liveDocs().forEach(d=>{ try{ fn(d); }catch(e){} }); }
 
 // darken a hex colour ~20% for hover/dark accent
 function darken(hex){
@@ -274,19 +336,32 @@ function darken(hex){
   const n = p=>Math.max(0,Math.round(parseInt(m.substr(p,2),16)*0.8)).toString(16).padStart(2,'0');
   return '#'+n(0)+n(2)+n(4);
 }
-function setField(id,val){ if(!doc)return;
-  // a logo carrying its own typed word is left alone; the name still drives everything else
-  doc.querySelectorAll('[data-field="'+id+'"]').forEach(el=>{
-    if(el.hasAttribute('data-d7logotext')) return;
-    // the mobile menu holds its own copy of a nav link and carries no field of
-    // its own, so find the twin BEFORE the text changes and move it too
-    const twins=(typeof d7NavTwins==='function')?d7NavTwins(el):[];
-    el.textContent=val;
-    twins.forEach(x=>{ x.textContent=val; });
+function setField(id,val){
+  if(id==='siteUrl'){ applySiteUrl(val); return; }   // no visible counterpart, see below
+  eachDoc(d=>{
+    // a logo carrying its own typed word is left alone; the name still drives everything else
+    d.querySelectorAll('[data-field="'+id+'"]').forEach(el=>{
+      if(el.hasAttribute('data-d7logotext')) return;
+      // the mobile menu holds its own copy of a nav link and carries no field of
+      // its own, so find the twin BEFORE the text changes and move it too
+      const twins=(d===doc && typeof d7NavTwins==='function')?d7NavTwins(el):[];
+      el.textContent=val;
+      twins.forEach(x=>{ x.textContent=val; });
+    });
+    // business-info fields also drive the clickable links, not just the visible text
+    if(id==='phone'){ const t='tel:'+String(val).replace(/[^\d+]/g,''); d.querySelectorAll('a[href^="tel:"]').forEach(a=>a.setAttribute('href',t)); }
+    else if(id==='email'){ const e=String(val).trim(); d.querySelectorAll('a[href^="mailto:"]').forEach(a=>a.setAttribute('href','mailto:'+e)); }
   });
-  // business-info fields also drive the clickable links, not just the visible text
-  if(id==='phone'){ const t='tel:'+String(val).replace(/[^\d+]/g,''); doc.querySelectorAll('a[href^="tel:"]').forEach(a=>a.setAttribute('href',t)); }
-  else if(id==='email'){ const e=String(val).trim(); doc.querySelectorAll('a[href^="mailto:"]').forEach(a=>a.setAttribute('href','mailto:'+e)); }
+}
+/* The practice's own web address. It is not printed anywhere on the page, so it
+   is held on <html> and read back by js/seo.js when the schema is rebuilt. An
+   address that is not yet a real one is kept in the field but not written out,
+   so a half-typed domain never reaches a canonical tag. */
+function applySiteUrl(val){
+  let u=String(val||'').trim().replace(/\/+$/,'');
+  if(u && !/^https?:\/\//i.test(u)) u='https://'+u;
+  const good=/^https?:\/\/[a-z0-9][a-z0-9.-]*\.[a-z]{2,}(\/|$)/i.test(u);
+  eachDoc(d=>{ d.documentElement.setAttribute('data-site-url', good?u:''); });
 }
 /* ---- Logo: swap the wordmark for a client's own image -----------------
    Templates draw the logo as a letter badge plus the business name. When a
@@ -294,12 +369,12 @@ function setField(id,val){ if(!doc)return;
    the same link, header and footer alike. Clearing the field puts the
    wordmark back. ---------------------------------------------------------- */
 function applyLogo(){
-  if(!doc) return;
   const uIn=document.getElementById('f_logoImg'), hIn=document.getElementById('f_logoH'),
         tIn=document.getElementById('f_logoText');
   if(!uIn) return;
   const url=(uIn.value||'').trim(), size=(hIn&&hIn.value)||36,
         text=(tIn&&tIn.value||'').trim();
+  eachDoc(doc=>{
   doc.querySelectorAll('[data-field="brandMark"]').forEach(mark=>{
     const link=mark.closest('a')||mark.parentElement; if(!link) return;
     link.setAttribute('data-d7logo','1');               // so it can be moved as one piece
@@ -330,8 +405,9 @@ function applyLogo(){
       if(bn && bn.value && name.textContent!==bn.value) name.textContent=bn.value;
     }
   });
+  });
 }
-function setImg(id,src){ if(!doc)return; const el=doc.querySelector('[data-img="'+id+'"]'); if(el)el.src=src; }
+function setImg(id,src){ eachDoc(d=>{ const el=d.querySelector('[data-img="'+id+'"]'); if(el)el.src=src; }); }
 // ---- Every image gets a field. The templates only tag a hero and an about
 //      image, so clicking any of the others in the preview had nothing to
 //      reveal on the left and the panel just sat there. Give the untagged ones
@@ -372,16 +448,18 @@ function d7BuildImageFields(){
       const rd=new FileReader(); rd.onload=e=>{ inp.value=e.target.result; setImg(x.id,e.target.result); }; rd.readAsDataURL(f); });
   });
 }
-function setAccent(hex){ if(!doc)return; const d=darken(hex);
-  let st=doc.getElementById('d7-accent'); if(!st){st=doc.createElement('style');st.id='d7-accent';doc.head.appendChild(st);}
-  // '*' + !important overrides the template's own scoped --acc/--accent definitions wherever they sit
-  st.textContent='*{--acc:'+hex+'!important;--accent:'+hex+'!important;--acc2:'+d+'!important;--accent-dark:'+d+'!important}';
+function setAccent(hex){ const dk=darken(hex);
+  eachDoc(doc=>{
+    let st=doc.getElementById('d7-accent'); if(!st){st=doc.createElement('style');st.id='d7-accent';doc.head.appendChild(st);}
+    // '*' + !important overrides the template's own scoped --acc/--accent definitions wherever they sit
+    st.textContent='*{--acc:'+hex+'!important;--accent:'+hex+'!important;--acc2:'+dk+'!important;--accent-dark:'+dk+'!important}';
+  });
 }
 // Studio-only: reveal-on-scroll elements shown immediately while editing (removed on export)
-function ensurePreviewStyle(){ if(!doc)return; if(doc.getElementById('d7-studio-only'))return; const s=doc.createElement('style');s.id='d7-studio-only';s.textContent='.reveal{opacity:1!important;transform:none!important}';doc.head.appendChild(s); }
-function updateMark(name){ if(!doc)return; const ltr=(name.trim()[0]||'Y').toUpperCase(); doc.querySelectorAll('[data-field="brandMark"]').forEach(el=>el.textContent=ltr); }
-function toggleCard(n){ if(!doc)return; const t=(document.getElementById('f_svc'+n+'Title').value||'').trim(); const card=doc.querySelector('[data-card="'+n+'"]'); if(card)card.dataset.empty=t?'0':'1'; }
-function toggleCheck(n){ if(!doc)return; const v=(document.getElementById('f_check'+n).value||'').trim(); const li=doc.querySelector('[data-check="'+n+'"]'); if(li)li.dataset.empty=v?'0':'1'; }
+function ensurePreviewStyle(d){ d=d||doc; if(!d)return; if(d.getElementById('d7-studio-only'))return; const s=d.createElement('style');s.id='d7-studio-only';s.textContent='.reveal{opacity:1!important;transform:none!important}';d.head.appendChild(s); }
+function updateMark(name){ const ltr=(name.trim()[0]||'Y').toUpperCase(); eachDoc(d=>d.querySelectorAll('[data-field="brandMark"]').forEach(el=>el.textContent=ltr)); }
+function toggleCard(n){ const t=(document.getElementById('f_svc'+n+'Title').value||'').trim(); eachDoc(d=>{ const card=d.querySelector('[data-card="'+n+'"]'); if(card)card.dataset.empty=t?'0':'1'; }); }
+function toggleCheck(n){ const v=(document.getElementById('f_check'+n).value||'').trim(); eachDoc(d=>{ const li=d.querySelector('[data-check="'+n+'"]'); if(li)li.dataset.empty=v?'0':'1'; }); }
 
 // build the form
 GROUPS.forEach((g,gi)=>{
@@ -462,8 +540,14 @@ function populate(){
       const rs=getComputedStyle(doc.documentElement);
       let cur=(rs.getPropertyValue('--acc')||rs.getPropertyValue('--accent')||'#2E8B8B').trim(); if(!/^#/.test(cur))cur='#2E8B8B';
       inp.value=cur; if(/^#[0-9a-fA-F]{6}$/.test(cur))document.getElementById('c_'+f.id).value=cur;
+    } else if(f.id==='siteUrl'){
+      inp.disabled=false; applySiteUrl(inp.value);   // no element to read it back from
     } else {
-      const el=doc.querySelector('[data-field="'+f.id+'"]');
+      // A field can belong to the blog or the post rather than this page. Look
+      // across every loaded page before giving up on it, or switching the
+      // preview would blank half the panel.
+      let el=doc.querySelector('[data-field="'+f.id+'"]');
+      if(!el) for(const d of liveDocs()){ el=d.querySelector('[data-field="'+f.id+'"]'); if(el) break; }
       if(el){inp.value=el.textContent.trim(); inp.disabled=false;} else {inp.value=''; inp.disabled=true;}
     }
   }));
@@ -479,7 +563,7 @@ document.getElementById('redoBtn').addEventListener('click',()=>d7DoRedo());
 window.addEventListener('keydown',e=>{ if(!(e.ctrlKey||e.metaKey))return; const ae=document.activeElement; if(ae&&/^(INPUT|TEXTAREA|SELECT)$/.test(ae.tagName))return; const k=e.key.toLowerCase();
   if(k==='z'){ e.preventDefault(); e.shiftKey?d7DoRedo():d7DoUndo(); } else if(k==='y'){ e.preventDefault(); d7DoRedo(); } });
 // template picker (cache-bust so freshly-instrumented templates always load)
-document.getElementById('tpl').addEventListener('change',e=>{frame.src=e.target.value+'?t='+Date.now();});
+document.getElementById('tpl').addEventListener('change',e=>{dropSecondaryFrames();frame.src=e.target.value+'?t='+Date.now();});
 
 // device + icon toggles. Scoped per .seg: a shared handler used to clear the
 // "on" state across every segmented control on the bar, not just its own.
@@ -493,6 +577,117 @@ document.querySelectorAll('.seg').forEach(seg=>seg.addEventListener('click',e=>{
   }
 }));
 
+/* ---- Site / Blog / Post -----------------------------------------------------
+   Each page is a frame of its own, created the first time it is asked for and
+   then left loaded. Switching only changes which one is visible. ---------- */
+function pageSrcFor(page){
+  const tpl=document.getElementById('tpl').value;
+  return page==='site' ? tpl : tpl.replace(/\.html$/, '-'+page+'.html');
+}
+// A page the design does not have: the six templates outside the catalog have
+// no blog, and asking for one would load a 404 into the preview.
+const pageExists={};
+async function pageAvailable(page){
+  if(page==='site') return true;
+  const src=pageSrcFor(page);
+  if(src in pageExists) return pageExists[src];
+  let ok=false;
+  try{ ok=(await fetch(src,{method:'HEAD'})).ok; }catch(e){ ok=false; }
+  pageExists[src]=ok; return ok;
+}
+/* A page that has just loaded takes the business details already typed into the
+   panel, and gives back the fields only it has. Without the second half the
+   blog's own wording would never reach the form; without the first, a client's
+   name would stop at the home page. */
+function adoptPage(page){
+  const f=pageFrames[page]; if(!f) return;
+  let d; try{ d=f.contentDocument; }catch(e){ return; }
+  if(!d || !d.body) return;
+  ensurePreviewStyle(d);
+  d.querySelectorAll('.reveal').forEach(e=>e.classList.add('is-in'));
+  GROUPS.forEach(g=>g.fields.forEach(fl=>{
+    if(fl.type==='logo'||fl.type==='range'||fl.type==='color'||fl.type==='image') return;
+    const inp=document.getElementById('f_'+fl.id); if(!inp) return;
+    const el=d.querySelector('[data-field="'+fl.id+'"]');
+    if(!el) return;
+    if(inp.disabled || !inp.value.trim()){ inp.value=el.textContent.trim(); inp.disabled=false; }
+    else el.textContent=inp.value;
+  }));
+  const bn=document.getElementById('f_brandName');
+  if(bn && bn.value) updateMark(bn.value);
+  const ac=document.getElementById('f_accent'); if(ac && ac.value) setAccent(ac.value);
+  const su=document.getElementById('f_siteUrl'); if(su) applySiteUrl(su.value);
+  applyLogo();
+}
+function showPage(page){
+  activePage=page;
+  PAGES.forEach(p=>{ const f=pageFrames[p]; if(f) f.style.display=(p===page)?'block':'none'; });
+  const f=pageFrames[page]; let d=null;
+  try{ d=f && f.contentDocument; }catch(e){}
+  if(d && d.body){
+    doc=d;
+    initInlineEditor();   // no-ops on a document it has already wired
+    d7BuildImageFields();
+  }
+}
+/* Resolves once the page is loaded and has taken the panel's values. Returns
+   false for a design that has no such page. `show` is false when the download
+   button is quietly loading the blog in order to include it. */
+async function loadPage(page, opts){
+  const show = !opts || opts.show !== false;
+  if(page==='site'){ if(show) showPage('site'); return true; }
+  if(!(await pageAvailable(page))){
+    if(show){
+      toast('This design does not have a '+page+' page');
+      const seg=document.getElementById('pageSeg');
+      seg.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.page===activePage));
+    }
+    return false;
+  }
+  /* A frame that has just been appended fires a load event for the empty
+     document it starts life with, and that document has a body and a ready
+     state like any other. Both the wait below and this check have to look at
+     the address, or the page is declared ready while it is still blank and the
+     panel's values are handed to nothing. */
+  const blank = d => !d || !d.body || d.location.href === 'about:blank';
+  let f=pageFrames[page];
+  if(f){
+    let d; try{ d=f.contentDocument; }catch(e){}
+    if(!blank(d)){ if(show) showPage(page); return true; }
+  }
+  if(!f){
+    f=document.createElement('iframe');
+    f.id='frame-'+page; f.style.display='none';
+    pageFrames[page]=f;
+    f.ready=new Promise(res=>{
+      f.addEventListener('load',()=>{
+        let d; try{ d=f.contentDocument; }catch(e){ return; }
+        if(blank(d)) return;
+        adoptPage(page);
+        res();
+      });
+    });
+    document.getElementById('frameWrap').appendChild(f);
+    f.src=pageSrcFor(page)+'?t='+Date.now();
+  }
+  await f.ready;
+  if(show) showPage(page);
+  return true;
+}
+document.getElementById('pageSeg').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  loadPage(b.dataset.page,{show:true});
+});
+// Changing the design invalidates the blog and post frames: they belong to the
+// template that was loaded before.
+function dropSecondaryFrames(){
+  ['blog','post'].forEach(p=>{ const f=pageFrames[p]; if(f) f.remove(); pageFrames[p]=null; });
+  activePage='site';
+  const seg=document.getElementById('pageSeg');
+  if(seg) seg.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.page==='site'));
+  frame.style.display='block';
+}
+
 // toast helper
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600);}
 
@@ -501,9 +696,12 @@ async function inlineAsset(clone,selector,make){
   const el=clone.querySelector(selector); if(!el)return;
   try{ const txt=await (await fetch(el.href||el.src)).text(); el.replaceWith(make(txt)); }catch(e){/* leave external ref if fetch fails */}
 }
-document.getElementById('download').addEventListener('click',async ()=>{
-  if(!doc)return;
-  const clone=doc.documentElement.cloneNode(true);
+/* Everything the editor added to a page, taken back out, leaving the client's
+   own edits. It used to be the body of the download button; it is a function
+   now because a site is three pages and each one goes through it. */
+function cleanClone(srcDoc){
+  const doc=srcDoc;                      // the helpers below all create nodes in it
+  const clone=srcDoc.documentElement.cloneNode(true);
   clone.querySelectorAll('[data-empty="1"]').forEach(el=>el.remove());
   const so=clone.querySelector('#d7-studio-only'); if(so)so.remove(); // keep scroll animations in the delivered file
   clone.querySelectorAll('.reveal.is-in').forEach(e=>e.classList.remove('is-in')); // restore reveal-on-scroll for visitors
@@ -563,20 +761,123 @@ document.getElementById('download').addEventListener('click',async ()=>{
   clone.querySelectorAll('[data-d7autoimg]').forEach(el=>el.removeAttribute('data-img'));
   ['data-d7z','data-d7b','data-d7px','data-d7py','data-d7zi','data-d7float','data-d7ow','data-d7oh','data-d7ov','data-d7fr','data-d7adopt','data-d7icon0','data-d7logo','data-d7logotext','data-d7auto','data-d7imgstyle','data-d7frstyle','data-d7pre','data-d7tr','data-d7cb','data-d7bg0','data-d7autoimg'].forEach(a=>clone.querySelectorAll('['+a+']').forEach(el=>el.removeAttribute(a)));
   // .d7-frame wrappers + .d7-ph placeholders are KEPT (they hold the crop/size/placement and keep the layout stable)
-  // make the file self-contained: inline the shared template.css + template.js (bespoke templates use them)
-  await inlineAsset(clone,'link[rel="stylesheet"][href*="template.css"]',css=>{const s=doc.createElement('style');s.textContent=css;return s;});
-  await inlineAsset(clone,'script[src*="template.js"]',js=>{const s=doc.createElement('script');s.textContent=js;return s;});
-  const html='<!DOCTYPE html>\n'+clone.outerHTML;
-  const name=((document.getElementById('f_brandName').value||'website').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''))||'website';
-  const blob=new Blob([html],{type:'text/html'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name+'.html';a.click();
-  URL.revokeObjectURL(a.href);
-  toast('Downloaded '+name+'.html, self-contained & ready to deploy');
+  return clone;
+}
+
+/* The repository keeps the three pages of a design side by side, named after
+   the design. A client's site names them for what they are, so every link
+   between them is rewritten on the way out. */
+const EXPORT_NAMES={site:'index.html', blog:'blog.html', post:'post.html'};
+function rewriteLinks(clone){
+  const tpl=document.getElementById('tpl').value;
+  const base=tpl.replace(/^.*\//,'').replace(/\.html$/,'');
+  const map={};
+  map[base+'.html']=EXPORT_NAMES.site;
+  map[base+'-blog.html']=EXPORT_NAMES.blog;
+  map[base+'-post.html']=EXPORT_NAMES.post;
+  clone.querySelectorAll('a[href]').forEach(a=>{
+    const href=a.getAttribute('href')||'';
+    const m=/^([^#?]*)(.*)$/.exec(href);
+    const file=m[1].replace(/^.*\//,'');
+    if(map[file]) a.setAttribute('href', map[file]+m[2]);
+  });
+}
+/* A canonical tag needs a domain, which only the client can supply. With the
+   Website address field filled in every page gets one; left blank, no canonical
+   is written rather than one pointing at a guess. */
+function setCanonical(clone, srcDoc, page){
+  const site=(srcDoc.documentElement.getAttribute('data-site-url')||'').replace(/\/+$/,'');
+  let link=clone.querySelector('link[rel="canonical"]');
+  if(!site){ if(link) link.remove(); return; }
+  const path=page==='site'?'/':'/'+EXPORT_NAMES[page];
+  if(!link){ link=srcDoc.createElement('link'); link.setAttribute('rel','canonical'); (clone.querySelector('head')||clone).appendChild(link); }
+  link.setAttribute('href', site+path);
+}
+/* The title and the description are the two things a search result is made of,
+   and they are the only part of a page a visitor never sees while editing. They
+   are written here from what the client has already typed, so nobody has to
+   remember to go and change them, and so no exported page goes out still
+   describing the demo practice. */
+function textOf(srcDoc,id){ const el=srcDoc.querySelector('[data-field="'+id+'"]'); return el?el.textContent.replace(/\s+/g,' ').trim():''; }
+function clamp(s,n){
+  s=String(s||'').trim();
+  if(s.length<=n) return s;
+  const cut=s.slice(0,n);
+  const sp=cut.lastIndexOf(' ');
+  return (sp>n*0.6?cut.slice(0,sp):cut).replace(/[,;:]$/,'');
+}
+function setTitleAndDescription(srcDoc, page){
+  const brand=textOf(srcDoc,'brandName');
+  if(!brand) return;
+  let title, desc;
+  if(page==='blog'){
+    title=[textOf(srcDoc,'blogTitle'),brand].filter(Boolean).join(', ');
+    desc=textOf(srcDoc,'blogSub');
+  } else if(page==='post'){
+    title=[textOf(srcDoc,'postTitle'),brand].filter(Boolean).join(', ');
+    desc=textOf(srcDoc,'postDek');
+  } else {
+    // The eyebrow above the headline is the line that says what the practice is
+    // and where, which is exactly what belongs after the name in a title.
+    title=[brand,textOf(srcDoc,'heroEyebrow')].filter(Boolean).join(', ');
+    desc=textOf(srcDoc,'heroSub')||textOf(srcDoc,'aboutText');
+  }
+  if(title) srcDoc.title=clamp(title,65);
+  if(desc){
+    let m=srcDoc.querySelector('meta[name="description"]');
+    if(!m){ m=srcDoc.createElement('meta'); m.setAttribute('name','description'); srcDoc.head.appendChild(m); }
+    m.setAttribute('content',clamp(desc,158));
+  }
+}
+async function exportPage(page){
+  const f=pageFrames[page]; if(!f) return null;
+  let srcDoc; try{ srcDoc=f.contentDocument; }catch(e){ return null; }
+  if(!srcDoc || !srcDoc.body) return null;
+  setTitleAndDescription(srcDoc, page);
+  // Rebuild the structured data from what the page now says, before the page is
+  // copied. This is the step that puts a client's own name, phone, address,
+  // hours and services into the schema instead of the demo practice's.
+  if(window.SW_SEO) window.SW_SEO.sync(srcDoc, page==='site'?'home':page);
+  const clone=cleanClone(srcDoc);
+  rewriteLinks(clone);
+  setCanonical(clone, srcDoc, page);
+  // self-contained: inline the shared template.css + template.js (bespoke templates use them)
+  await inlineAsset(clone,'link[rel="stylesheet"][href*="template.css"]',css=>{const s=srcDoc.createElement('style');s.textContent=css;return s;});
+  await inlineAsset(clone,'script[src*="template.js"]',js=>{const s=srcDoc.createElement('script');s.textContent=js;return s;});
+  return '<!DOCTYPE html>\n'+clone.outerHTML;
+}
+
+document.getElementById('download').addEventListener('click',async ()=>{
+  if(!doc)return;
+  const btn=document.getElementById('download');
+  btn.disabled=true;
+  try{
+    // Load the blog and the post if they have not been opened, so the download
+    // is the whole site whether or not the blog was looked at.
+    for(const page of ['blog','post']) await loadPage(page,{show:false});
+    const files=[];
+    for(const page of PAGES){
+      const html=await exportPage(page);
+      if(html) files.push({name:EXPORT_NAMES[page], text:html});
+    }
+    const name=((document.getElementById('f_brandName').value||'website').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''))||'website';
+    if(files.length===1){
+      const blob=new Blob([files[0].text],{type:'text/html'});
+      const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name+'.html';a.click();
+      URL.revokeObjectURL(a.href);
+      toast('Downloaded '+name+'.html, self-contained & ready to deploy');
+    } else {
+      const blob=window.SW_ZIP.blob(files);
+      const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name+'.zip';a.click();
+      URL.revokeObjectURL(a.href);
+      toast('Downloaded '+name+'.zip, '+files.length+' pages ready to deploy');
+    }
+  } finally { btn.disabled=false; showPage(activePage); }
 });
 
 // reset
 document.getElementById('reset').addEventListener('click',()=>{
-  if(confirm('Reset the preview to the starting template?')){ frame.src=document.getElementById('tpl').value+'?t='+Date.now(); }
+  if(confirm('Reset the preview to the starting template?')){ dropSecondaryFrames(); frame.src=document.getElementById('tpl').value+'?t='+Date.now(); }
 });
 
 // Fold the editing panel away so the site can be judged at the width it will
@@ -1947,6 +2248,7 @@ function loadProject(state){
   const tpl=document.getElementById('tpl');
   if(state.template) tpl.value=state.template;
   pendingValues=state.values||{};
+  dropSecondaryFrames();
   frame.src=(state.template||tpl.value)+'?t='+Date.now();
 }
 function refreshProjectList(sel){
