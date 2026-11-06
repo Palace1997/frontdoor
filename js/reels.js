@@ -38,7 +38,9 @@
   // How much the cards at the edges swell. The old standalone section had a
   // whole band to grow into; as a backdrop behind the masthead they should
   // stay calm, so the perspective reads as depth rather than motion.
-  var GROW = hero ? 0.13 : 0.42;
+  // 0.42 was tuned for the old 180px cards. At 288 the edge cards swell to
+  // over 800px tall and climb straight over the section heading.
+  var GROW = hero ? 0.13 : 0.16;
   var pitch = CARD_W + GAP;
   var N = picks.length;
   var total = N * pitch;
