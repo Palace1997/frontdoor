@@ -829,6 +829,25 @@ function setTitleAndDescription(srcDoc, page){
     m.setAttribute('content',clamp(desc,158));
   }
 }
+/* A sitemap and a robots.txt, but only once the practice has given a domain.
+   A sitemap has to list absolute addresses, so there is nothing truthful to
+   write without one, and a robots.txt that allows everything says no more than
+   the absence of one does. Both appear in the download as soon as the Website
+   address field is filled in. */
+function crawlFiles(names){
+  const site=((doc&&doc.documentElement.getAttribute('data-site-url'))||'').replace(/\/+$/,'');
+  if(!site) return [];
+  const today=new Date().toISOString().slice(0,10);
+  const urls=names.map(n=>{
+    const loc=site+(n===EXPORT_NAMES.site?'/':'/'+n);
+    return '  <url>\n    <loc>'+loc+'</loc>\n    <lastmod>'+today+'</lastmod>\n  </url>';
+  }).join('\n');
+  return [
+    {name:'sitemap.xml', text:'<?xml version="1.0" encoding="UTF-8"?>\n'
+      +'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+urls+'\n</urlset>\n'},
+    {name:'robots.txt', text:'User-agent: *\nAllow: /\n\nSitemap: '+site+'/sitemap.xml\n'}
+  ];
+}
 async function exportPage(page){
   const f=pageFrames[page]; if(!f) return null;
   let srcDoc; try{ srcDoc=f.contentDocument; }catch(e){ return null; }
@@ -860,6 +879,7 @@ document.getElementById('download').addEventListener('click',async ()=>{
       const html=await exportPage(page);
       if(html) files.push({name:EXPORT_NAMES[page], text:html});
     }
+    files.push(...crawlFiles(files.map(f=>f.name)));
     const name=((document.getElementById('f_brandName').value||'website').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''))||'website';
     if(files.length===1){
       const blob=new Blob([files[0].text],{type:'text/html'});
@@ -870,7 +890,8 @@ document.getElementById('download').addEventListener('click',async ()=>{
       const blob=window.SW_ZIP.blob(files);
       const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name+'.zip';a.click();
       URL.revokeObjectURL(a.href);
-      toast('Downloaded '+name+'.zip, '+files.length+' pages ready to deploy');
+      const pages=files.filter(f=>/\.html$/.test(f.name)).length;
+      toast('Downloaded '+name+'.zip, '+pages+' pages ready to deploy');
     }
   } finally { btn.disabled=false; showPage(activePage); }
 });
