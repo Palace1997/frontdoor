@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/main.css?v=20261106a">
+<link rel="stylesheet" href="css/main.css?v=20261106b">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%2300A583'/><text x='16' y='22' font-family='Inter,sans-serif' font-size='12' font-weight='700' fill='white' text-anchor='middle'>FD</text></svg>">
 <link rel="canonical" href="https://palace1997.github.io/sitewell-studio/gallery.html">
 <meta property="og:type" content="website">
@@ -41,6 +41,9 @@
   <a href="index.html" class="routeback routeback--static" aria-label="Back to homepage">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back to homepage</span>
   </a>
+  <button type="button" class="mnav__burger mnav__burger--light" aria-expanded="false" aria-controls="mnavPanel" aria-label="Open menu">
+    <span class="mnav__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+  </button>
 </div>
 
 <!-- CATALOG -->
@@ -95,9 +98,33 @@
 
 <a href="index.html#start" class="helpdock" aria-label="Questions? Talk to us"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 01-4 4H7l-4 3V6a4 4 0 014-4h10a4 4 0 014 4z"/></svg><span>Questions? Talk to us</span></a>
 
+<!-- ============ MOBILE NAV PANEL (below 1080px) ============ -->
+<div class="mnav" id="mnavPanel" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+  <div class="mnav__scrim" data-mnav-close aria-hidden="true"></div>
+  <div class="mnav__sheet">
+    <div class="mnav__top">
+      <a href="index.html" aria-label="FrontDoor home"><img class="mnav__logo" src="assets/img/logo-frontdoor-full-light.png?v=5" alt="FrontDoor, powered by iTrust Insights"></a>
+      <button type="button" class="mnav__close" data-mnav-close aria-label="Close menu">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <nav class="mnav__links" aria-label="Site">
+      <a href="index.html#mission">Our Mission<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="index.html#how">How It Works<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="index.html#features">Package<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="index.html#faq">FAQ<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </nav>
+    <a class="mnav__cta" href="index.html#start" data-book>Get Started<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <div class="mnav__util">
+      <a href="gallery.html" aria-current="page"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>Browse Designs</a>
+      <a href="index.html#start" data-book><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.9-.9L3 20l1.2-4.2A8.4 8.4 0 1 1 21 11.5z"/></svg>Talk With Us</a>
+    </div>
+  </div>
+</div>
+
 <script src="js/catalog.js?v=20261106a"></script>
 <script src="js/designs.js?v=20261106a"></script>
-<script src="js/main.js?v=20261023c"></script>
+<script src="js/main.js?v=20261106b"></script>
 <script src="js/tuner.js?v=4"></script>
 <script src="js/editorial.js?v=8"></script>
 </body>

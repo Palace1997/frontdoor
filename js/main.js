@@ -47,6 +47,83 @@
     });
   }
 
+  /* ---- Mobile navigation panel ----------------------------------------
+     Below 1080px the hero pill and the utility links are hidden by CSS, so
+     this burger + panel is the only navigation on a phone or tablet. It is
+     keyboard complete: aria-expanded on the button, focus moved into the
+     panel on open, Tab trapped inside it, Escape closes and hands focus
+     back. Deliberately no document-level pointer listeners, so the hero
+     carousel in .lhero__reels keeps its own drag handling. */
+  var mnav = document.getElementById('mnavPanel');
+  var mnavBtn = document.querySelector('.mnav__burger');
+  if (mnav && mnavBtn) {
+    var mnavOpen = false, mnavTimer;
+    var FOCUSABLE = 'a[href],button:not([disabled]),input,select,textarea,[tabindex]:not([tabindex="-1"])';
+
+    var mnavFocusable = function () {
+      return Array.prototype.filter.call(mnav.querySelectorAll(FOCUSABLE), function (el) {
+        return el.offsetWidth || el.offsetHeight || el.getClientRects().length;
+      });
+    };
+
+    var openMnav = function () {
+      if (mnavOpen) return;
+      mnavOpen = true;
+      clearTimeout(mnavTimer);
+      mnav.hidden = false;
+      document.body.classList.add('mnav-open');
+      mnavBtn.setAttribute('aria-expanded', 'true');
+      mnavBtn.setAttribute('aria-label', 'Close menu');
+      // force a reflow so the panel transitions in from its closed state
+      void mnav.offsetWidth;
+      mnav.classList.add('is-open');
+      var first = mnav.querySelector('.mnav__close') || mnavFocusable()[0];
+      if (first) first.focus();
+    };
+
+    var closeMnav = function (returnFocus) {
+      if (!mnavOpen) return;
+      mnavOpen = false;
+      mnav.classList.remove('is-open');
+      document.body.classList.remove('mnav-open');
+      mnavBtn.setAttribute('aria-expanded', 'false');
+      mnavBtn.setAttribute('aria-label', 'Open menu');
+      clearTimeout(mnavTimer);
+      mnavTimer = setTimeout(function () { if (!mnavOpen) mnav.hidden = true; }, 300);
+      if (returnFocus) mnavBtn.focus();
+    };
+
+    mnavBtn.addEventListener('click', function () {
+      if (mnavOpen) closeMnav(true); else openMnav();
+    });
+
+    mnav.addEventListener('click', function (e) {
+      // the scrim, the close button, and any link all dismiss the panel
+      if (e.target.closest('[data-mnav-close]')) { closeMnav(true); return; }
+      if (e.target.closest('a[href]')) closeMnav(false);
+    });
+
+    mnav.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); closeMnav(true); return; }
+      if (e.key !== 'Tab') return;
+      var items = mnavFocusable();
+      if (!items.length) return;
+      var first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+
+    // Escape works even if focus has slipped outside the panel
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && mnavOpen && !mnav.contains(document.activeElement)) closeMnav(true);
+    });
+
+    // Never leave the panel (and the scroll lock) stranded on a resize to desktop
+    window.addEventListener('resize', function () {
+      if (mnavOpen && window.innerWidth > 1080) closeMnav(false);
+    });
+  }
+
   /* ---- Section router --------------------------------------------------
      Nav items behave like standalone pages: clicking "FAQ" shows only
      the FAQ section (plus the persistent nav + footer), not the whole
