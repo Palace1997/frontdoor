@@ -576,6 +576,19 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* The samples sit in the hero now. They rise out of the bottom edge of the
    frame, so the bottom row of cards is deliberately cropped by its radius. */
 
+/* The designs in the hero: a band across the bottom of the frame, sitting
+   over the photograph. The cards are taller than the band, so they rise out
+   of it and crop on the frame's rounded edge. The mask fades their tops back
+   into the picture rather than cutting them off in a hard line. */
+.lhero__reels{position:relative;z-index:2;flex:0 0 auto;margin-top:auto;
+  height:clamp(170px,26vh,320px);perspective:1700px;cursor:grab;
+  touch-action:pan-y;-webkit-user-select:none;user-select:none;
+  -webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0,#000 24%);
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,0) 0,#000 24%)}
+.lhero__reels.is-grab{cursor:grabbing}
+.lhero__reels .rcard{box-shadow:0 36px 80px -28px rgba(4,12,24,.8)}
+@media (max-width:860px){ .lhero__reels{height:clamp(170px,24vh,230px);perspective:1100px} }
+
 /* ================= Designs showcase: curved carousel ================= */
 .rdeck{position:relative;background:var(--canvas,#F7F4EE);padding:calc(clamp(26px,4vw,44px) + var(--rdeck-head-y,80px)) 0 clamp(22px,3vw,36px);overflow:hidden;text-align:center}
 .rdeck__badge{display:inline-block;color:#112746;font-family:var(--font-sans);font-weight:600;font-size:14px;letter-spacing:.01em;margin-bottom:16px}
@@ -649,7 +662,7 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
 .lnav__right svg{filter:drop-shadow(0 1px 2px rgba(4,12,24,.9))}
 .lnav__right svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7}
 /* center stage: eyebrow + giant masthead */
-.lstage{position:relative;z-index:3;flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,1.8vw,20px);text-align:center;padding:clamp(8px,2vh,28px) 18px clamp(14px,2.4vh,30px)}
+.lstage{position:relative;z-index:3;flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,1.8vw,20px);text-align:center;padding:clamp(8px,2vh,28px) 18px clamp(26px,4.5vh,54px)}
 /* small caps over a bright screenshot need more than the ellipse alone */
 .lhero .leyebrow{text-shadow:0 1px 2px rgba(4,12,24,.92),0 0 8px rgba(4,12,24,.95),0 0 20px rgba(4,12,24,.8)}
 .leyebrow{font-size:clamp(11px,1.1vw,13px);font-weight:600;letter-spacing:.34em;text-transform:uppercase;color:var(--cream-accent);opacity:.9;padding-left:.34em;margin:0 0 clamp(6px,1.2vw,14px)}
