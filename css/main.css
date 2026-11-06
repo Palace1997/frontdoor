@@ -662,19 +662,27 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
 .lnav__right svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7}
 /* center stage: eyebrow + giant masthead */
 .lstage{position:relative;z-index:3;flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,1.8vw,20px);text-align:center;padding:clamp(8px,2vh,28px) 18px clamp(14px,2.4vh,30px)}
-/* Nothing darkens the designs any more. There is no scrim and no ellipse in
-   front of them: every bit of legibility below comes from a tight halo on
-   the letters themselves, so the type lifts off the screenshots without a
-   sheet dimming the work behind it. */
-.lhero .leyebrow{text-shadow:0 1px 2px rgba(4,12,24,.92),0 0 8px rgba(4,12,24,.95),0 0 20px rgba(4,12,24,.8)}
+/* The scrim used to cover the whole frame and dimmed every design with it.
+   It sits behind the cards now, so this is the only darkening left in front:
+   a soft ellipse under the words themselves. The cards either side of it stay
+   at full brightness. It fades to nothing well before its own edge, so there
+   is no visible boundary. */
+.lstage::before{content:"";position:absolute;z-index:-1;pointer-events:none;
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(1120px,94%);height:min(660px,88%);
+  background:radial-gradient(closest-side,
+    rgba(7,18,33,.94) 0%, rgba(7,18,33,.91) 44%,
+    rgba(7,18,33,.74) 66%, rgba(7,18,33,.34) 85%, rgba(7,18,33,0) 100%)}
+/* small caps over a bright screenshot need more than the ellipse alone */
+.lhero .leyebrow{text-shadow:0 1px 10px rgba(5,14,26,.95),0 0 3px rgba(5,14,26,.8)}
 .leyebrow{font-size:clamp(11px,1.1vw,13px);font-weight:600;letter-spacing:.34em;text-transform:uppercase;color:var(--cream-accent);opacity:.9;padding-left:.34em;margin:0 0 clamp(6px,1.2vw,14px)}
 .lmast-wrap{position:relative;display:inline-block}
-.lhero .lmast{font-family:var(--font-display);font-weight:500;font-size:var(--lmast-size,clamp(38px,7.2vw,96px));line-height:.92;letter-spacing:-.02em;color:#F3ECDD;max-width:15ch;margin:0;text-wrap:balance;user-select:none;text-shadow:0 2px 3px rgba(4,12,24,.85),0 0 10px rgba(4,12,24,.9),0 0 34px rgba(4,12,24,.75)}
+.lhero .lmast{font-family:var(--font-display);font-weight:500;font-size:var(--lmast-size,clamp(38px,7.2vw,96px));line-height:.92;letter-spacing:-.02em;color:#F3ECDD;max-width:15ch;margin:0;text-wrap:balance;text-shadow:0 2px 40px rgba(0,0,0,.25);user-select:none}
 .lmast-ghost{position:absolute;inset:0;z-index:-1;pointer-events:none;font-family:var(--font-display);font-weight:500;font-size:var(--lmast-size,clamp(38px,7.2vw,96px));line-height:.92;letter-spacing:-.02em;text-wrap:balance;color:rgba(243,236,221,.14)}
 /* bottom: subline + explore button */
 .lfoot{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;gap:clamp(16px,2.4vw,26px);padding:0 clamp(18px,3vw,40px) clamp(26px,4vw,48px)}
 /* thin italic over live screenshots needs its own lift, not just the scrim */
-.lsub2{text-shadow:0 1px 2px rgba(4,12,24,.9),0 0 8px rgba(4,12,24,.92),0 0 24px rgba(4,12,24,.8);max-width:34ch;margin-top:clamp(4px,1vh,10px);text-align:center;font-family:var(--font-display);font-style:italic;font-weight:400;font-size:clamp(15px,1.5vw,20px);line-height:1.5;color:var(--cream-accent);opacity:.95;margin:0}
+.lsub2{text-shadow:0 1px 16px rgba(5,14,26,.95),0 0 4px rgba(5,14,26,.75);max-width:34ch;margin-top:clamp(4px,1vh,10px);text-align:center;font-family:var(--font-display);font-style:italic;font-weight:400;font-size:clamp(15px,1.5vw,20px);line-height:1.5;color:var(--cream-accent);opacity:.95;margin:0}
 .lcta2{display:inline-flex;align-items:center;gap:12px;background:var(--blue);color:#0A1B33;text-decoration:none;font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:14px 22px 14px 26px;border-radius:999px;transition:transform .25s ease,box-shadow .25s ease;box-shadow:0 10px 30px rgba(0,0,0,.28)}
 .lcta2:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(0,0,0,.34)}
 .lcta2__dot{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#0A1B33}
