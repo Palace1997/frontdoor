@@ -669,8 +669,7 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
    .lstage is a flex child, so a margin would re-run the layout and the block
    would travel at less than 1:1, which is exactly what went wrong with the
    reels slider. `transform` would work, but .lcta2:hover animates its own
-   transform, so keeping the axes separate avoids a future clash.
-   The ellipse scrim is .lstage::before, a child, so it follows the words. */
+   transform, so keeping the axes separate avoids a future clash. */
 .lstage{position:relative;z-index:3;flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,1.8vw,20px);text-align:center;padding:clamp(8px,2vh,28px) 18px clamp(14px,2.4vh,30px);
   translate:0 var(--lhero-copy-y,-40px)}
 /* The scrim used to cover the whole frame and dimmed every design with it.
@@ -678,44 +677,49 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
    a soft ellipse under the words themselves. The cards either side of it stay
    at full brightness. It fades to nothing well before its own edge, so there
    is no visible boundary. */
-/* The old five-stop version dropped from .34 to 0 over its last 15%, which on
-   a 1120px ellipse is 4.05 alpha per 1000px: steep enough to read as a soft
-   vertical edge down any card it crossed, which is what it was doing. These
-   stops follow a plateau to 45% then a Gaussian tail, on a wider ellipse, so
-   the steepest point is 3.40 per 1000px, 16% gentler, while the darkening over
-   the words themselves is unchanged (alpha .86 at 55% of the radius, against
-   .82 before) and the outer cards get LESS dimming, not more (.34 at 80%
-   against .45). 16% is the ceiling while the ellipse still has to fade to zero
-   inside the frame; going wider smooths the edge further but leaves real
-   darkening on the outermost cards. Removing it altogether is not an option:
-   measured on 6 Nov, the masthead is unreadable over bright screenshots
-   without it. */
-.lstage::before{content:"";position:absolute;z-index:-1;pointer-events:none;
-  left:50%;top:50%;transform:translate(-50%,-50%);
-  width:min(1400px,104%);height:min(820px,96%);
-  background:radial-gradient(closest-side,
-    rgba(7,18,33,.940) 0%,
-    rgba(7,18,33,.921) 50%,
-    rgba(7,18,33,.847) 56%,
-    rgba(7,18,33,.730) 62%,
-    rgba(7,18,33,.590) 69%,
-    rgba(7,18,33,.447) 75%,
-    rgba(7,18,33,.317) 81%,
-    rgba(7,18,33,.211) 88%,
-    rgba(7,18,33,.132) 94%,
-    rgba(7,18,33,0) 100%)}
-/* small caps over a bright screenshot need more than the ellipse alone */
-.lhero .leyebrow{text-shadow:0 1px 10px rgba(5,14,26,.95),0 0 3px rgba(5,14,26,.8)}
+/* There is deliberately no scrim here any more.
+   An ellipse covering a region always has an edge somewhere, and wherever that
+   edge crossed a card it read as a soft vertical band down it. Softening the
+   falloff only ever got it 16% gentler, because the ellipse still has to reach
+   zero inside the frame, so the boundary stayed visible. Removed on 9 Nov 2026
+   on the third request.
+   The legibility it was providing now comes from the type itself, in the
+   text-shadow stacks below. A shadow is attached to the glyphs, so it has no
+   region and therefore no boundary to notice. Do not reintroduce a background
+   plate or ellipse behind the hero copy: fix contrast on the letters. */
+/* Small caps are thin and widely tracked, so they need the tightest contact
+   shadow of the three. */
+.lhero .leyebrow{text-shadow:
+  0 0 1px rgba(4,12,24,.98),
+  0 1px 2px rgba(4,12,24,.95),
+  0 2px 8px rgba(4,12,24,.88),
+  0 4px 18px rgba(4,12,24,.6)}
 .leyebrow{font-size:clamp(11px,1.1vw,13px);font-weight:600;letter-spacing:.34em;text-transform:uppercase;color:var(--cream-accent);opacity:.9;padding-left:.34em;margin:0 0 clamp(6px,1.2vw,14px)}
 .lmast-wrap{position:relative;display:inline-block}
-.lhero .lmast{font-family:var(--font-display);font-weight:500;font-size:var(--lmast-size,clamp(38px,7.2vw,96px));line-height:.92;letter-spacing:-.02em;color:#F3ECDD;max-width:15ch;margin:0;text-wrap:balance;text-shadow:0 2px 40px rgba(0,0,0,.25);user-select:none}
+/* Carries its own legibility now that the ellipse is gone. The stack is five
+   layers: two tight ones that put a hard dark contact edge right against the
+   letterforms (this is what makes it read over a white screenshot), then three
+   progressively softer pools that lift it off the background without painting
+   a visible shape. All of it is bound to the glyphs, so no edge appears
+   anywhere on the cards. */
+.lhero .lmast{font-family:var(--font-display);font-weight:500;font-size:var(--lmast-size,clamp(38px,7.2vw,96px));line-height:.92;letter-spacing:-.02em;color:#F3ECDD;max-width:15ch;margin:0;text-wrap:balance;user-select:none;
+  text-shadow:
+    0 0 1px rgba(4,12,24,.95),
+    0 1px 2px rgba(4,12,24,.92),
+    0 2px 7px rgba(4,12,24,.82),
+    0 4px 18px rgba(4,12,24,.62),
+    0 8px 36px rgba(4,12,24,.45)}
 .lmast-ghost{position:absolute;inset:0;z-index:-1;pointer-events:none;font-family:var(--font-display);font-weight:500;font-size:var(--lmast-size,clamp(38px,7.2vw,96px));line-height:.92;letter-spacing:-.02em;text-wrap:balance;color:rgba(243,236,221,.14)}
 /* bottom: subline + explore button */
 /* Not used by any page: the subline and CTA live inside .lstage. Left as it
    was found, but do not add hero behaviour here expecting it to apply. */
 .lfoot{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;gap:clamp(16px,2.4vw,26px);padding:0 clamp(18px,3vw,40px) clamp(26px,4vw,48px)}
 /* thin italic over live screenshots needs its own lift, not just the scrim */
-.lsub2{text-shadow:0 1px 16px rgba(5,14,26,.95),0 0 4px rgba(5,14,26,.75);max-width:34ch;margin-top:clamp(4px,1vh,10px);text-align:center;font-family:var(--font-display);font-style:italic;font-weight:400;font-size:clamp(15px,1.5vw,20px);line-height:1.5;color:var(--cream-accent);opacity:.95;margin:0}
+.lsub2{text-shadow:
+    0 0 1px rgba(4,12,24,.96),
+    0 1px 2px rgba(4,12,24,.92),
+    0 2px 8px rgba(4,12,24,.85),
+    0 4px 20px rgba(4,12,24,.6);max-width:34ch;margin-top:clamp(4px,1vh,10px);text-align:center;font-family:var(--font-display);font-style:italic;font-weight:400;font-size:clamp(15px,1.5vw,20px);line-height:1.5;color:var(--cream-accent);opacity:.95;margin:0}
 .lcta2{display:inline-flex;align-items:center;gap:12px;background:var(--blue);color:#0A1B33;text-decoration:none;font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:14px 22px 14px 26px;border-radius:999px;transition:transform .25s ease,box-shadow .25s ease;box-shadow:0 10px 30px rgba(0,0,0,.28)}
 .lcta2:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(0,0,0,.34)}
 .lcta2__dot{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:50%;background:#0A1B33}
