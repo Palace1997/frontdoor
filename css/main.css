@@ -678,12 +678,32 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
    a soft ellipse under the words themselves. The cards either side of it stay
    at full brightness. It fades to nothing well before its own edge, so there
    is no visible boundary. */
+/* The old five-stop version dropped from .34 to 0 over its last 15%, which on
+   a 1120px ellipse is 4.05 alpha per 1000px: steep enough to read as a soft
+   vertical edge down any card it crossed, which is what it was doing. These
+   stops follow a plateau to 45% then a Gaussian tail, on a wider ellipse, so
+   the steepest point is 3.40 per 1000px, 16% gentler, while the darkening over
+   the words themselves is unchanged (alpha .86 at 55% of the radius, against
+   .82 before) and the outer cards get LESS dimming, not more (.34 at 80%
+   against .45). 16% is the ceiling while the ellipse still has to fade to zero
+   inside the frame; going wider smooths the edge further but leaves real
+   darkening on the outermost cards. Removing it altogether is not an option:
+   measured on 6 Nov, the masthead is unreadable over bright screenshots
+   without it. */
 .lstage::before{content:"";position:absolute;z-index:-1;pointer-events:none;
   left:50%;top:50%;transform:translate(-50%,-50%);
-  width:min(1120px,94%);height:min(660px,88%);
+  width:min(1400px,104%);height:min(820px,96%);
   background:radial-gradient(closest-side,
-    rgba(7,18,33,.94) 0%, rgba(7,18,33,.91) 44%,
-    rgba(7,18,33,.74) 66%, rgba(7,18,33,.34) 85%, rgba(7,18,33,0) 100%)}
+    rgba(7,18,33,.940) 0%,
+    rgba(7,18,33,.921) 50%,
+    rgba(7,18,33,.847) 56%,
+    rgba(7,18,33,.730) 62%,
+    rgba(7,18,33,.590) 69%,
+    rgba(7,18,33,.447) 75%,
+    rgba(7,18,33,.317) 81%,
+    rgba(7,18,33,.211) 88%,
+    rgba(7,18,33,.132) 94%,
+    rgba(7,18,33,0) 100%)}
 /* small caps over a bright screenshot need more than the ellipse alone */
 .lhero .leyebrow{text-shadow:0 1px 10px rgba(5,14,26,.95),0 0 3px rgba(5,14,26,.8)}
 .leyebrow{font-size:clamp(11px,1.1vw,13px);font-weight:600;letter-spacing:.34em;text-transform:uppercase;color:var(--cream-accent);opacity:.9;padding-left:.34em;margin:0 0 clamp(6px,1.2vw,14px)}
