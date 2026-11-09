@@ -18,7 +18,7 @@
   var nav = get('fd_nav', 92);
   var foot = get('fd_logo', 120);
   var hLogo = get('fd_lhero_logo', 56);
-  var copyY = get('fd_lhero_copy_y', 0);
+  var copyY = get('fd_lhero_copy_y', -40);
   var rHead = get('fd_rdeck_head', 80);
   var reelY = get('fd_reels_y', 0);
   var reelX = get('fd_reels_x', 0);
