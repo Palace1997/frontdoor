@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Readable Without A Shadow</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css?v=20261109i">
+<style>
+  body{background:var(--canvas);padding:38px 22px 90px}
+  .wrap{max-width:1060px;margin:0 auto}
+  .pagehead{margin-bottom:8px}
+  .pagehead h1{font-size:34px;margin-bottom:10px}
+  .pagehead p{color:var(--g-700);max-width:70ch;line-height:1.62;margin-bottom:10px}
+
+  /* the measured facts, up front */
+  .hlo-facts{background:#112746;color:#F0EBE1;border-radius:14px;padding:22px 24px;margin:22px 0 34px}
+  .hlo-facts h2{color:#F0EBE1;font-size:19px;margin-bottom:14px}
+  .hlo-facts table{width:100%;border-collapse:collapse;font-size:14px}
+  .hlo-facts td{padding:7px 0;border-bottom:1px solid rgba(240,235,225,.13);color:#F0EBE1}
+  .hlo-facts tr:last-child td{border-bottom:0}
+  .hlo-facts td:last-child{text-align:right;font-weight:600;white-space:nowrap}
+  .hlo-facts .ok{color:#8FD4F3}
+  .hlo-facts .bad{color:#E79385}
+  .hlo-facts p{font-size:13.5px;color:#BDB6AA;margin:14px 0 0;line-height:1.6}
+
+  .opt{background:#fff;border:1px solid var(--border);border-radius:14px;
+    padding:0;margin-bottom:26px;overflow:hidden}
+  .opt__txt{padding:22px 26px 24px}
+  .opt h2{font-size:20px;margin-bottom:5px}
+  .opt .tag{font-size:11px;letter-spacing:.09em;text-transform:uppercase;font-weight:600;
+    color:var(--blue);display:block;margin-bottom:9px}
+  .opt p{font-size:14.5px;line-height:1.62;color:var(--g-700);margin:0 0 10px;max-width:72ch}
+  .opt p:last-child{margin-bottom:0}
+  .opt b{color:var(--ink)}
+  .cost{display:inline-block;font-size:12.5px;font-weight:600;border-radius:100px;
+    padding:4px 12px;margin-top:12px}
+  .cost--low{background:#E3F2FB;color:#15578C}
+  .cost--mid{background:#FBF1E3;color:#8A5A1E}
+  .cost--high{background:#F6E6E2;color:#9A4232}
+
+  /* ---- layout mocks: real colours, real type, schematic cards ---- */
+  .mock{height:250px;background:linear-gradient(to bottom,#112746,#0A1B33);
+    position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .mock .card{position:absolute;top:50%;transform:translateY(-50%);width:76px;height:150px;
+    border-radius:8px;background:linear-gradient(170deg,#fdfdfb,#dfe6ee);
+    box-shadow:0 12px 26px -12px rgba(0,0,0,.6)}
+  .mock .card i{display:block;height:34px;border-radius:8px 8px 0 0;
+    background:linear-gradient(100deg,#9fb6cd,#c9d6e3)}
+  .mock .copy{position:relative;z-index:3;text-align:center;padding:0 10px}
+  .mock .eb{font:600 7px/1 Inter,sans-serif;letter-spacing:.24em;text-transform:uppercase;
+    color:#F3ECDD;margin-bottom:7px}
+  .mock .mast{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:29px;line-height:.95;
+    color:#F3ECDD;letter-spacing:-.02em}
+  .mock .sub{font-family:Fraunces,Georgia,serif;font-style:italic;font-size:10px;
+    color:#F0EBE1;margin-top:7px;opacity:.95}
+  .mock .btn{display:inline-block;margin-top:9px;background:#1C6FB0;color:#0A1B33;
+    font:700 7px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;
+    padding:7px 13px;border-radius:999px}
+  .mock__label{position:absolute;left:12px;bottom:10px;z-index:5;
+    font:600 10px/1 Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;
+    color:rgba(240,235,225,.5)}
+
+  /* A: split */
+  .m-split .copy{text-align:left;margin-right:auto;margin-left:34px;max-width:300px}
+  .m-split .mast{font-size:26px}
+  /* B: corridor */
+  .m-corr .copy{z-index:3}
+  /* C: text above */
+  .m-above{align-items:flex-start;padding-top:22px}
+  .m-above .card{top:auto;bottom:-56px;transform:none;height:132px}
+  /* D: dimmed */
+  .m-dim .card{filter:brightness(.5)}
+  /* E: current, for reference */
+  .m-now .copy::before{content:"";position:absolute;left:50%;top:50%;
+    transform:translate(-50%,-50%);width:330px;height:150px;z-index:-1;
+    background:radial-gradient(closest-side,rgba(7,18,33,.94),rgba(7,18,33,.6) 62%,rgba(7,18,33,0))}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="pagehead">
+    <span class="eyebrow">Hero legibility</span>
+    <h1>Readable Without A Shadow</h1>
+    <p>No shadow can fix this, and it is worth being precise about why: parts of the card
+       screenshots are <b>brighter than the cream text itself</b>. A shadow outlines a letter, it
+       cannot darken what sits behind it. So every real answer below changes where the text and
+       the cards are, not what is painted between them.</p>
+  </div>
+
+  <section class="hlo-facts">
+    <h2>What The Numbers Say</h2>
+    <table>
+      <tr><td>Cream #F3ECDD on brand navy</td><td class="ok">12.73:1</td></tr>
+      <tr><td>Cream on the deepest navy</td><td class="ok">14.66:1</td></tr>
+      <tr><td>Cream on the navy bloom at the hero top</td><td class="ok">9.47:1</td></tr>
+      <tr><td>Cream on a dark area of a card</td><td class="ok">8.43:1</td></tr>
+      <tr><td>Cream on a white part of a screenshot</td><td class="bad">1.18:1</td></tr>
+      <tr><td>Cream on a cream part of a screenshot</td><td class="bad">1.03:1</td></tr>
+      <tr><td>Navy #112746 on a white screenshot</td><td class="ok">14.97:1</td></tr>
+    </table>
+    <p>AA asks 3.0:1 for text this large. Cream is comfortable on any navy in the palette and
+       hopeless on anything pale, which is exactly the split the carousel puts underneath it.</p>
+  </section>
+
+  <article class="opt">
+    <div class="mock m-split">
+      <div class="copy">
+        <div class="eb">Made For Mental Health Practices</div>
+        <div class="mast">Behavioral<br>Health Websites</div>
+        <div class="sub">The first impression your practice deserves.</div>
+        <span class="btn">Explore The Designs</span>
+      </div>
+      <span class="card" style="right:14px"><i></i></span>
+      <span class="card" style="right:100px"><i></i></span>
+      <span class="card" style="right:186px"><i></i></span>
+      <span class="mock__label">A, split</span>
+    </div>
+    <div class="opt__txt">
+      <span class="tag">Option A</span>
+      <h2>Stop Them Overlapping, Split The Hero</h2>
+      <p>Copy in a column on the left over plain navy, carousel to the right. The text never
+         crosses a screenshot, so it reads at <b>12.73:1</b> with no shadow, no scrim and the cards
+         at full brightness. It also gives the headline a left edge to align to, which large
+         display type generally prefers.</p>
+      <p>The cost is that it is a different hero. The centred, symmetrical composition goes, and
+         the cards get roughly half the width, so fewer are visible at once.</p>
+      <span class="cost cost--high">Biggest change, best result</span>
+    </div>
+  </article>
+
+  <article class="opt">
+    <div class="mock m-corr">
+      <div class="copy">
+        <div class="eb">Made For Mental Health Practices</div>
+        <div class="mast">Behavioral<br>Health Websites</div>
+        <div class="sub">The first impression your practice deserves.</div>
+        <span class="btn">Explore The Designs</span>
+      </div>
+      <span class="card" style="left:6px"><i></i></span>
+      <span class="card" style="left:92px"><i></i></span>
+      <span class="card" style="right:92px"><i></i></span>
+      <span class="card" style="right:6px"><i></i></span>
+      <span class="mock__label">B, corridor</span>
+    </div>
+    <div class="opt__txt">
+      <span class="tag">Option B</span>
+      <h2>Open A Corridor Through The Carousel</h2>
+      <p>Keep the centred composition exactly as it is, but leave one slot empty as it passes the
+         middle, so there is always a navy gap directly behind the words. Cards either side stay
+         at full brightness and keep moving. The text sits on navy, so again <b>12.73:1</b> with
+         nothing painted over anything.</p>
+      <p>This is my recommendation: it is the only option that keeps the hero looking the way you
+         have tuned it. The work is in <b>js/reels.js</b>, which currently spaces cards evenly, so
+         it needs to carry a deliberate blank at one position.</p>
+      <span class="cost cost--mid">Keeps the current look, moderate work</span>
+    </div>
+  </article>
+
+  <article class="opt">
+    <div class="mock m-above">
+      <div class="copy">
+        <div class="eb">Made For Mental Health Practices</div>
+        <div class="mast">Behavioral<br>Health Websites</div>
+        <span class="btn">Explore The Designs</span>
+      </div>
+      <span class="card" style="left:10px"><i></i></span>
+      <span class="card" style="left:96px"><i></i></span>
+      <span class="card" style="left:182px"><i></i></span>
+      <span class="card" style="right:96px"><i></i></span>
+      <span class="card" style="right:10px"><i></i></span>
+      <span class="mock__label">C, text above</span>
+    </div>
+    <div class="opt__txt">
+      <span class="tag">Option C</span>
+      <h2>Put The Copy Above The Cards</h2>
+      <p>Shrink the cards and push them down so they rise from the bottom edge, with the copy in
+         clear navy above. You can try this <b>right now</b> with the two controls already in
+         <b>#tune</b>: Card size and Text up / down. At card size 40% and text -150px the eyebrow
+         and the first line already clear the cards.</p>
+      <p>The cost is that the samples get smaller, which runs against the earlier note about
+         making them bigger so they are not blurry. Worth testing before committing to anything
+         else, because it costs nothing to try.</p>
+      <span class="cost cost--low">Try it today with the sliders</span>
+    </div>
+  </article>
+
+  <article class="opt">
+    <div class="mock m-dim">
+      <div class="copy">
+        <div class="eb">Made For Mental Health Practices</div>
+        <div class="mast">Behavioral<br>Health Websites</div>
+        <div class="sub">The first impression your practice deserves.</div>
+        <span class="btn">Explore The Designs</span>
+      </div>
+      <span class="card" style="left:10px"><i></i></span>
+      <span class="card" style="left:96px"><i></i></span>
+      <span class="card" style="left:182px"><i></i></span>
+      <span class="card" style="right:96px"><i></i></span>
+      <span class="card" style="right:10px"><i></i></span>
+      <span class="mock__label">D, all cards dimmed</span>
+    </div>
+    <div class="opt__txt">
+      <span class="tag">Option D</span>
+      <h2>Dim Every Card Equally</h2>
+      <p>One line on the iframes, and because the dimming is uniform there is no edge anywhere,
+         which is the thing you have been pointing at. But the numbers are unkind: a white
+         screenshot has to come down to <b>50% brightness</b> before cream text reaches even
+         3.36:1, and that is as dark as the mock above.</p>
+      <p>I would not do this. It makes every design look muddy, which is the opposite of what the
+         samples are there to prove, and you have twice asked for the templates to look clear.
+         Listed because it does technically solve the problem.</p>
+      <span class="cost cost--high">Solves it, costs the designs</span>
+    </div>
+  </article>
+
+  <article class="opt">
+    <div class="mock m-now">
+      <div class="copy">
+        <div class="eb">Made For Mental Health Practices</div>
+        <div class="mast">Behavioral<br>Health Websites</div>
+        <div class="sub">The first impression your practice deserves.</div>
+        <span class="btn">Explore The Designs</span>
+      </div>
+      <span class="card" style="left:10px"><i></i></span>
+      <span class="card" style="left:96px"><i></i></span>
+      <span class="card" style="left:182px"><i></i></span>
+      <span class="card" style="right:96px"><i></i></span>
+      <span class="card" style="right:10px"><i></i></span>
+      <span class="mock__label">Now, ellipse scrim</span>
+    </div>
+    <div class="opt__txt">
+      <span class="tag">For reference</span>
+      <h2>What Is Live Today</h2>
+      <p>The ellipse scrim, softened. It works, and the edge is fainter than it was, but it is
+         still a darkened region laid over the cards and its boundary is still findable, which is
+         the thing that started this.</p>
+      <p>One more idea that is not on this list because it is still a shadow in disguise: a dark
+         outline on the letters via text-stroke. It is crisper than a blur, but it is the same
+         family of fix and it changes how the serif reads at 96px, which on Fraunces is a real
+         loss.</p>
+    </div>
+  </article>
+
+</div>
+</body>
+</html>
