@@ -661,7 +661,17 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
 .lnav__right a:hover{opacity:1}
 .lnav__right svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7}
 /* center stage: eyebrow + giant masthead */
-.lstage{position:relative;z-index:3;flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,1.8vw,20px);text-align:center;padding:clamp(8px,2vh,28px) 18px clamp(14px,2.4vh,30px)}
+/* --lhero-copy-y moves the whole hero copy block. It is set on BOTH .lstage
+   and .lfoot, because the copy lives in two containers: eyebrow + masthead
+   here, subline + CTA there. Driving only one pulls them apart.
+   `translate` is the standalone property, not `transform`: these are flex
+   children, so a margin would re-run the layout and the block would travel at
+   less than 1:1 (that is exactly what went wrong with the reels), and
+   `transform` on the parent would be fine but .lcta2:hover already animates
+   its own transform, so keeping the axes separate avoids any future clash.
+   The ellipse scrim is .lstage::before, a child, so it follows the words. */
+.lstage{position:relative;z-index:3;flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,1.8vw,20px);text-align:center;padding:clamp(8px,2vh,28px) 18px clamp(14px,2.4vh,30px);
+  translate:0 var(--lhero-copy-y,0px)}
 /* The scrim used to cover the whole frame and dimmed every design with it.
    It sits behind the cards now, so this is the only darkening left in front:
    a soft ellipse under the words themselves. The cards either side of it stay
@@ -680,7 +690,8 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
 .lhero .lmast{font-family:var(--font-display);font-weight:500;font-size:var(--lmast-size,clamp(38px,7.2vw,96px));line-height:.92;letter-spacing:-.02em;color:#F3ECDD;max-width:15ch;margin:0;text-wrap:balance;text-shadow:0 2px 40px rgba(0,0,0,.25);user-select:none}
 .lmast-ghost{position:absolute;inset:0;z-index:-1;pointer-events:none;font-family:var(--font-display);font-weight:500;font-size:var(--lmast-size,clamp(38px,7.2vw,96px));line-height:.92;letter-spacing:-.02em;text-wrap:balance;color:rgba(243,236,221,.14)}
 /* bottom: subline + explore button */
-.lfoot{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;gap:clamp(16px,2.4vw,26px);padding:0 clamp(18px,3vw,40px) clamp(26px,4vw,48px)}
+.lfoot{position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;gap:clamp(16px,2.4vw,26px);padding:0 clamp(18px,3vw,40px) clamp(26px,4vw,48px);
+  translate:0 var(--lhero-copy-y,0px)}
 /* thin italic over live screenshots needs its own lift, not just the scrim */
 .lsub2{text-shadow:0 1px 16px rgba(5,14,26,.95),0 0 4px rgba(5,14,26,.75);max-width:34ch;margin-top:clamp(4px,1vh,10px);text-align:center;font-family:var(--font-display);font-style:italic;font-weight:400;font-size:clamp(15px,1.5vw,20px);line-height:1.5;color:var(--cream-accent);opacity:.95;margin:0}
 .lcta2{display:inline-flex;align-items:center;gap:12px;background:var(--blue);color:#0A1B33;text-decoration:none;font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:14px 22px 14px 26px;border-radius:999px;transition:transform .25s ease,box-shadow .25s ease;box-shadow:0 10px 30px rgba(0,0,0,.28)}

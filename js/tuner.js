@@ -3,8 +3,8 @@
    remember your last values in this browser. Once you settle, tell Claude the
    numbers and they get baked into css/main.css; this file can then be removed.
      - Nav / footer logo heights  -> --nav-logo-size, --footer-logo-size
-     - Hero (homepage .lhero only): logo size, center text down, nav sideways
-       -> --lhero-logo, --lhero-copy-y, --lhero-nav-x
+     - Hero (homepage .lhero only): logo size, and the copy block up/down
+       -> --lhero-logo, --lhero-copy-y
      - Hero designs reel: up/down, left/right, card size
        -> --reels-y, --reels-x, and window.SW_REELS.setFill() */
 (function () {
@@ -18,6 +18,7 @@
   var nav = get('fd_nav', 92);
   var foot = get('fd_logo', 120);
   var hLogo = get('fd_lhero_logo', 56);
+  var copyY = get('fd_lhero_copy_y', 0);
   var rHead = get('fd_rdeck_head', 80);
   var reelY = get('fd_reels_y', 0);
   var reelX = get('fd_reels_x', 0);
@@ -32,6 +33,9 @@
     root.style.setProperty('--footer-logo-size', foot + 'px');
     if (hasHero) {
       root.style.setProperty('--lhero-logo', hLogo + 'px');
+      // Moves the eyebrow, masthead, subline and CTA together, plus the
+      // ellipse scrim that sits under them.
+      root.style.setProperty('--lhero-copy-y', copyY + 'px');
     }
     if (hasShowcase) {
       root.style.setProperty('--rdeck-head-y', rHead + 'px');
@@ -84,7 +88,8 @@
 
     if (hasHero) {
       html += head('Hero (homepage)') +
-        row('Hero logo size', 'fd-hlogo', 24, 140, hLogo);
+        row('Hero logo size', 'fd-hlogo', 24, 140, hLogo) +
+        row('Text up / down', 'fd-copyy', -260, 260, copyY);
     }
 
     if (hasShowcase) {
@@ -107,6 +112,7 @@
     bind('fd-nav', function (v) { nav = v; set('fd_nav', v); });
     bind('fd-logo', function (v) { foot = v; set('fd_logo', v); });
     bind('fd-hlogo', function (v) { hLogo = v; set('fd_lhero_logo', v); });
+    bind('fd-copyy', function (v) { copyY = v; set('fd_lhero_copy_y', v); });
     bind('fd-rhead', function (v) { rHead = v; set('fd_rdeck_head', v); });
     bind('fd-reely', function (v) { reelY = v; set('fd_reels_y', v); });
     bind('fd-reelx', function (v) { reelX = v; set('fd_reels_x', v); });
