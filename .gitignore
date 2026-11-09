@@ -14,3 +14,8 @@ AEO-SEO-REPORT.md
 
 # Server logs / scratch
 *.log
+
+# scratch: recoloured image comparisons
+recolour-preview/
+recolour-preview.html
+benefit-03-options.html
