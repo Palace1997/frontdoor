@@ -40,7 +40,20 @@
   /* ---- Lazy-load the live thumbnails only when they come near view ----
      IntersectionObserver does the normal work. A position check backs it up,
      because the section router can move cards into view without any scroll. */
-  function load(f) { if (!f.getAttribute('src')) f.src = f.dataset.src; if (lazyIO) lazyIO.unobserve(f); }
+  function load(f) {
+    if (!f.getAttribute('src')) {
+      // Same origin, so mark the document as a preview once it lands: that
+      // hides the template's own "Built with FrontDoor" ribbon, which at card
+      // size is an unreadable dark pill and reads as a chat bubble stuck to
+      // every sample. The full-size preview modal keeps it, where it is
+      // legible and does its job as a credit, so this is only for the cards.
+      f.addEventListener('load', function () {
+        try { f.contentDocument.documentElement.classList.add('is-preview'); } catch (x) {}
+      });
+      f.src = f.dataset.src;
+    }
+    if (lazyIO) lazyIO.unobserve(f);
+  }
   var lazyIO = ('IntersectionObserver' in window) ? new IntersectionObserver(function (es) {
     es.forEach(function (e) { if (e.isIntersecting) load(e.target); });
   }, { rootMargin: '300px 0px' }) : null;
