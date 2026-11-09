@@ -1356,7 +1356,7 @@ body::after{
    fdImgIn on load instead: it sits above the fold, so there is nothing to
    wait for. */
 .gal__band::after{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
-  background:url(../assets/img/designs-wall.jpg?v=navy2) center 34%/cover no-repeat;
+  background:url(../assets/img/designs-wall.jpg?v=navy3) center 34%/cover no-repeat;
   animation:fdImgIn 1.25s cubic-bezier(.16,1,.3,1) both; }
 @media (prefers-reduced-motion:reduce){ .gal__band::after{ animation:none; } }
 /* the framed designs run the full height of this artwork, so there is no
@@ -1412,7 +1412,7 @@ body::after{
 .pk-panel{ position:relative; min-height:74vh; display:flex; overflow:hidden; isolation:isolate;
   background:var(--pk-cream); }
 .pk-panel::before{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
-  background:url(../assets/img/features-handoff.jpg?v=navy2) center 40%/cover no-repeat; }
+  background:url(../assets/img/features-handoff.jpg?v=navy3) center 40%/cover no-repeat; }
 .pk-layer{ position:absolute; inset:0; z-index:1; opacity:0; transition:opacity .77s ease; will-change:opacity;
   animation:pkDrift 20s ease-in-out infinite alternate; }
 .pk-layer.on{ opacity:1; }
@@ -1580,7 +1580,7 @@ body::after{
   margin-bottom:clamp(30px,4vw,56px); }
 /* the photo lives on its own layer so it can animate in without moving the text */
 .mission__band::after{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
-  background:url(../assets/img/mission-path.jpg?v=navy2) center 30%/cover no-repeat; }
+  background:url(../assets/img/mission-path.jpg?v=navy3) center 30%/cover no-repeat; }
 /* veil under the heading, clearing toward the base so the path reads */
 .mission__band::before{ content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
   background:linear-gradient(180deg, rgba(10,27,51,.78) 0%, rgba(10,27,51,.6) 30%,
@@ -1622,7 +1622,7 @@ body::after{
   margin-bottom:clamp(30px,4vw,56px); }
 /* the photo lives on its own layer so it can animate in without moving the text */
 .how__band::after{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
-  background:url(../assets/img/how-steps.jpg?v=navy2) center 37%/cover no-repeat; }
+  background:url(../assets/img/how-steps.jpg?v=navy3) center 37%/cover no-repeat; }
 /* Veil sits under the heading and then gets out of the way: the steps need
    to stay solid. No heavy base fade here, unlike the other two bands, since
    the crop already lands on the illustration's own cream floor. */
@@ -1655,7 +1655,7 @@ body::after{
   padding:clamp(96px,13vh,160px) 0 clamp(120px,15vw,230px);
   margin-bottom:clamp(30px,4vw,56px); }
 .faq__band::after{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
-  background:url(../assets/img/faq-conversation.jpg?v=navy2) center 30%/cover no-repeat; }
+  background:url(../assets/img/faq-conversation.jpg?v=navy3) center 30%/cover no-repeat; }
 /* light veil so the centred heading stays legible in the gap between the two
    figures, plus a fade at the base so the crop dissolves into the cream */
 .faq__band::before{ content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
@@ -1695,7 +1695,7 @@ body::after{
 /* Features: image as background of the header band only (same as How It Works) */
 #features{ padding-top:0; }
 .feat__band{ position:relative; overflow:hidden;
-  background:url(../assets/img/features-handoff.jpg?v=navy2) center 42%/cover no-repeat;
+  background:url(../assets/img/features-handoff.jpg?v=navy3) center 42%/cover no-repeat;
   padding:clamp(88px,13vh,150px) 0 clamp(44px,6vw,74px); }
 .feat__band::before{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
   background:linear-gradient(90deg, rgba(247,244,238,.95) 0%, rgba(247,244,238,.74) 40%, rgba(247,244,238,.34) 68%, rgba(247,244,238,.08) 100%); }
@@ -1766,7 +1766,7 @@ body::after{
   padding:clamp(96px,13vh,160px) 0 clamp(120px,15vw,230px); }
 /* the photo lives on its own layer so it can animate in without moving the text */
 .start__panel::after{ content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
-  background:url(../assets/img/start-door.jpg?v=navy2) center 32%/cover no-repeat; }
+  background:url(../assets/img/start-door.jpg?v=navy3) center 32%/cover no-repeat; }
 /* This illustration has no empty corridor down the middle: the door and the
    figure sit where the centred heading lands. The veil therefore stays solid
    through the text, clears for the middle, then fades out at the base. */
