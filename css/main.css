@@ -709,7 +709,13 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
     rgba(7,18,33,.132) 94%,
     rgba(7,18,33,0) 100%)}
 /* small caps over a bright screenshot need more than the ellipse alone */
-.lhero .leyebrow{text-shadow:0 1px 10px rgba(5,14,26,.95),0 0 3px rgba(5,14,26,.8)}
+/* Pure white at full opacity: the brightest text this palette can print, so it
+   reads on navy and holds up as far as it can over the pale cards. Literal
+   colour and a two-class selector on purpose, because .leyebrow is also set
+   further down the file and a token or a single class would lose to it. A
+   colour cannot fix white-on-white: where a pale card sits under these words
+   no text colour passes, only moving the words or the card does. */
+.lhero .leyebrow{color:#fff;opacity:1;text-shadow:0 1px 10px rgba(5,14,26,.95),0 0 3px rgba(5,14,26,.8)}
 .leyebrow{font-size:clamp(11px,1.1vw,13px);font-weight:600;letter-spacing:.34em;text-transform:uppercase;color:var(--cream-accent);opacity:.9;padding-left:.34em;margin:0 0 clamp(6px,1.2vw,14px)}
 .lmast-wrap{position:relative;display:inline-block}
 .lhero .lmast{font-family:var(--font-display);font-weight:500;font-size:var(--lmast-size,clamp(38px,7.2vw,96px));line-height:.92;letter-spacing:-.02em;color:#F3ECDD;max-width:15ch;margin:0;text-wrap:balance;text-shadow:0 2px 40px rgba(0,0,0,.25);user-select:none}
