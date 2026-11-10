@@ -1950,17 +1950,9 @@ body::after{
   border:1px solid var(--line); box-shadow:0 30px 60px -38px rgba(17,39,70,.35); }
 .about__fig img{ display:block; width:100%; height:auto; }
 .about__sec{ padding-top:clamp(32px,5vw,64px); }
-.about__sec + .about__sec{ padding-top:0; }
 .about__prose{ margin-top:clamp(20px,2.6vw,30px); }
 .about__prose p{ font-size:clamp(17px,1.7vw,19.5px); line-height:1.7; color:var(--g-700); margin:0 0 1.15em; max-width:62ch; }
 .about__prose p:last-child{ margin-bottom:0; }
-/* Wide enough that "What You Can Count On" fits on one line at desktop width
-   instead of stranding "On" by itself, and balanced so that where it does have
-   to wrap on a phone, the two lines come out even. */
-.about__head2{ max-width:1000px; margin:0 auto; text-align:center; }
-.about__head2 .eyebrow{ justify-content:center; }
-.about__head2 h2{ text-wrap:balance; }
-.about__head2 + .numlist{ margin-top:clamp(28px,4vw,48px); }
 /* Skip link: off-screen until it takes focus. It paints text on a filled
    button, so it uses a two-class selector to keep this page's own link styles
    from recolouring it. */
