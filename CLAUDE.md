@@ -21,7 +21,7 @@ Live site: https://palace1997.github.io/sitewell-studio/
 - Sky `--sky #52BEEB` (from the logo)
 - Warm neutrals: `--canvas #F7F4EE`, `--paper-2 #EFE9DE`, `--cream-accent #F0EBE1`, `--ink #1B1812`
 - Hairlines `--line #E5E2DC`, muted text `--g-500 #8A8480`
-- Headings: Fraunces (`--font-display`). Body: Inter (`--font-sans`).
+- Headings: Fraunces by default, Bodoni Moda on the editorial skin (`--font-display`). Body: Inter (`--font-sans`).
 - Layout: `.wrap` (max 1200px), `.section`, `.section--dark`, `.section--soft`
 - Buttons: `.btn`, `.btn--primary` (blue), `.btn--ghost`, `.btn--cream` (on navy), `.btn--lg`. Pill shape.
 - Nav is `.nav` with `.nav__inner`, `.nav__links`, `.nav__actions`. Footer is `.footer`. Reuse these. Do not build a second nav or footer.
@@ -32,6 +32,23 @@ Live site: https://palace1997.github.io/sitewell-studio/
 - Fraunces headings, Inter body
 - Every class uses the `t-` prefix (`t-btn`, `t-nav`, `t-card`, `t-section`). Do not use `main.css` classes in templates.
 - The skip link, focus ring, and "Built with FrontDoor" ribbon are shared accessibility parts. Keep them on every template.
+
+## Home page hero (special case)
+
+The home page does not use the standard `.nav` or `.hero--split`. It has its own landscape hero in `css/main.css`.
+
+- `body:has(.lhero)` hides the normal `.topbar` and `header.nav` on this page. Do not "fix" that.
+- Nav is the rounded pill: `.lnav`, `.lpill`, `.lcta`, with `.lnav__right` for Browse Designs and Talk With Us.
+- Center copy is `.lstage`: eyebrow (`.leyebrow`), masthead (`.lmast`), subline (`.lsub2`), CTA (`.lcta2`).
+- The curved card carousel is `.lhero__reels` with `.rcard`. `reels.js` rewrites each card's `transform` every frame, so never set `transform` on `.rcard` from CSS.
+- `.lfoot` is not used by any page. Do not add hero behavior there.
+
+**Do not change the hero scrim without John's approval.** It has been tuned several times (see the long comment above `.lstage::before` in `main.css`).
+
+- Layers: `.lhero__wash` (full frame) and `.lstage::before` (soft ellipse behind the words).
+- The tradeoff is on record. Without the ellipse, the headline is unreadable over bright cards. With it, its edge can show faintly across a pale card.
+- The approved levers are `--lhero-copy-y` (copy block position, default -40px) and the card size. Try those first.
+- After any hero change, check the headline, eyebrow, and subline against the cards at 1440 and 375 wide.
 
 ## Brand rules
 
@@ -51,29 +68,12 @@ Live site: https://palace1997.github.io/sitewell-studio/
 
 `robots.txt`, `sitemap.xml`, and `llms.txt` are in the root. A new public page needs an entry in `sitemap.xml` plus a unique title, meta description, and canonical tag.
 
-## Known cleanup (green that should be blue)
+## Green cleanup (done)
 
-Reviewers: report these as BLOCK on any page that touches the file, and fix them in a dedicated pass.
+All green colors were replaced with navy, blue, or sky in `brand.html` and `css/main.css`. Treat any new green as a bug.
 
-`brand.html`
-- Line 11: favicon fill `%2300A583` (green)
-- Line 23: body background glow `rgba(0,165,131,.14)`
-- Line 49: `.panel--forest` uses `#0e3b2e`, `#082420`
-- Line 58: `rgba(11,54,42,.28)` dashed border
-- Line 60: `.cs__k` uses `rgba(0,165,131,...)`
-- Line 153: "Door Mint" swatch `#5FCE9F` (and `--mint` on line 15)
-- Names to rename: `--forest` to `--navy`, `--green` to `--blue`, "Forest Base" and "Forest Deep" to Navy, "Kenzie Green" to Blue, "Green 600" to Blue 600
-- Copy on lines 7, 95, 112, 116, 117 mentions forest and Kenzie green
-- Heading font here is Bodoni Moda. Every other page uses Fraunces. Switch to Fraunces.
-
-`css/main.css`
-- Line 89: `.section--dark .eyebrow` color `#4fc7ab`
-- Line 130: `.topbar` text `#dff3ec`
-- Line 171: `.nav--v2 .nav__links a` color `#dfeee8`
-- Line 234: `.hero__statbadge .l` color `#a9d9cb`
-- Line 605: `.rcard` background `#dde6dd`
-- Lines 1446 to 1447, 1514, 1538: `--pk-mint`, `--pk-deep` and their hover tints are green washes
-- Note: lines 1 to 629 and the green matches were reviewed. The rest of the file (about 1,280 lines) was not read in full.
+- `css/main.css` still has variables named `--pk-mint` and `--pk-deep`. They are blue now. The names are old. Rename only in a dedicated pass, because they are used in several rules.
+- `main.css` sets `--font-display` to Bodoni Moda on the editorial skin (around line 1282), so Bodoni Moda is used on site pages too. Fraunces is the base font.
 
 ## How to work here
 
