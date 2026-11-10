@@ -5,6 +5,7 @@
 ## Pages
 - [Home](https://palace1997.github.io/sitewell-studio/): what FrontDoor is, how it works, and how to get started
 - [Designs](https://palace1997.github.io/sitewell-studio/gallery.html): browse website designs by practice area and practice size
+- [About](https://palace1997.github.io/sitewell-studio/about.html): who FrontDoor is, what the service covers, and what every design includes
 
 ## Who it serves
 - Behavioral and mental health practices: psychiatry, psychology, counseling and psychotherapy, marriage and family therapy, clinical social work, ABA, peer recovery, addiction and substance use, clinics, programs and organizations

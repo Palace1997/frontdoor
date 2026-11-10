@@ -737,6 +737,21 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
 @media (prefers-reduced-motion:reduce){.leyebrow,.lmast-wrap,.lsub2,.lcta2,.lnav{animation:none}}
 /* responsive */
 @media (max-width:1080px){ .lpill{display:none} }
+/* The pill is the grid's auto-width middle column, so whatever it grows by comes
+   straight out of the logo's column. Adding About made it 70px wider, which took
+   the logo from 176px to 128px at 1280 wide, under the 160px brand minimum.
+   Tighter link padding below 1400 hands about 46px back (5 links x 8px, plus the
+   left inset). .lpill .lcta is two-class and keeps its own padding. Nothing
+   changes at 1440 and up. Below ~1250 the logo was already being squeezed before
+   About existed; this does not fix that, it only stops adding to it. */
+@media (max-width:1400px){
+  .lpill{padding-left:14px}
+  .lpill a{padding:8px 9px}
+}
+/* One size down below 1250, where the logo column is already the tightest part
+   of the page. Measured at 1100 wide: 59px before About, 10px with it, 42px with
+   the padding above, and back above the original with this. */
+@media (max-width:1250px){ .lpill{--lpill-size:14px} }
 @media (max-width:760px){ .lnav__right a span{display:none} }
 @media (max-width:560px){
   .lnav__right{display:none}
@@ -1916,3 +1931,48 @@ body::after{
     linear-gradient(180deg, rgba(9,22,40,.88) 0%, rgba(9,22,40,.46) 24%, rgba(9,22,40,.52) 70%, rgba(6,16,30,.95) 100%); }
   .lhero .lmast{ text-shadow:0 2px 22px rgba(10,27,51,.6); }
 }
+
+/* ================= About page =================
+   Built from what already exists: the gallery's centred heading (.port__head),
+   the numbered list from How It Works, and the dark CTA band. Only what has no
+   precedent is defined here: the framed illustration and a few spacers.
+   The illustration sits BELOW the heading rather than behind it. The artwork
+   puts its figure and door across the middle, so any heading laid over it
+   either hides the figure or needs the near-opaque veil that made the Get
+   Started and FAQ illustrations all but invisible. */
+.about__top{ padding-top:clamp(28px,5vw,64px); padding-bottom:clamp(40px,6vw,80px); }
+.about__head{ max-width:800px; margin:0 auto; text-align:center; }
+.about__head .eyebrow{ justify-content:center; }
+.about__head .lede{ margin-left:auto; margin-right:auto; }
+.about__head .lede a{ color:var(--blue-600); text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; }
+.about__head .lede a:hover{ color:var(--navy); }
+.about__fig{ max-width:980px; margin:clamp(32px,4.5vw,56px) auto 0; border-radius:20px; overflow:hidden;
+  border:1px solid var(--line); box-shadow:0 30px 60px -38px rgba(17,39,70,.35); }
+.about__fig img{ display:block; width:100%; height:auto; }
+.about__sec{ padding-top:clamp(32px,5vw,64px); }
+.about__sec + .about__sec{ padding-top:0; }
+.about__prose{ margin-top:clamp(20px,2.6vw,30px); }
+.about__prose p{ font-size:clamp(17px,1.7vw,19.5px); line-height:1.7; color:var(--g-700); margin:0 0 1.15em; max-width:62ch; }
+.about__prose p:last-child{ margin-bottom:0; }
+/* Wide enough that "What You Can Count On" fits on one line at desktop width
+   instead of stranding "On" by itself, and balanced so that where it does have
+   to wrap on a phone, the two lines come out even. */
+.about__head2{ max-width:1000px; margin:0 auto; text-align:center; }
+.about__head2 .eyebrow{ justify-content:center; }
+.about__head2 h2{ text-wrap:balance; }
+.about__head2 + .numlist{ margin-top:clamp(28px,4vw,48px); }
+/* Skip link: off-screen until it takes focus. It paints text on a filled
+   button, so it uses a two-class selector to keep this page's own link styles
+   from recolouring it. */
+.skip-link.skip-link{ position:absolute; left:16px; top:-64px; z-index:200; padding:12px 18px;
+  background:var(--navy); color:var(--paper); border-radius:999px; font-weight:600; font-size:14px;
+  text-decoration:none; transition:top .15s ease; }
+.skip-link.skip-link:focus{ top:12px; outline:3px solid var(--sky); outline-offset:3px; }
+/* Visible focus for the page's own links and buttons. Scoped by the
+   .about-page body class: other pages (home-editorial.html and two internal
+   experiments) also contain a <main>, so a bare `main` selector would have
+   changed them too. */
+.about-page main a:focus-visible, .about-page main .btn:focus-visible{ outline:3px solid var(--blue); outline-offset:3px; border-radius:4px; }
+.about-page main .section--dark a:focus-visible, .about-page main .section--dark .btn:focus-visible{ outline-color:var(--sky); }
+/* current page in the mobile panel's main list, as the utility links already do */
+.mnav__links a[aria-current="page"]{ color:var(--sky,#52BEEB); }
