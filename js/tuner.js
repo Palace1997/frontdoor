@@ -15,13 +15,34 @@
   }
   function set(key, v) { try { localStorage.setItem(key, v); } catch (e) {} }
 
-  var nav = get('fd_nav', 92);
-  var foot = get('fd_logo', 120);
-  var hLogo = get('fd_lhero_logo', 56);
-  var copyY = get('fd_lhero_copy_y', -40);
+  // What each slider starts on when nothing is saved in this browser. These used to
+  // be hard-coded numbers (hero logo 56, footer logo 120, reel position 0 and 0),
+  // which had drifted from the values actually baked into the CSS (122, 90, -10
+  // and 49). So a fresh browser opening #tune silently applied the wrong numbers,
+  // and the tuner looked different from the live page until something was saved.
+  // Read the real current value from the page instead, so they cannot drift again.
+  function cssPx(name, fb) {
+    var n = parseFloat(getComputedStyle(root).getPropertyValue(name));
+    return isNaN(n) ? fb : n;
+  }
+  function translateOf(sel) {                       // [x, y] of the standalone `translate`
+    var e = document.querySelector(sel);
+    var t = e ? getComputedStyle(e).translate : '';
+    if (!t || t === 'none') return [0, 0];
+    var p = t.split(/\s+/);
+    return [parseFloat(p[0]) || 0, parseFloat(p[1]) || 0];
+  }
+  var heroImg = document.querySelector('.lnav__logo img');
+  var reelT = translateOf('.lhero__reels');
+  var copyT = translateOf('.lstage');
+
+  var nav = get('fd_nav', cssPx('--nav-logo-size', 92));
+  var foot = get('fd_logo', cssPx('--footer-logo-size', 90));
+  var hLogo = get('fd_lhero_logo', heroImg ? Math.round(parseFloat(getComputedStyle(heroImg).height)) || 122 : 122);
+  var copyY = get('fd_lhero_copy_y', copyT[1]);
   var rHead = get('fd_rdeck_head', 80);
-  var reelY = get('fd_reels_y', 0);
-  var reelX = get('fd_reels_x', 0);
+  var reelY = get('fd_reels_y', reelT[1]);
+  var reelX = get('fd_reels_x', reelT[0]);
   var reelFill = get('fd_reels_fill', 0);   // 0 = leave reels.js on its default
   var reelGap = get('fd_reels_gap', -1);    // -1 = leave reels.js on its default (0 is a real value)
 
