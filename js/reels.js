@@ -84,6 +84,21 @@
   var stageW = stage.clientWidth, center = stageW / 2;
   function measure() { stageW = stage.clientWidth; center = stageW / 2; }
   addEventListener('resize', measure);
+  // In the hero the card height is a percentage of the frame's height, and that
+  // used to be worked out once, when the script ran. Load the page in a tall
+  // window, shrink it, and the cards stayed at the old pixel size: measured, 60%
+  // of a 900px frame (523px) was still 523px after the window dropped to 520px,
+  // which is 103% of the new frame. So the same 60% setting looked different
+  // depending on the window or zoom the page happened to load in. Re-apply the
+  // size when the window changes, debounced so dragging the edge does not thrash,
+  // and once more after everything has loaded, because the frame can still grow a
+  // few percent once fonts and the logo arrive. The tuner's chosen fill is kept:
+  // applySize() reads the current value rather than resetting it.
+  var sizeTimer;
+  function resettle() { if (hero) { clearTimeout(sizeTimer); sizeTimer = setTimeout(applySize, 120); } }
+  addEventListener('resize', resettle);
+  addEventListener('load', resettle);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(resettle);
 
   // Re-apply the card size to the cards already on the page. Used by the dev
   // tuner (#tune) so the size slider is live; the iframes are left alone, so
