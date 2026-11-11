@@ -24,7 +24,7 @@
   var hero = stage.classList.contains('lhero__reels');
   // On a phone a card sized off the frame is nearly as wide as the frame, so
   // you read one screenshot rather than a wall of them. Smaller there.
-  var DEFAULT_FILL = small ? 0.42 : 0.66;
+  var DEFAULT_FILL = small ? 0.42 : 0.60;
   var fill = DEFAULT_FILL;
   var CARD_W, CARD_H;
 
@@ -43,7 +43,7 @@
   measureCards();
   // Space between neighbouring cards. Mutable so the dev tuner (#tune) can set
   // it live; the default is what ships until a tuned value is baked in.
-  var DEFAULT_GAP = small ? 22 : hero ? 28 : 34;
+  var DEFAULT_GAP = small ? 22 : hero ? 60 : 34;   // hero 60 tuned 11 Nov 2026 (was 28)
   var GAP = DEFAULT_GAP;
   // How much the cards at the edges swell. The old standalone section had a
   // whole band to grow into; as a backdrop behind the masthead they should

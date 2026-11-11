@@ -585,7 +585,7 @@ ul { margin: 0; padding: 0; list-style: none; }
      transform every frame and would wipe anything set there. `translate` is
      the standalone property, not `transform`, so it moves the reel 1:1
      without resizing the stage the way a margin did. */
-  translate:var(--reels-x,18px) var(--reels-y,48px);
+  translate:var(--reels-x,-10px) var(--reels-y,49px);
   touch-action:pan-y;-webkit-user-select:none;user-select:none;
   -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,0) 0,#000 9%,#000 91%,rgba(0,0,0,0) 100%);
   mask-image:linear-gradient(to right,rgba(0,0,0,0) 0,#000 9%,#000 91%,rgba(0,0,0,0) 100%)}
