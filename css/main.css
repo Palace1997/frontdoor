@@ -1263,6 +1263,18 @@ body:not(.is-routed) #faq { margin-top: -140px; }
 @media (max-width: 760px) { .vtest { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 460px) { .vtest { grid-template-columns: 1fr; } }
 
+/* ---- What You Get: abbreviated package checklist (home page) ---------
+   Replaced the video-testimonial tiles until real videos exist. White tick on
+   --blue is 5.3:1. Two columns on desktop, one on a phone. */
+.incl { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(28px,5vw,72px); border-top: 1px solid var(--line); }
+.incl__item { display: grid; grid-template-columns: 34px 1fr; gap: 18px; align-items: start; padding: clamp(20px,2.6vw,30px) 0; border-bottom: 1px solid var(--line); }
+.incl__tick { width: 34px; height: 34px; border-radius: 50%; background: var(--blue); color: #fff; display: grid; place-items: center; margin-top: 2px; }
+.incl__tick svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.4; }
+.incl__item h3 { font-family: var(--font-display); font-weight: 500; font-size: clamp(19px,2vw,24px); line-height: 1.15; margin: 0 0 6px; color: var(--ink); }
+.incl__item p { margin: 0; color: var(--g-700); font-size: clamp(15px,1.3vw,17px); line-height: 1.55; max-width: 46ch; }
+.incl__more { margin: clamp(28px,3.4vw,44px) 0 0; }
+@media (max-width: 760px) { .incl { grid-template-columns: 1fr; } }
+
 /* Floating help pill */
 .helpdock { position: fixed; right: 20px; bottom: 20px; z-index: 90; display: inline-flex; align-items: center; gap: 9px; background: var(--navy); color: #fff; font-weight: 600; font-size: 14px; padding: 12px 18px; border-radius: 100px; box-shadow: 0 16px 36px -16px rgba(10,27,51,.7); transition: transform .2s var(--ease); }
 .helpdock:hover { transform: translateY(-2px); }

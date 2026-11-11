@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/main.css?v=20261111c">
+<link rel="stylesheet" href="css/main.css?v=20261111d">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-navy-32.png?v=1">
 <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-navy-512.png?v=1">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon-navy-180.png?v=1">
@@ -118,9 +118,8 @@
       </button>
     </nav>
 
-    <!-- Center stage: eyebrow, masthead, subline, button -->
+    <!-- Center stage: masthead, subline, button. The "Made for mental health practices" eyebrow was removed 11 Nov 2026 on leadership feedback. -->
     <div class="lstage">
-      <p class="leyebrow">Made For Mental Health Practices</p>
       <div class="lmast-wrap">
         <span class="lmast-ghost" aria-hidden="true">Behavioral Health Websites</span>
         <h1 class="lmast">Behavioral Health Websites</h1>
@@ -254,33 +253,28 @@
   </div>
 </section>
 
-<!-- ============ CLIENT STORIES (VIDEO) ============ -->
-<section class="section" id="testimonials">
+<!-- ============ WHAT YOU GET ============ -->
+<!-- Replaces the "Hear It From Practitioners" video tiles (leadership, 10 Nov 2026):
+     there are no real testimonial videos yet, so this is an abbreviated version of the
+     Package section (#features). The .vtest styles stay in main.css for when real
+     videos exist. -->
+<section class="section" id="included">
   <div class="wrap">
     <div class="section__head reveal">
-      <span class="eyebrow">Client stories</span>
-      <h2 class="display-2">Hear It From Practitioners</h2>
-      <p class="lede">Short videos from the people behind the practices we build for. We add new ones here as our clients share them.</p>
+      <span class="eyebrow">Everything included</span>
+      <h2 class="display-2">What You Get</h2>
+      <p class="lede">Every FrontDoor website comes with all of this, built in.</p>
     </div>
-    <div class="vtest reveal">
-      <article class="vtest__card">
-        <!-- No play button until there is something to play: a play glyph on an
-             empty poster is a control that does nothing. The .vtest__play rule
-             stays in main.css for when the real videos land. -->
-        <div class="vtest__poster"><span class="vtest__soon">Video coming</span></div>
-      </article>
-      <article class="vtest__card">
-        <!-- No play button until there is something to play: a play glyph on an
-             empty poster is a control that does nothing. The .vtest__play rule
-             stays in main.css for when the real videos land. -->
-        <div class="vtest__poster"><span class="vtest__soon">Video coming</span></div>
-      </article>
-      <article class="vtest__card">
-        <!-- No play button until there is something to play: a play glyph on an
-             empty poster is a control that does nothing. The .vtest__play rule
-             stays in main.css for when the real videos land. -->
-        <div class="vtest__poster"><span class="vtest__soon">Video coming</span></div>
-      </article>
+    <div class="reveal">
+      <ul class="incl">
+        <li class="incl__item"><span class="incl__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Done-for-you design and copy</h3><p>A website shaped around your practice, with the pages, layout and words written by our team.</p></div></li>
+        <li class="incl__item"><span class="incl__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Your domain and business email</h3><p>A custom domain and a professional email address, set up for you.</p></div></li>
+        <li class="incl__item"><span class="incl__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Secure hosting</h3><p>Fast hosting with SSL and daily backups. No traffic limits.</p></div></li>
+        <li class="incl__item"><span class="incl__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Easy editor</h3><p>Update text and images yourself whenever you like, no code.</p></div></li>
+        <li class="incl__item"><span class="incl__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>30 days of edits</h3><p>Send us any change in your first month and we'll make it, as many as you need.</p></div></li>
+        <li class="incl__item"><span class="incl__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Human support</h3><p>Real people, reachable by chat and email. No bots, no runaround.</p></div></li>
+      </ul>
+      <p class="incl__more"><a class="btn btn--ghost" href="#features">See the full package</a></p>
     </div>
   </div>
 </section>
