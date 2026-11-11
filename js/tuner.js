@@ -5,8 +5,8 @@
      - Nav / footer logo heights  -> --nav-logo-size, --footer-logo-size
      - Hero (homepage .lhero only): logo size, and the copy block up/down
        -> --lhero-logo, --lhero-copy-y
-     - Hero designs reel: up/down, left/right, card size
-       -> --reels-y, --reels-x, and window.SW_REELS.setFill() */
+     - Hero designs reel: up/down, left/right, card size, space between
+       -> --reels-y, --reels-x, window.SW_REELS.setFill() and .setGap() */
 (function () {
   var root = document.documentElement;
 
@@ -23,6 +23,7 @@
   var reelY = get('fd_reels_y', 0);
   var reelX = get('fd_reels_x', 0);
   var reelFill = get('fd_reels_fill', 0);   // 0 = leave reels.js on its default
+  var reelGap = get('fd_reels_gap', -1);    // -1 = leave reels.js on its default (0 is a real value)
 
   var hasHero = !!document.querySelector('.lhero');
   var hasShowcase = !!document.querySelector('.rdeck');
@@ -99,10 +100,12 @@
 
     if (hasReels) {
       var startFill = reelFill || (window.SW_REELS && window.SW_REELS.defaultFill) || 62;
+      var startGap = reelGap >= 0 ? reelGap : ((window.SW_REELS && window.SW_REELS.defaultGap) || 28);
       html += head('Hero designs') +
         row('Up / down', 'fd-reely', -320, 320, reelY) +
         row('Left / right', 'fd-reelx', -320, 320, reelX) +
-        row('Card size', 'fd-reelf', 20, 110, startFill, '%');
+        row('Card size', 'fd-reelf', 20, 110, startFill, '%') +
+        row('Space between', 'fd-reelg', 0, 120, startGap);
     }
 
     html += '<div style="font-size:11px;color:#9fc3b7;margin-top:8px">Only shows with #tune in the URL. Tell Claude the values to lock them in.</div>';
@@ -116,6 +119,10 @@
     bind('fd-rhead', function (v) { rHead = v; set('fd_rdeck_head', v); });
     bind('fd-reely', function (v) { reelY = v; set('fd_reels_y', v); });
     bind('fd-reelx', function (v) { reelX = v; set('fd_reels_x', v); });
+    bind('fd-reelg', function (v) {
+      reelGap = v; set('fd_reels_gap', v);
+      if (window.SW_REELS) window.SW_REELS.setGap(v);
+    });
     bind('fd-reelf', function (v) {
       reelFill = v; set('fd_reels_fill', v);
       if (window.SW_REELS) window.SW_REELS.setFill(v);
@@ -123,9 +130,26 @@
 
     // reels.js builds after this panel on some loads, so apply a stored card
     // size once it is there rather than silently doing nothing.
-    if (hasReels && reelFill) {
+    // If nothing was saved, the slider started on a guess (28) because reels.js
+    // may not exist yet. Once it does, show the real default for this layout
+    // (22 on a phone, 28 in the hero, 34 elsewhere).
+    if (hasReels && reelGap < 0) {
+      (function syncGap(tries) {
+        if (window.SW_REELS && window.SW_REELS.defaultGap != null) {
+          var g = document.getElementById('fd-reelg'), o = document.getElementById('fd-reelg-o');
+          if (g && o && reelGap < 0) { g.value = window.SW_REELS.defaultGap; o.textContent = window.SW_REELS.defaultGap + 'px'; }
+          return;
+        }
+        if (tries > 0) setTimeout(function () { syncGap(tries - 1); }, 120);
+      })(25);
+    }
+    if (hasReels && (reelFill || reelGap >= 0)) {
       (function waitForReels(tries) {
-        if (window.SW_REELS) { window.SW_REELS.setFill(reelFill); return; }
+        if (window.SW_REELS) {
+          if (reelFill) window.SW_REELS.setFill(reelFill);
+          if (reelGap >= 0) window.SW_REELS.setGap(reelGap);
+          return;
+        }
         if (tries > 0) setTimeout(function () { waitForReels(tries - 1); }, 120);
       })(25);
     }

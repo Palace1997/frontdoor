@@ -41,7 +41,10 @@
     }
   }
   measureCards();
-  var GAP = small ? 22 : hero ? 28 : 34;
+  // Space between neighbouring cards. Mutable so the dev tuner (#tune) can set
+  // it live; the default is what ships until a tuned value is baked in.
+  var DEFAULT_GAP = small ? 22 : hero ? 28 : 34;
+  var GAP = DEFAULT_GAP;
   // How much the cards at the edges swell. The old standalone section had a
   // whole band to grow into; as a backdrop behind the masthead they should
   // stay calm, so the perspective reads as depth rather than motion.
@@ -102,6 +105,10 @@
   window.SW_REELS = {
     setFill: function (pct) { fill = Math.max(0.15, Math.min(1.15, pct / 100)); applySize(); },
     defaultFill: Math.round(DEFAULT_FILL * 100),
+    // pitch and total are derived from GAP inside applySize(), so changing the
+    // gap re-spaces every card in place without reloading an iframe.
+    setGap: function (px) { GAP = Math.max(0, Math.min(160, px)); applySize(); },
+    defaultGap: DEFAULT_GAP,
     isHero: hero
   };
 

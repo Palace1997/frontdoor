@@ -100,7 +100,7 @@
      gallery cards, the preview modal). It used to be hardcoded in four places
      across designs.js and reels.js, so edits to a template or to
      css/template.css kept being served stale. Bump this one line instead. */
-  window.SW_TPL_V = '20261106g';
+  window.SW_TPL_V = '20261111b';
 
   window.SW_CATALOG = { groups: GROUPS, areas: AREAS, types: TYPES, designs: DESIGNS, categories: CATEGORIES, categoryOf: categoryOf };
 })();
