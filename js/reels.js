@@ -24,12 +24,11 @@
   var hero = stage.classList.contains('lhero__reels');
   // On a phone a card sized off the frame is nearly as wide as the frame, so
   // you read one screenshot rather than a wall of them. Smaller there.
-  // 0.63 on purpose. The tuner showed "60%" while the cards on screen measured
-  // 62.5% of the frame (centre card 609px in a 975px frame): the size was being
-  // worked out before fonts loaded, when the frame was a few percent taller. That
-  // is fixed now (applySize re-runs on load and resize), so the number means what
-  // it says, and 63 is the size that was actually chosen by eye in the tuner.
-  var DEFAULT_FILL = small ? 0.42 : 0.63;
+  // 0.60 tuned 11 Nov 2026. applySize() re-runs on load, resize and font load, so
+  // the "60%" shown in the tuner is the real share of the frame on every screen.
+  // (It was 0.63 for a day, to cover the old tuner reading 60 while the cards
+  // measured 62.5%; that mismatch is fixed, so the number is now just the number.)
+  var DEFAULT_FILL = small ? 0.42 : 0.60;
   var fill = DEFAULT_FILL;
   var CARD_W, CARD_H;
 

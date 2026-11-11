@@ -585,7 +585,7 @@ ul { margin: 0; padding: 0; list-style: none; }
      transform every frame and would wipe anything set there. `translate` is
      the standalone property, not `transform`, so it moves the reel 1:1
      without resizing the stage the way a margin did. */
-  translate:var(--reels-x,-10px) var(--reels-y,49px);
+  translate:var(--reels-x,-10px) var(--reels-y,45px);
   touch-action:pan-y;-webkit-user-select:none;user-select:none;
   -webkit-mask-image:linear-gradient(to right,rgba(0,0,0,0) 0,#000 9%,#000 91%,rgba(0,0,0,0) 100%);
   mask-image:linear-gradient(to right,rgba(0,0,0,0) 0,#000 9%,#000 91%,rgba(0,0,0,0) 100%)}
@@ -664,7 +664,7 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
 /* --lhero-copy-y moves the whole hero copy block. All four pieces (eyebrow,
    masthead, subline, CTA) are children of .lstage, so this one rule moves the
    lot. (.lfoot below looks like it holds the subline and CTA, but no page uses
-   it.) Default -40px, tuned on 9 Nov 2026.
+   it.) Default -46px, tuned on 11 Nov 2026 (was -40px).
    `translate` is the standalone property, not a margin and not `transform`:
    .lstage is a flex child, so a margin would re-run the layout and the block
    would travel at less than 1:1, which is exactly what went wrong with the
@@ -672,7 +672,7 @@ body.is-routed .routeback{position:fixed;top:clamp(18px,2.4vw,30px);left:clamp(1
    transform, so keeping the axes separate avoids a future clash.
    The ellipse scrim is .lstage::before, a child, so it follows the words. */
 .lstage{position:relative;z-index:3;flex:1 1 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,1.8vw,20px);text-align:center;padding:clamp(8px,2vh,28px) 18px clamp(14px,2.4vh,30px);
-  translate:0 var(--lhero-copy-y,-40px)}
+  translate:0 var(--lhero-copy-y,-46px)}
 /* The only darkening in front of the cards: a soft ellipse under the words.
    The full-frame wash that used to dim every design now sits behind them.
    This scrim's edge IS faintly visible where it crosses a pale card, and that
