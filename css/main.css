@@ -2083,5 +2083,6 @@ body::after{
   .wi__bar[aria-current="true"] i::after{ animation:none; transform:scaleX(1); }
   .wi__pause{ display:none; }
 }
-/* Terms page: same band as Privacy, with no illustration under the text */
-.terms__band{ padding-bottom:clamp(40px,6vw,72px); }
+/* Terms page: same band as Privacy. Its illustration sits on a slightly different cream
+   (#FAF6E9, sampled from the file), so the band takes that colour and the edges blend. */
+.terms__band{ --privacy-ground:#FAF6E9; }
