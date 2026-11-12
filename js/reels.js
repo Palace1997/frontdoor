@@ -57,11 +57,18 @@
   var N = picks.length;
   var total = N * pitch;
 
+  var pageLoaded = document.readyState === 'complete';
+  function afterLoad(fn) {
+    if (pageLoaded) { fn(); return; }
+    window.addEventListener('load', function () { pageLoaded = true; fn(); }, { once: true });
+  }
+
   var cards = picks.map(function (d, i) {
     var el = document.createElement('div');
     el.className = 'rcard';
     el.style.width = CARD_W + 'px';
     el.style.height = CARD_H + 'px';
+    el.style.left = '0';                          // x is set with `translate` in layout(), so moving a card never forces a layout
     el.style.setProperty('--shot', String(CARD_W / SHOT_W));
     el.style.setProperty('--ch', CARD_H + 'px');   // the CSS centres on this
     el.setAttribute('role', 'button');
@@ -80,8 +87,12 @@
       try { fr.contentDocument.documentElement.classList.add('is-preview'); } catch (x) {}
       el.classList.add('ready');
     });
-    // stagger the loads a little so they don't all hit at once
-    setTimeout(function () { fr.src = d.file + '?v=' + (window.SW_TPL_V || '1'); }, i * 120);
+    // Stagger the loads so they don't all hit at once, and not before the page has finished
+    // loading: fourteen full pages parsing, laying out and decoding big photos at the same
+    // moment as the first paint is what made the first seconds of scrolling stutter.
+    afterLoad(function () {
+      setTimeout(function () { fr.src = d.file + '?v=' + (window.SW_TPL_V || '1'); }, i * 120);
+    });
     return el;
   });
 
@@ -128,7 +139,8 @@
     // gap re-spaces every card in place without reloading an iframe.
     setGap: function (px) { GAP = Math.max(0, Math.min(160, px)); applySize(); },
     defaultGap: DEFAULT_GAP,
-    isHero: hero
+    isHero: hero,
+    isRunning: function () { return running; }
   };
 
   function layout() {
@@ -144,16 +156,32 @@
       var scale = 1 + GROW * dist * dist;        // edges grow
       var rotY = -26 * Math.max(-1.4, Math.min(1.4, d)); // lean like inside a cylinder
       var ty = -10 * dist * dist;
-      el.style.left = x + 'px';
-      el.style.transform = 'translateY(' + ty.toFixed(1) + 'px) rotateY(' + rotY.toFixed(1) + 'deg) scale(' + scale.toFixed(3) + ')';
-      el.style.zIndex = String(Math.round(120 - dist * 60));
+      // `translate` (the standalone property) puts the card where `left: x` used to. The
+      // result is the same picture, but changing `left` made the browser re-run layout for
+      // every card on every frame, and `translate` does not.
+      el.style.translate = x.toFixed(2) + 'px';
+      var t = 'translateY(' + ty.toFixed(1) + 'px) rotateY(' + rotY.toFixed(1) + 'deg) scale(' + scale.toFixed(3) + ')';
+      if (t !== el._t) { el.style.transform = t; el._t = t; }
+      var z = Math.round(120 - dist * 60);
+      if (z !== el._z) { el.style.zIndex = String(z); el._z = z; }
     }
   }
 
   var pos = 0, mom = 0, speed = RM ? 0 : 44, last = performance.now(), raf = 0;
   var dragging = false, lastX = 0, moved = 0;
 
+  // The loop only runs while the carousel is on screen and the tab is in front. It used to run
+  // for as long as the page was open, so every frame of scrolling through the rest of the page
+  // also paid for re-positioning fourteen cards nobody could see.
+  var running = false, inView = true, pageVisible = !document.hidden;
+  function start() {
+    if (running || !inView || !pageVisible) return;
+    running = true; last = performance.now(); raf = requestAnimationFrame(frame);
+  }
+  function stop() { running = false; cancelAnimationFrame(raf); }
+
   function frame(now) {
+    if (!running) return;
     var dt = Math.min(64, now - last); last = now;
     if (!dragging) {
       pos += speed * dt / 1000 + mom;
@@ -161,6 +189,8 @@
       if (Math.abs(mom) < 0.02) mom = 0;
     }
     layout();
+    // reduced motion: nothing moves on its own, so stop once any drag momentum has died down
+    if (speed === 0 && mom === 0 && !dragging) { running = false; return; }
     raf = requestAnimationFrame(frame);
   }
 
@@ -168,6 +198,7 @@
     dragging = true; moved = 0; mom = 0;
     lastX = (e.touches ? e.touches[0].clientX : e.clientX);
     stage.classList.add('is-grab');
+    start();
     if (e.pointerId != null && stage.setPointerCapture) { try { stage.setPointerCapture(e.pointerId); } catch (x) {} }
   }
   function onMove(e) {
@@ -177,7 +208,7 @@
     pos -= dx; mom = -dx * 0.85; moved += Math.abs(dx);
     layout();
   }
-  function onUp() { dragging = false; stage.classList.remove('is-grab'); }
+  function onUp() { dragging = false; stage.classList.remove('is-grab'); start(); }
 
   stage.addEventListener('pointerdown', onDown);
   addEventListener('pointermove', onMove, { passive: true });
@@ -205,5 +236,16 @@
 
   measure();
   layout();
-  raf = requestAnimationFrame(frame);
+  document.addEventListener('visibilitychange', function () {
+    pageVisible = !document.hidden;
+    if (pageVisible) start(); else stop();
+  });
+  if ('IntersectionObserver' in window) {
+    // a little margin so it is already moving when it scrolls back into view
+    new IntersectionObserver(function (entries) {
+      inView = entries[entries.length - 1].isIntersecting;
+      if (inView) start(); else stop();
+    }, { rootMargin: '160px 0px' }).observe(stage);
+  }
+  start();
 })();

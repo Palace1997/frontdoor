@@ -56,6 +56,7 @@ The home page does not use the standard `.nav` or `.hero--split`. It has its own
 - Center copy is `.lstage`: masthead (`.lmast`), subline (`.lsub2`), CTA (`.lcta2`). The eyebrow line ("Made for mental health practices") was removed on 11 Nov 2026 on leadership feedback. Do not put it back.
 - The curved card carousel is `.lhero__reels` with `.rcard`. `reels.js` rewrites each card's `transform` every frame, so never set `transform` on `.rcard` from CSS.
 - `.lfoot` is not used by any page. Do not add hero behavior there.
+- Scroll performance (12 Nov 2026): `reels.js` only runs its animation loop while the carousel is on screen and the tab is in front, and it positions each card with the standalone `translate` property, not `left`, so moving a card never forces a layout. The fourteen design previews start loading after the page's `load` event. Keep all three. Do not go back to `left`, and do not add anything that writes layout properties (width, left, top, margin) on every frame.
 
 **Do not change the hero scrim without John's approval.** It has been tuned several times (see the long comment above `.lstage::before` in `main.css`).
 

@@ -14,13 +14,9 @@
     });
   }
 
-  // Auto-hiding scrollbar: show only while actively scrolling
-  var root = document.documentElement, sbTimer;
-  window.addEventListener('scroll', function () {
-    root.classList.add('is-scrolling');
-    clearTimeout(sbTimer);
-    sbTimer = setTimeout(function () { root.classList.remove('is-scrolling'); }, 650);
-  }, { passive: true });
+  // (An "is-scrolling" class used to be toggled on <html> here for an auto-hiding scrollbar.
+  // Only the template pages' css/template.css reads it, and these pages do not load that file,
+  // so it did nothing except make the browser re-check styles at the start and end of every scroll.)
 
   // Sticky nav shadow + hide on scroll down, show on scroll up
   var nav = document.querySelector('.nav');
