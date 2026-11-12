@@ -64,6 +64,15 @@ The home page does not use the standard `.nav` or `.hero--split`. It has its own
 - The approved levers are `--lhero-copy-y` (copy block position, now -46px) and the card size (now 60% of the frame). Try those first. Both can be tried live with the dev tuner: add `#tune` to the home page address. It saves to that browser only; the numbers that count are the ones baked into `css/main.css` and `js/reels.js`.
 - After any hero change, check the headline and subline against the cards at 1440 and 375 wide.
 
+## "What You Get" section (home page)
+
+`#included` on the home page is a motion section: a navy band with a big headline whose words rise in one by one (`.wi__w`), a button and one line, then a three-panel strip along the bottom. The middle panel rotates through the six included items; each progress bar's CSS fill animation is the timer, so pausing the animation pauses the rotation. It is `css/main.css` (search `.wi`) plus `js/included.js`. It uses no photo, only navy, blue and cream.
+
+- The six items mirror the Package section (`#features`). If one changes there, change it here too.
+- It has a pause button and pauses on hover and keyboard focus. With reduced motion, or without JavaScript, it does not rotate and all six items are listed. Keep both fallbacks.
+- It replaced the "Hear It From Practitioners" video tiles. The old `.vtest` styles are still in `main.css` for when real videos exist.
+- Do not claim numbers it cannot back up. The "30" is the real count of designs in `js/catalog.js`.
+
 ## Brand rules
 
 - No green anywhere on FrontDoor pages. The brand moved to navy and blue. Any green is a bug.

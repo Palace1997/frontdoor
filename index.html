@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter+Tight:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/main.css?v=20261112b">
+<link rel="stylesheet" href="css/main.css?v=20261112g">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-navy-32.png?v=1">
 <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-navy-512.png?v=1">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon-navy-180.png?v=1">
@@ -254,25 +254,72 @@
 <!-- ============ WHAT YOU GET ============ -->
 <!-- Replaces the "Hear It From Practitioners" video tiles (leadership, 10 Nov 2026):
      there are no real testimonial videos yet, so this is an abbreviated version of the
-     Package section (#features). The .vtest styles stay in main.css for when real
-     videos exist. -->
-<section class="section" id="included">
-  <div class="wrap">
-    <div class="section__head reveal">
-      <span class="eyebrow">Everything included</span>
-      <h2 class="display-2">What You Get</h2>
-      <p class="lede">Every FrontDoor website comes with all of this, built in.</p>
+     Package section (#features). Laid out as a motion hero: headline words rise in,
+     then a three-panel strip with the included items rotating in the middle panel.
+     The .vtest styles stay in main.css for when real videos exist. -->
+<section class="wi" id="included" aria-labelledby="wi-h">
+  <div class="wi__top">
+    <div class="wrap">
+      <span class="wi__eyebrow">Everything included</span>
+      <h2 class="wi__h" id="wi-h"><span class="wi__w" style="--d:.15s"><span>What</span></span> <span class="wi__w wi__w--dim" style="--d:.3s"><span>You</span></span> <span class="wi__w" style="--d:.45s"><span>Get</span></span></h2>
+      <div class="wi__cta">
+        <a class="btn btn--cream btn--lg" href="#features">See the full package
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17L17 7M8 7h9v9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <p>Every FrontDoor website comes with all of this, built in.</p>
+      </div>
     </div>
-    <div class="reveal">
-      <ul class="incl">
-        <li class="incl__item"><span class="incl__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Done-for-you design and copy</h3><p>A website shaped around your practice, with the pages, layout and words written by our team.</p></div></li>
-        <li class="incl__item"><span class="incl__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Your domain and business email</h3><p>A custom domain and a professional email address, set up for you.</p></div></li>
-        <li class="incl__item"><span class="incl__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Secure hosting</h3><p>Fast hosting with SSL and daily backups. No traffic limits.</p></div></li>
-        <li class="incl__item"><span class="incl__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Changes handled for you</h3><p>Send us what you want changed and our team updates your site. No code, no editor to learn.</p></div></li>
-        <li class="incl__item"><span class="incl__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>30 days of edits</h3><p>Send us any change in your first month and we'll make it, as many as you need.</p></div></li>
-        <li class="incl__item"><span class="incl__tick" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><h3>Human support</h3><p>Real people, reachable by chat and email. No bots, no runaround.</p></div></li>
-      </ul>
-      <p class="incl__more"><a class="btn btn--ghost" href="#features">See the full package</a></p>
+  </div>
+  <div class="wi__strip">
+    <div class="wi__p wi__p1">
+      <p class="wi__p1-t">Start with a design made for your kind of practice</p>
+      <a class="wi__link" href="gallery.html">Browse the designs</a>
+    </div>
+    <div class="wi__p wi__p2" role="group" aria-roledescription="carousel" aria-label="What is included">
+      <div class="wi__slides" id="wiSlides">
+        <article class="wi__slide is-active" role="group" aria-roledescription="slide" aria-label="1 of 6">
+          <span class="wi__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="8.5" cy="9.5" r="1.6"/><path d="M4 17l4.5-4.8 3.2 3 3.2-3.4L20 16.5"/></svg></span>
+          <div><h3>Done-for-you design and copy</h3><p>A website shaped around your practice, with the pages, layout and words written by our team.</p></div>
+        </article>
+        <article class="wi__slide" role="group" aria-roledescription="slide" aria-label="2 of 6">
+          <span class="wi__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.2 2.4 3.3 5.3 3.3 8.5s-1.1 6.1-3.3 8.5c-2.2-2.4-3.3-5.3-3.3-8.5S9.8 5.9 12 3.5z"/></svg></span>
+          <div><h3>Your domain and business email</h3><p>A custom domain and a professional email address, set up for you.</p></div>
+        </article>
+        <article class="wi__slide" role="group" aria-roledescription="slide" aria-label="3 of 6">
+          <span class="wi__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="6" rx="2"/><rect x="3.5" y="13.5" width="17" height="6" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span>
+          <div><h3>Secure hosting</h3><p>Fast hosting with SSL and daily backups. No traffic limits.</p></div>
+        </article>
+        <article class="wi__slide" role="group" aria-roledescription="slide" aria-label="4 of 6">
+          <span class="wi__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20h4.2L19 9.2a2.1 2.1 0 0 0 0-3L17.8 5a2.1 2.1 0 0 0-3 0L4 15.8z"/><path d="M14.3 5.7l4 4"/></svg></span>
+          <div><h3>Changes handled for you</h3><p>Send us what you want changed and our team updates your site. No code, no editor to learn.</p></div>
+        </article>
+        <article class="wi__slide" role="group" aria-roledescription="slide" aria-label="5 of 6">
+          <span class="wi__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 0 1-13.7 5.6L4 15.4"/><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.6"/><path d="M4 11.2v4.4h4.4M20 12.8V8.4h-4.4"/></svg></span>
+          <div><h3>30 days of edits</h3><p>Send us any change in your first month and we'll make it, as many as you need.</p></div>
+        </article>
+        <article class="wi__slide" role="group" aria-roledescription="slide" aria-label="6 of 6">
+          <span class="wi__ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.5 12.4c0 3.8-3.8 6.9-8.5 6.9-1 0-2-.1-2.9-.4L4 20.5l1.4-3.6A6.6 6.6 0 0 1 3.5 12.4C3.5 8.6 7.3 5.5 12 5.5s8.5 3.1 8.5 6.9z"/><path d="M9 12.3h.01M12 12.3h.01M15 12.3h.01"/></svg></span>
+          <div><h3>Human support</h3><p>Real people, reachable by chat and email. No bots, no runaround.</p></div>
+        </article>
+      </div>
+      <div class="wi__ctl" hidden>
+        <div class="wi__bars" role="group" aria-label="Choose an item">
+          <button type="button" class="wi__bar" aria-label="Done-for-you design and copy" aria-current="true"><i></i></button>
+          <button type="button" class="wi__bar" aria-label="Your domain and business email" aria-current="false"><i></i></button>
+          <button type="button" class="wi__bar" aria-label="Secure hosting" aria-current="false"><i></i></button>
+          <button type="button" class="wi__bar" aria-label="Changes handled for you" aria-current="false"><i></i></button>
+          <button type="button" class="wi__bar" aria-label="30 days of edits" aria-current="false"><i></i></button>
+          <button type="button" class="wi__bar" aria-label="Human support" aria-current="false"><i></i></button>
+        </div>
+        <button type="button" class="wi__pause" aria-label="Pause rotation">
+          <svg class="wi__i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="wi__i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="wi__p wi__p3">
+      <span class="wi__n">30</span>
+      <p>designs to start from, for solo therapists, group practices, clinics and programs.</p>
     </div>
   </div>
 </section>
@@ -427,6 +474,7 @@
 <script src="js/main.js?v=20261112a"></script>
 <script src="js/tuner.js?v=20261111c"></script>
 <script src="js/hero-motion.js?v=2"></script>
+<script src="js/included.js?v=4"></script>
 <script src="js/editorial.js?v=9"></script>
 
 </body>
