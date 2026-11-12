@@ -2007,7 +2007,7 @@ body::after{
    the middle panel. Navy, blue and cream only, no photo. Everything is visible
    without JavaScript or with reduced motion: the words show at once and all six
    items are listed instead of rotating. White on --blue is 5.3:1. */
-.wi{ position:relative; overflow:hidden; display:flex; flex-direction:column; min-height:min(100svh,940px);
+.wi{ position:relative; overflow:hidden; display:flex; flex-direction:column; min-height:min(80svh,760px);
   background:linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 100%); color:var(--cream-accent); }
 .wi::before{ content:""; position:absolute; top:-25%; right:-10%; width:60%; height:130%; pointer-events:none;
   background:radial-gradient(closest-side, rgba(28,111,176,.26), transparent); }
@@ -2016,8 +2016,9 @@ body::after{
 .wi__eyebrow{ display:inline-flex; font-family:var(--font-sans); font-weight:600; font-size:12px; line-height:1.4;
   letter-spacing:.2em; text-transform:uppercase; color:#6EC5EC; }
 .wi__h{ margin:18px 0 0; font-family:var(--font-display); font-weight:600; text-transform:uppercase;
-  font-size:clamp(44px,8.4vw,120px); line-height:.98; letter-spacing:.005em; color:var(--cream-accent); }
-.wi__w{ display:inline-block; overflow:hidden; vertical-align:top; padding:.04em .03em .06em; margin-right:.1em; }
+  font-size:clamp(30px,4.2vw,60px); line-height:1; letter-spacing:.005em; color:var(--cream-accent); }
+/* clips the rise from below, but not sideways: overflow:hidden shaved the serif off the W */
+.wi__w{ display:inline-block; clip-path:inset(0 -0.4em); vertical-align:top; padding:.06em .02em .1em; margin-right:.14em; }
 .wi__w > span{ display:inline-block; }
 .wi__w--dim > span{ color:rgba(240,235,225,.55); }
 .wi__cta{ display:flex; flex-wrap:wrap; align-items:center; gap:clamp(18px,3vw,40px); margin-top:clamp(28px,6vh,64px); }
