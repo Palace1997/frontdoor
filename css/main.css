@@ -1980,3 +1980,15 @@ body::after{
 .about-page main .section--dark a:focus-visible, .about-page main .section--dark .btn:focus-visible{ outline-color:var(--sky); }
 /* current page in the mobile panel's main list, as the utility links already do */
 .mnav__links a[aria-current="page"]{ color:var(--sky,#52BEEB); }
+
+/* ---- Privacy page (reuses the About layout) --------------------------- */
+.about__updated{ margin:14px 0 0; font-size:14px; color:var(--g-700); }
+.privacy .display-3{ margin:clamp(40px,5.5vw,64px) 0 0; }
+.privacy .display-3:first-child{ margin-top:0; }
+.about__prose ul{ list-style:disc; margin:0 0 1.15em; padding-left:1.25em; color:var(--g-700); font-size:clamp(17px,1.7vw,19.5px); line-height:1.7; max-width:62ch; }
+.about__prose li{ margin:0 0 .45em; }
+.about__prose li:last-child{ margin-bottom:0; }
+.about__prose a{ color:var(--blue-600); text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:1px; }
+.about__prose a:hover{ color:var(--navy); }
+.reqform__note a{ color:var(--blue-600); text-decoration:underline; text-underline-offset:2px; white-space:nowrap; }
+.reqform__note a:hover{ color:var(--navy); }
