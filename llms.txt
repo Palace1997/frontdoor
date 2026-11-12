@@ -5,7 +5,6 @@
 ## Pages
 - [Home](https://palace1997.github.io/frontdoor/): what FrontDoor is, how it works, and how to get started
 - [Designs](https://palace1997.github.io/frontdoor/gallery.html): browse website designs by practice area and practice size
-- [About](https://palace1997.github.io/frontdoor/about.html): who FrontDoor is and what the service covers
 - [Privacy](https://palace1997.github.io/frontdoor/privacy.html): what this site collects, why, and how to ask for deletion
 
 ## Who it serves
