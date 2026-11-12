@@ -201,9 +201,10 @@
   });
 
   /* ---- Get-started request form ---------------------------------------
-     Posts to Formspree once a real form id is set below. Until then it shows
-     a friendly confirmation so nothing looks broken. Never collects health data. */
-  var REQUEST_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+     Posts to Formspree (form id set below). If the id is ever reset to the
+     YOUR_FORM_ID placeholder it only shows a confirmation and sends nothing.
+     Never collects health data. */
+  var REQUEST_ENDPOINT = 'https://formspree.io/f/mzerbyed';
   var req = document.getElementById('requestForm');
   if (req) {
     req.addEventListener('submit', function (e) {
