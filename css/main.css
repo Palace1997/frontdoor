@@ -2083,3 +2083,5 @@ body::after{
   .wi__bar[aria-current="true"] i::after{ animation:none; transform:scaleX(1); }
   .wi__pause{ display:none; }
 }
+/* Terms page: same band as Privacy, with no illustration under the text */
+.terms__band{ padding-bottom:clamp(40px,6vw,72px); }
