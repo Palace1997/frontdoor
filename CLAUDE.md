@@ -69,7 +69,7 @@ The home page does not use the standard `.nav` or `.hero--split`. It has its own
 ## Forms, booking and privacy
 
 - The home page request form posts to Formspree. The form id is `REQUEST_ENDPOINT` in `js/main.js`. If it is ever set back to the `YOUR_FORM_ID` placeholder, the form shows "Request sent" and sends nothing.
-- `BOOKING_URL` in `js/main.js` is still the `YOUR-HANDLE` placeholder, so Get Started and Talk With Us have no booking link yet.
+- No booking tool is used (decided 12 Nov 2026). Get Started and Talk With Us go to the request form. `BOOKING_URL` in `js/main.js` is deliberately left as the `YOUR-HANDLE` placeholder, which keeps that code switched off. Do not wire a scheduling link in unless John asks.
 - The designs' own contact forms use a placeholder too. A message from a real practice's visitors can be protected health information, so those need a form service with a signed HIPAA agreement before a real practice uses one. Do not point them at the standard Formspree plan.
 - `privacy.html` is linked from the footers and under the request form. It was written from what the site actually does (no analytics, cookies or stored data on the public pages). If you add analytics, a booking widget or any other third-party script, update it. `PRIVACY-REVIEW.md` in the repo folder is an internal note for iTrust's compliance read and is git-ignored.
 
