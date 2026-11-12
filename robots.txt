@@ -31,4 +31,4 @@ Allow: /
 Disallow: /studio/
 Disallow: /forms/
 
-Sitemap: https://palace1997.github.io/sitewell-studio/sitemap.xml
+Sitemap: https://palace1997.github.io/frontdoor/sitemap.xml

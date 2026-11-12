@@ -1,8 +1,8 @@
-# FrontDoor (repo: sitewell-studio)
+# FrontDoor (repo: frontdoor, formerly sitewell-studio)
 
 FrontDoor is a web studio by iTrust Insights. This repo is the marketing site plus 30 demo templates for behavioral health practices. The brand was renamed from SiteWell Studio to FrontDoor. Some file names and commits still say SiteWell.
 
-Live site: https://palace1997.github.io/sitewell-studio/
+Live site: https://palace1997.github.io/frontdoor/
 
 ## Stack and deploy
 
