@@ -11,8 +11,20 @@ Live site: https://palace1997.github.io/frontdoor/
 - Local preview: `python3 server.py` from the repo root, then open http://localhost:4787/index.html. On a Mac you can double-click `Start SiteWell.command`, which does the same and frees the port first. The server handles one request at a time, so open one page at a time and expect a gallery full of iframes to load slowly.
 - Cache busting: pages load CSS and JS with a `?v=` suffix. Bump it on every page that loads a file you changed, or browsers keep the old copy. Template iframes are busted by `window.SW_TPL_V` in `js/catalog.js`.
 - `tools-build-seo.js` (run `node tools-build-seo.js`) edits each of the 30 catalogued designs in place, adding structured data and Blog links, and writes `<design>-blog.html` and `<design>-post.html` beside it plus `js/blog-pages.json`. The blog and post pages copy each design's `<style>` block, so after changing a design's CSS, re-run it to keep those copies in step. It is safe to run twice.
-- `tools-build-forms.js` writes `forms/<design>.html` and `forms/index.html`. It does not run as it stands: it has John's Mac path hard-coded and reads `/tmp/groups.json`, which is not in the repo. Fix both before using it.
-- `studio/` and `forms/` are internal team tools. Do not link them from public nav.
+- `tools-build-forms.js` writes `forms/<design>.html` and `forms/index.html`. It does not run as it stands: it has John's Mac path hard-coded and reads `/tmp/groups.json`, which is not in the repo. Fix both before using it. Note it writes `forms/index.html` in plain text, which must be locked again afterwards (see below).
+- `studio/` and `forms/` are internal team tools. Do not link them from the public nav.
+
+## The locked Studio pages
+
+GitHub Pages is static and has no login, so two internal pages are stored encrypted and only open with the team password: `studio/customize.html` (the template Studio) and `forms/index.html` (the list of client intake forms). What is in the repo is a small lock screen plus the scrambled page. Without the password the page cannot be read from the repo, from view-source or from the live site.
+
+- The team password is NOT in the repo. John has it. Locally it lives in `.studio-password` in the repo root (git-ignored) or the `STUDIO_PASSWORD` environment variable. Never commit it, paste it into a page, or write it in a commit message or comment.
+- `tools-lock.js` locks and unlocks a page: `node tools-lock.js unlock studio/customize.html /tmp/customize.html` to edit, then `node tools-lock.js lock /tmp/customize.html studio/customize.html` to lock it back. Edit the unlocked copy outside the repo. Never commit a plain version of either page, and never leave one in a served folder. To change the password, unlock with the old one and lock again with the new one.
+- After a successful sign-in the browser keeps the password for that tab only, so reloading the Studio does not ask again. Closing the tab forgets it.
+- A password shared by the whole team cannot be taken away from one person. If someone leaves, change the password.
+- The individual client forms (`forms/<design>.html`) are deliberately NOT locked, because clients open them from a link in an email. They hold no secrets. Only the list page that links to all of them is locked.
+- Be straight about what this protects: the Studio's old source is still readable in this repo's earlier commits, so the lock stops casual use of the live tool, not a determined person reading git history. The Studio holds no client data; projects are saved in each person's own browser.
+- The `studio/editable-practice*.html` base template and `studio/icon-library.js` are not locked. They are generic and the template is already public through the gallery.
 
 ## Two design systems. Do not mix them.
 

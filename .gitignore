@@ -25,3 +25,6 @@ assets/img/favicon-mark-*.png
 assets/img/favicon-cream-*.png
 hero-door-options.html
 hero-photo-width.html
+
+# Team password for the locked Studio pages (never commit)
+.studio-password
