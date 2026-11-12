@@ -118,9 +118,5 @@
   "throughline": {
     "blog": "templates/practices/coaching-throughline-blog.html",
     "post": "templates/practices/coaching-throughline-post.html"
-  },
-  "starter": {
-    "blog": "studio/editable-practice-blog.html",
-    "post": "studio/editable-practice-post.html"
   }
 }
