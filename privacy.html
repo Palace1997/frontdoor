@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/main.css?v=20261112b">
+<link rel="stylesheet" href="css/main.css?v=20261112d">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-navy-32.png?v=1">
 <link rel="icon" type="image/png" sizes="512x512" href="assets/img/favicon-navy-512.png?v=1">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon-navy-180.png?v=1">
@@ -51,18 +51,9 @@
 }
 </script>
 </head>
-<body class="about-page">
+<body class="about-page privacy-page">
 <a class="skip-link" href="#main">Skip to content</a>
 
-<div class="topbar">A web studio by <b>iTrust Insights</b> · Specialists in mental health practices</div>
-<div class="galback">
-  <a href="index.html" class="routeback routeback--static" aria-label="Back to homepage">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back to homepage</span>
-  </a>
-  <button type="button" class="mnav__burger mnav__burger--light" aria-expanded="false" aria-controls="mnavPanel" aria-label="Open menu">
-    <span class="mnav__bars" aria-hidden="true"><span></span><span></span><span></span></span>
-  </button>
-</div>
 
 <main id="main">
 <!-- DRAFT, needs a compliance read before it is relied on. To confirm or fill in:
@@ -76,17 +67,26 @@
      browser storage on the home, designs or about pages. Google Fonts and one Unsplash
      image load from those companies' servers (no longer mentioned on the page). -->
 
-<section class="section about__top" id="privacy">
+<!-- Same format as the Mission page: a full-width band with the heading centred over
+     the artwork and the back pill pinned top-left. The illustration's own cream ground
+     is the band colour, so it runs edge to edge with no frame. -->
+<section class="privacy__band" id="privacy">
+  <div class="galback">
+    <a href="index.html" class="routeback routeback--static" aria-label="Back to homepage">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>Back to homepage</span>
+    </a>
+    <button type="button" class="mnav__burger mnav__burger--light" aria-expanded="false" aria-controls="mnavPanel" aria-label="Open menu">
+      <span class="mnav__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+    </button>
+  </div>
   <div class="wrap">
-    <div class="port__head about__head reveal">
+    <div class="privacy__head reveal">
       <span class="eyebrow">Privacy</span>
       <h1 class="port__title">Privacy Policy</h1>
       <p class="lede">FrontDoor is a service of iTrust Insights. Here is what we collect when you use this site or ask us about a website, what we do with it, and how to ask us to delete it.</p>
       <p class="about__updated">Last updated November 12, 2026</p>
     </div>
-    <figure class="about__fig reveal">
-      <img src="assets/img/privacy-shield.jpg?v=1" width="2000" height="1129" alt="An illustration of a person working at a laptop beside an open document with a navy shield and keyhole in front of it, and padlocked notes branching off to the right." decoding="async">
-    </figure>
+    <img class="privacy__art" src="assets/img/privacy-shield.jpg?v=1" width="2000" height="1129" alt="An illustration of a person working at a laptop beside an open document with a navy shield and keyhole in front of it, and padlocked notes branching off to the right." decoding="async">
   </div>
 </section>
 

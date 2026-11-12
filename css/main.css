@@ -1992,3 +1992,22 @@ body::after{
 .about__prose a:hover{ color:var(--navy); }
 .reqform__note a{ color:var(--blue-600); text-decoration:underline; text-underline-offset:2px; white-space:nowrap; }
 .reqform__note a:hover{ color:var(--navy); }
+
+/* ---- Privacy page header band, same format as the Mission page --------
+   Full-width band, heading centred over the artwork, back pill top-left. The
+   illustration is light, so the text is ink on its own cream ground
+   (#FAF1E0, sampled from the file) rather than cream on navy. The picture has
+   no frame: its edges fade into the band colour so it reads as one surface. */
+.privacy-page{ --privacy-ground:#FAF1E0; }
+.privacy__band{ position:relative; overflow:hidden; background:var(--privacy-ground);
+  padding:clamp(96px,12vh,150px) 0 clamp(8px,2vw,28px); margin-bottom:clamp(30px,4vw,56px); }
+.privacy-page .galback{ position:absolute; top:0; left:0; right:0; z-index:3; }
+.privacy__head{ max-width:780px; margin:0 auto; text-align:center; position:relative; z-index:2; }
+.privacy__head .eyebrow{ justify-content:center; }
+.privacy__head h1{ margin:16px auto 18px; }
+.privacy__head .lede{ margin:0 auto; max-width:60ch; color:var(--g-700); }
+.privacy__art{ display:block; position:relative; z-index:1; width:100%; max-width:1180px; height:auto;
+  margin:clamp(-96px,-6vw,-28px) auto 0;
+  -webkit-mask-image:radial-gradient(ellipse 72% 74% at 50% 52%, #000 58%, transparent 100%);
+          mask-image:radial-gradient(ellipse 72% 74% at 50% 52%, #000 58%, transparent 100%); }
+@media (max-width:820px){ .privacy__art{ margin-top:18px; width:116%; max-width:none; margin-left:-8%; } .privacy__head{ text-align:left; } .privacy__head .eyebrow{ justify-content:flex-start; } .privacy__head .lede{ margin-left:0; } }
