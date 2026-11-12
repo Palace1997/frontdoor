@@ -1,5 +1,3 @@
-> Note, 12 Nov 2026: `studio/` mentioned below moved to the private repo `Palace1997/frontdoor-studio`. Findings about it still apply there.
-
 # Accessibility audit, the 30 catalog designs
 
 **Audited 6 November 2026.** Target: WCAG 2.1 Level AA.

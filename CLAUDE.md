@@ -11,7 +11,8 @@ Live site: https://palace1997.github.io/frontdoor/
 - Local preview: `python3 server.py` from the repo root, then open http://localhost:4787/index.html. On a Mac you can double-click `Start SiteWell.command`, which does the same and frees the port first. The server handles one request at a time, so open one page at a time and expect a gallery full of iframes to load slowly.
 - Cache busting: pages load CSS and JS with a `?v=` suffix. Bump it on every page that loads a file you changed, or browsers keep the old copy. Template iframes are busted by `window.SW_TPL_V` in `js/catalog.js`.
 - `tools-build-seo.js` (run `node tools-build-seo.js`) edits each of the 30 catalogued designs in place, adding structured data and Blog links, and writes `<design>-blog.html` and `<design>-post.html` beside it plus `js/blog-pages.json`. The blog and post pages copy each design's `<style>` block, so after changing a design's CSS, re-run it to keep those copies in step. It is safe to run twice.
-- The Studio and the client intake forms are not in this repo any more. They moved on 12 Nov 2026 to a private repo, `Palace1997/frontdoor-studio` (local copy: `/Users/eddmaar/Documents/FrontDoor Studio`), together with `tools-build-forms.js`. Do not recreate `studio/` or `forms/` here, and do not link to them from the public site. The Studio keeps its own snapshot of the 30 designs, so a design change made here has to be copied there too.
+- `tools-build-forms.js` writes `forms/<design>.html` and `forms/index.html`. It does not run as it stands: it has John's Mac path hard-coded and reads `/tmp/groups.json`, which is not in the repo. Fix both before using it.
+- `studio/` and `forms/` are internal team tools. Do not link them from public nav.
 
 ## Two design systems. Do not mix them.
 

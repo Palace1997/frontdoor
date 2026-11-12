@@ -524,10 +524,17 @@ function instrument(d, src, base, have) {
 const report = [];
 let wrote = 0;
 
-/* The Studio's Starter template (studio/editable-practice.html) used to be
-   processed here as a 31st entry. The Studio moved to its own private repo
-   (Palace1997/frontdoor-studio) on 12 Nov 2026, so it is no longer in this one. */
-DESIGNS.forEach(design => {
+/* The Studio's Starter is not in the public catalog, so it has no entry to read
+   a practice area from, but it is the template the Studio opens on and the one
+   a client most often starts from. It gets the same treatment as the thirty,
+   with the broadest honest pair of values: a behavioral health business, with
+   no claim about which discipline. */
+const STARTER = {
+  id: 'starter', name: 'Starter', practice: 'Your Practice',
+  area: 'counseling', file: 'studio/editable-practice.html'
+};
+
+[].concat(DESIGNS, [STARTER]).forEach(design => {
   const map = SCHEMA[design.area];
   if (!map) { console.warn('no schema mapping for area ' + design.area + ' (' + design.id + '), skipped'); return; }
   const d = Object.assign({}, design, { schemaType: map.type, specialty: map.specialty });

@@ -11,6 +11,8 @@ User-agent: Claude-User
 User-agent: PerplexityBot
 User-agent: Perplexity-User
 Allow: /
+Disallow: /studio/
+Disallow: /forms/
 
 # AI training crawlers: blocked (default stance; does not remove the site from AI answers)
 User-agent: GPTBot
@@ -26,5 +28,7 @@ Disallow: /
 # Everyone else
 User-agent: *
 Allow: /
+Disallow: /studio/
+Disallow: /forms/
 
 Sitemap: https://palace1997.github.io/frontdoor/sitemap.xml
