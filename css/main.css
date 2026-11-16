@@ -2086,3 +2086,9 @@ body::after{
 /* Terms page: same band as Privacy. Its illustration sits on a slightly different cream
    (#FAF6E9, sampled from the file), so the band takes that colour and the edges blend. */
 .terms__band{ --privacy-ground:#FAF6E9; }
+
+/* Lenis smooth scroll (js/smooth.js) */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+.lenis.lenis-stopped{overflow:hidden}
+.lenis.lenis-scrolling iframe{pointer-events:none}

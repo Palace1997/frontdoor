@@ -79,7 +79,7 @@
   var pv = null, pvFrame, pvStage, pvTitle, pvOpen, pvChoose, lastFocus;
   function buildPreview() {
     pv = document.createElement('div');
-    pv.className = 'pv'; pv.setAttribute('role', 'dialog'); pv.setAttribute('aria-modal', 'true'); pv.setAttribute('aria-label', 'Design preview');
+    pv.className = 'pv'; pv.setAttribute('data-lenis-prevent', ''); pv.setAttribute('role', 'dialog'); pv.setAttribute('aria-modal', 'true'); pv.setAttribute('aria-label', 'Design preview');
     pv.innerHTML =
       '<div class="pv__bar">' +
         '<div class="pv__title" id="pvTitle"></div>' +

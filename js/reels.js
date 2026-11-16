@@ -231,7 +231,7 @@
   var cta = document.querySelector('[data-reels-cta]');
   if (cta) cta.addEventListener('click', function (e) {
     var t = document.getElementById('catalog');
-    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' }); }
+    if (t) { e.preventDefault(); if (window.swScrollTo) window.swScrollTo(t); else t.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' }); }
   });
 
   measure();
