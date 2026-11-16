@@ -1,4 +1,25 @@
 /* FrontDoor template, shared interactions */
+/* Smooth wheel scrolling, same as the FrontDoor site pages (js/smooth.js + js/lenis.min.js).
+   Loaded from here so every design and its blog pages get it without a new tag on each page.
+   Skipped inside the small preview cards on the home page and gallery, which nobody scrolls,
+   and for reduced motion (smooth.js checks that too). */
+(function () {
+  try {
+    var fe = window.frameElement;
+    if (fe && fe.closest && fe.closest('.rcard, .dcard__shot')) return;
+  } catch (x) {}
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var me = document.currentScript && document.currentScript.src;
+  if (!me) return;
+  var base = me.replace(/template\.js.*$/, '');
+  function add(file, v, next) {
+    var el = document.createElement('script');
+    el.src = base + file + '?v=' + v;
+    el.onload = next || null;
+    document.head.appendChild(el);
+  }
+  add('lenis.min.js', '1.1.13', function () { add('smooth.js', '5'); });
+})();
 (function () {
   /* ---- Form delivery config -------------------------------------------
      Set the Formspree endpoint here (or per-form via the form's action="…",

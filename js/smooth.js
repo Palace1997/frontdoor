@@ -24,7 +24,12 @@
   }
   function wake() {
     awake = performance.now();
-    if (!pending) { pending = true; requestAnimationFrame(loop); }
+    if (!pending) {
+      // The loop slept, so Lenis's clock is stale: its first frame would measure the whole idle
+      // gap as one huge step and jump most of the way there. Zero it so the glide starts gently.
+      lenis.time = 0;
+      pending = true; requestAnimationFrame(loop);
+    }
   }
   ['wheel', 'keydown', 'pointerdown', 'scroll', 'touchstart'].forEach(function (ev) {
     addEventListener(ev, wake, { passive: true });
