@@ -22,12 +22,17 @@
 })();
 (function () {
   /* ---- Form delivery config -------------------------------------------
-     Set the Formspree endpoint here (or per-form via the form's action="…",
-     or globally via window.D7_FORM_ENDPOINT before this script runs).
-     While it is left as the placeholder below, forms fall back to a friendly
-     no-backend confirmation so nothing looks broken pre-launch. */
+     A message through a practice's contact form can be protected health information
+     (it shows someone is contacting a provider). So the endpoint set here, per form via
+     action="https://...", or globally via window.D7_FORM_ENDPOINT, must be a form service
+     that signs a HIPAA business associate agreement with the practice. Not Formspree's
+     standard plan: this script refuses to send to formspree.io (see BLOCKED below).
+     While the placeholder is left as it is, forms fall back to a friendly no-backend
+     confirmation so the demo does not look broken. That stub sends nothing, so a live
+     practice site must never ship with it. */
   var FORM_ENDPOINT_DEFAULT = 'https://formspree.io/f/YOUR_FORM_ID';
   var PLACEHOLDER = 'https://formspree.io/f/YOUR_FORM_ID';
+  var BLOCKED = /(^|\.)formspree\.io$/i;   // standard Formspree has no HIPAA agreement
 
   // Auto-hiding scrollbar: show the bar only while actively scrolling
   var root = document.documentElement, sbTimer;
@@ -99,6 +104,15 @@
         if (btn) { btn.textContent = 'Thank you, we’ll be in touch'; btn.disabled = true; }
         return;
       }
+
+      // A real Formspree address is not allowed on a practice site. Say so, send nothing.
+      try {
+        if (BLOCKED.test(new URL(endpoint, location.href).hostname)) {
+          if (window.console) console.error('FrontDoor: this form points at Formspree, which has no HIPAA agreement. Use a HIPAA-capable form service.');
+          if (btn) { btn.textContent = 'Form not set up yet. Please call the office.'; btn.disabled = true; }
+          return;
+        }
+      } catch (x) {}
 
       // Build payload from all named/derivable controls.
       var data = new FormData();
