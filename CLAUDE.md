@@ -24,6 +24,7 @@ GitHub Pages is static and has no login, so two internal pages are stored encryp
 - A password shared by the whole team cannot be taken away from one person. If someone leaves, change the password.
 - The individual client forms (`forms/<design>.html`) are deliberately NOT locked, because clients open them from a link in an email. They hold no secrets. Only the list page that links to all of them is locked.
 - Be straight about what this protects: the Studio's old source is still readable in this repo's earlier commits, so the lock stops casual use of the live tool, not a determined person reading git history. The Studio holds no client data; projects are saved in each person's own browser.
+- The Studio can select and delete decorative rules (thin lines): `d7RuleFor()` in `studio/customize.html` finds a rule under the pointer with a few pixels of give, whether it is its own empty element or a `::before`/`::after` on an element with no text. Clicking it, or right-clicking, offers "Delete this line" (real element) or "Remove line" and "Delete this" (drawn by CSS). Lines drawn before a piece of text still use the text bar's "Remove line". Edited 17 Nov 2026.
 - The `studio/editable-practice*.html` base template and `studio/icon-library.js` are not locked. They are generic and the template is already public through the gallery.
 
 ## Two design systems. Do not mix them.
